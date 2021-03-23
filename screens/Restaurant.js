@@ -5,6 +5,8 @@ import {
     View,
     Text,
     TouchableOpacity,
+    Platform,
+    StatusBar,
     Image,
     Animated
 } from "react-native";
@@ -435,7 +437,8 @@ const Restaurant = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2
+        backgroundColor: COLORS.lightGray2,
+        paddingTop: (Platform.OS==="android")?StatusBar.currentHeight:0
     }
 })
 

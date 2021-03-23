@@ -1,9 +1,12 @@
 import React from "react";
 import {
+    StyleSheet,
     View,
     SafeAreaView,
     Text,
     Image,
+    Platform,
+    StatusBar,
     TouchableOpacity
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
@@ -372,7 +375,7 @@ const OrderDelivery = ({ route, navigation }) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={styles.container}>
             {renderMap()}
             {renderDestinationHeader()}
             {renderDeliveryInfo()}
@@ -380,5 +383,13 @@ const OrderDelivery = ({ route, navigation }) => {
         </SafeAreaView>
     )
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: COLORS.lightGray2,
+        paddingTop: (Platform.OS==="android")?StatusBar.currentHeight:0
+    }
+})
 
 export default OrderDelivery;
