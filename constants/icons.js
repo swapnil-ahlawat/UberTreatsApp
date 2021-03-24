@@ -23,11 +23,17 @@ export const basket = require("../assets/icons/shopping-basket.png");
 export const star = require("../assets/icons/star.png");
 export const sushi = require("../assets/icons/sushi.png");
 export const user = require("../assets/icons/user.png");
-
+export const arrowDown= require("../assets/icons/down.png");
+export const eye= require("../assets/icons/eye.png")
+export const disable_eye= require("../assets/icons/disable_eye.png")
+export const scan= require("../assets/icons/scan.png")
 export default {
+    arrowDown,
     back,
     car,
     cutlery,
+    eye,
+    disable_eye,
     donut,
     drink,
     fire,
@@ -47,7 +53,8 @@ export default {
     salad,
     search,
     basket,
+    scan,
     star,
     sushi,
-    user,
+    user
 }

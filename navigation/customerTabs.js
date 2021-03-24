@@ -98,7 +98,7 @@ const CustomTabBar = (props) => {
 
 }
 
-const Tabs = () => {
+const CustomerTabs = () => {
     return (
         <Tab.Navigator
             tabBarOptions={{
@@ -214,4 +214,4 @@ const Tabs = () => {
     )
 }
 
-export default Tabs
+export default CustomerTabs

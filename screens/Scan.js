@@ -171,7 +171,7 @@ const Scan = ({ navigation }) => {
         )
     }
 
-    function onBarCodeRead(result) {
+    function onQRCodeRead(result) {
         console.log(result.data)
     }
 
@@ -185,10 +185,10 @@ const Scan = ({ navigation }) => {
                 captureAudio={false}
                 type={RNCamera.Constants.Type.back}
                 flashMode={RNCamera.Constants.FlashMode.off}
-                onBarCodeRead={onBarCodeRead}
+                onQRCodeRead={onQRCodeRead}
                 androidCameraPermissionOptions={{
                     title: "Permission to use camera",
-                    message: "Camera is required for barcode scanning",
+                    message: "Camera is required for QR code scanning",
                     buttonPositive: "OK",
                     buttonNegative: "Cancel"
                 }}
