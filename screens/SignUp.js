@@ -47,7 +47,7 @@ const SignUp = ({ navigation }) => {
         return (
             <View
                 style={{
-                    marginTop: SIZES.padding * 5,
+                    marginTop: SIZES.padding * 10,
                     height: 100,
                     alignItems: 'center',
                     justifyContent: 'center'

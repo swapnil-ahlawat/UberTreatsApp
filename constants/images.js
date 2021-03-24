@@ -29,7 +29,7 @@ const sushi = require("../assets/images/sushi.jpg");
 const teh_c_peng = require("../assets/images/teh-c-peng.jpg");
 const tomato_pasta = require("../assets/images/tomato-pasta.jpg");
 const uberEatsLogo= require("../assets/images/UberEatsLogo.png");
-
+const focus= require("../assets/images/focus.png")
 export default {
     avatar_1,
     avatar_2,
@@ -41,7 +41,7 @@ export default {
     burger_restaurant_2,
     chicago_hot_dog,
     crispy_chicken_burger,
-
+    focus,
     fries_restaurant,
     hawaiian_pizza,
     honey_mustard_chicken_burger,

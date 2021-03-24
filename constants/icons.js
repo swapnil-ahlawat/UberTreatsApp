@@ -24,14 +24,16 @@ export const star = require("../assets/icons/star.png");
 export const sushi = require("../assets/icons/sushi.png");
 export const user = require("../assets/icons/user.png");
 export const arrowDown= require("../assets/icons/down.png");
-export const eye= require("../assets/icons/eye.png")
-export const disable_eye= require("../assets/icons/disable_eye.png")
-export const scan= require("../assets/icons/scan.png")
+export const eye= require("../assets/icons/eye.png");
+export const disable_eye= require("../assets/icons/disable_eye.png");
+export const scan= require("../assets/icons/scan.png");
+export const close= require("../assets/icons/close.png");
 export default {
     arrowDown,
     back,
     car,
     cutlery,
+    close,
     eye,
     disable_eye,
     donut,
