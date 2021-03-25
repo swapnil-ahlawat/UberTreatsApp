@@ -21,7 +21,9 @@ import { COLORS, FONTS, SIZES, icons, images } from "../constants";
 const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
-    const [modalVisible, setModalVisible] = React.useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [serialNumber, setSerialNumber]= useState(null);
+
     useEffect(() => {
         (async () => {
           const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -30,11 +32,14 @@ const Scan = ({ navigation }) => {
       }, []);
 
       const handleBarCodeScanned = ({ type, data }) => {
-        setModalVisible(true)
+        setSerialNumber(data);
+        setModalVisible(true);
       };
+
       const handleClicked = () => {
-          setModalVisible(false),
-          navigation.navigate("Home")
+          setScanned(true);
+          setModalVisible(false);
+          navigation.navigate("Home");
         };
     
       if (hasPermission === null) {
@@ -43,8 +48,6 @@ const Scan = ({ navigation }) => {
       if (hasPermission === false) {
         return <Text>No access to camera</Text>;
       }
-
-    
 
     function renderHeader() {
         return (
@@ -147,13 +150,17 @@ const Scan = ({ navigation }) => {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
-                    onPress={() => setModalVisible(true)}
+                    onPress={() => {
+                        setSerialNumber(10);
+                        setModalVisible(true);
+                    }}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>
                 </TouchableOpacity>
             </View>
         )
     }
+
     function renderModeModal() {
 
         return (
@@ -173,23 +180,37 @@ const Scan = ({ navigation }) => {
                                 width: "100%",
                                 backgroundColor: COLORS.white,
                                 borderRadius: SIZES.radius,
-                                alignItems: 'center',
+                                alignItems: 'center'
                             }}
                         >   
-                          
+                            <View style={{flexDirection:'row', marginTop: 5*SIZES.padding, alignItems: "center"}}>
+                                <Image
+                                    source={icons.success}
+                                    resizeMode="contain"
+                                    style={{
+                                        height: 60,
+                                        width: 60,
+                                        tintColor: COLORS.primary
+                                    }}
+                                />
+                                <Text
+                                    style={{
+                                        color: COLORS.black,
+                                        ...FONTS.body1,
+                                }}>Successful!</Text>
+                            </View>
+
+                            <Text style={{
+                                    color: COLORS.black,
+                                    marginVertical: 3*SIZES.padding,
+                                    marginLeft: 3*SIZES.padding,
+                                    ...FONTS.body3,
+                                    width: SIZES.width * 0.8
+                            }}>Package No: {serialNumber}</Text>
                             <Text
                                 style={{
                                     color: COLORS.black,
-                                    marginTop: 10*SIZES.padding,
-                                    ...FONTS.body1,
-
-
-                            }}>Successful!</Text>
-                            
-                            <Text
-                                style={{
-                                    color: COLORS.black,
-                                    marginVertical: 2*SIZES.padding,
+                                    marginVertical: SIZES.padding,
                                     marginLeft: 3*SIZES.padding,
                                     ...FONTS.body2,
                                     width: SIZES.width * 0.8
@@ -197,15 +218,6 @@ const Scan = ({ navigation }) => {
 
                             }}>Thank you for collecting the package. Please deposit at any collection centre as per your convenience.</Text>
 
-                            <Image
-                                    source={icons.success}
-                                    resizeMode="contain"
-                                    style={{
-                                        height: 60,
-                                        width: 60,
-                                        tintColor: COLORS.primary                                
-                                    }}
-                                />
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
@@ -227,9 +239,9 @@ const Scan = ({ navigation }) => {
       {/* {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />} */}
                 {renderHeader()}
                 {renderScanFocus()}
-                {renderModeModal()}
                 {renderOtherOption()}
                 {renderButton()}
+                {renderModeModal()}
         </View>
     )
 }

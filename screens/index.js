@@ -3,12 +3,13 @@ import Restaurant from "./Restaurant"
 import OrderDelivery from "./OrderDelivery"
 import SignUp from "./SignUp"
 import Scan from "./Scan"
-
+import PersonnelHome from "./PersonnelHome"
 
 export {
     Home,
     Restaurant,
     OrderDelivery,
+    PersonnelHome,
     SignUp,
     Scan
 }
