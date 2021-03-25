@@ -180,7 +180,7 @@ const SignUp = ({ navigation }) => {
                     }}
                     onPress={() => navigation.navigate(selectedMode.tabs)}
                 >
-                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>
+                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>SIGN IN</Text>
                 </TouchableOpacity>
             </View>
         )

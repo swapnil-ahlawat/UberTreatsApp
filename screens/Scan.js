@@ -5,7 +5,9 @@ import {
     StyleSheet,
     Button,
     Image,
+    Modal,
     TouchableOpacity,
+    TouchableWithoutFeedback,
     TextInput
 } from "react-native"
 import {
@@ -13,9 +15,13 @@ import {
   } from 'expo-barcode-scanner';
 import { COLORS, FONTS, SIZES, icons, images } from "../constants";
 
+
+
+
 const Scan = ({ navigation }) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const [modalVisible, setModalVisible] = React.useState(false);
     useEffect(() => {
         (async () => {
           const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -24,8 +30,12 @@ const Scan = ({ navigation }) => {
       }, []);
 
       const handleBarCodeScanned = ({ type, data }) => {
-        alert(`Scanned \n ${data}`);
+        setModalVisible(true)
       };
+      const handleClicked = () => {
+          setModalVisible(false),
+          navigation.navigate("Home")
+        };
     
       if (hasPermission === null) {
         return <Text>Requesting for camera permission</Text>;
@@ -74,7 +84,7 @@ const Scan = ({ navigation }) => {
                     source={images.focus}
                     resizeMode="stretch"
                     style={{
-                        marginTop: "-55%",
+                        marginTop: "-15%",
                         width: 200,
                         height: 200
                     }}
@@ -91,7 +101,7 @@ const Scan = ({ navigation }) => {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    height: 220,
+                    height: 250,
                     padding: SIZES.padding * 3,
                     borderTopLeftRadius: SIZES.radius,
                     borderTopRightRadius: SIZES.radius,
@@ -110,7 +120,6 @@ const Scan = ({ navigation }) => {
                 >
                <TextInput
                         style={{
-                            marginVertical: SIZES.padding,
                             borderBottomColor: COLORS.black,
                             borderBottomWidth: 1,
                             height: 40,
@@ -126,6 +135,84 @@ const Scan = ({ navigation }) => {
             </View>
         )
     }
+
+    function renderButton() {
+        return (
+            <View style={{ margin: SIZES.padding*6 }}>
+                <TouchableOpacity
+                    style={{
+                        height: 60,
+                        backgroundColor: COLORS.black,
+                        borderRadius: SIZES.radius / 1.5,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                    onPress={() => setModalVisible(true)}
+                >
+                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+    function renderModeModal() {
+
+        return (
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <TouchableWithoutFeedback
+                    onPress={() => handleClicked()}
+                >
+                    <View style={{ flex: 1, flexDirection: 'column-reverse'}}>
+                        <View
+                            style={{
+                                
+                                height: 500,
+                                width: "100%",
+                                backgroundColor: COLORS.white,
+                                borderRadius: SIZES.radius,
+                                alignItems: 'center',
+                            }}
+                        >   
+                          
+                            <Text
+                                style={{
+                                    color: COLORS.black,
+                                    marginTop: 10*SIZES.padding,
+                                    ...FONTS.body1,
+
+
+                            }}>Successful!</Text>
+                            
+                            <Text
+                                style={{
+                                    color: COLORS.black,
+                                    marginVertical: 2*SIZES.padding,
+                                    marginLeft: 3*SIZES.padding,
+                                    ...FONTS.body2,
+                                    width: SIZES.width * 0.8
+
+
+                            }}>Thank you for collecting the package. Please deposit at any collection centre as per your convenience.</Text>
+
+                            <Image
+                                    source={icons.success}
+                                    resizeMode="contain"
+                                    style={{
+                                        height: 60,
+                                        width: 60,
+                                        tintColor: COLORS.primary                                
+                                    }}
+                                />
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+        )
+    }
+
     return (
         <View style={{ flex: 1, backgroundColor: COLORS.transparent}}>
         <BarCodeScanner
@@ -140,7 +227,9 @@ const Scan = ({ navigation }) => {
       {/* {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />} */}
                 {renderHeader()}
                 {renderScanFocus()}
+                {renderModeModal()}
                 {renderOtherOption()}
+                {renderButton()}
         </View>
     )
 }

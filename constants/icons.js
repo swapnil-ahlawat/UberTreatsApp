@@ -28,6 +28,7 @@ export const eye= require("../assets/icons/eye.png");
 export const disable_eye= require("../assets/icons/disable_eye.png");
 export const scan= require("../assets/icons/scan.png");
 export const close= require("../assets/icons/close.png");
+export const success = require("../assets/icons/success.png");
 export default {
     arrowDown,
     back,
@@ -57,6 +58,7 @@ export default {
     basket,
     scan,
     star,
+    success,
     sushi,
     user
 }
