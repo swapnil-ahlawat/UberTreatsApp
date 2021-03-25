@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import {
     View,
     Text,
-    StyleSheet,
     Button,
     Image,
     Modal,
@@ -24,6 +23,17 @@ const Scan = ({ navigation }) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [serialNumber, setSerialNumber]= useState(null);
 
+
+    const unsubscribe = navigation.addListener('focus', () => {
+        setScanned(false);
+      });
+    
+      useEffect(() => {    
+        return () => {
+          unsubscribe;
+        };
+      }, [navigation]);
+
     useEffect(() => {
         (async () => {
           const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -34,12 +44,13 @@ const Scan = ({ navigation }) => {
       const handleBarCodeScanned = ({ type, data }) => {
         setSerialNumber(data);
         setModalVisible(true);
+        setScanned(true);
       };
 
       const handleClicked = () => {
-          setScanned(true);
+        //   setScanned(false);
           setModalVisible(false);
-          navigation.navigate("Home");
+          navigation.navigate("PersonnelHome");
         };
     
       if (hasPermission === null) {
@@ -59,7 +70,7 @@ const Scan = ({ navigation }) => {
                     style={{
                         width: 40,
                     }}
-                    onPress={() => navigation.navigate("Home")}
+                    onPress={() => navigation.navigate("PersonnelHome")}
                 >
                     <Image
                         source={icons.close}
@@ -133,6 +144,7 @@ const Scan = ({ navigation }) => {
                         placeholder="Serial Number"
                         placeholderTextColor={COLORS.black}
                         selectionColor={COLORS.black}
+                        onChangeText={(text) => setSerialNumber(text)}
                     />
                 </View>
             </View>
@@ -151,8 +163,8 @@ const Scan = ({ navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={() => {
-                        setSerialNumber(10);
                         setModalVisible(true);
+                        setScanned(true);
                     }}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>
@@ -170,7 +182,9 @@ const Scan = ({ navigation }) => {
                 visible={modalVisible}
             >
                 <TouchableWithoutFeedback
-                    onPress={() => handleClicked()}
+                    onPress={() => {
+                        handleClicked()
+                    }}
                 >
                     <View style={{ flex: 1, flexDirection: 'column-reverse'}}>
                         <View
