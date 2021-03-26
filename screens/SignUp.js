@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     View,
     Text,
@@ -38,10 +38,12 @@ const SignUp = ({ navigation }) => {
         }
     ]
 
-    const [showPassword, setShowPassword] = React.useState(false)
+    const [showPassword, setShowPassword] = useState(false)
 
-    const [selectedMode, setSelectedMode] = React.useState(mode.filter(a => a.name== "Customer")[0])
-    const [modalVisible, setModalVisible] = React.useState(false)
+    const [selectedMode, setSelectedMode] = useState(mode.filter(a => a.name== "Customer")[0])
+    const [modalVisible, setModalVisible] = useState(false)
+    const [ID, setID]= useState(null);
+    const [password, setPassword]= useState(null);
 
     function renderLogo() {
         return (
@@ -88,6 +90,7 @@ const SignUp = ({ navigation }) => {
                         placeholder="Email ID/ Phone No."
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
+                        onChangeText={(text) => setID(text)}
                     />
                 </View>
                 
@@ -108,6 +111,7 @@ const SignUp = ({ navigation }) => {
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
                         secureTextEntry={!showPassword}
+                        onChangeText={(text) => setPassword(text)}
                     />
                     <TouchableOpacity
                         style={{
@@ -178,7 +182,11 @@ const SignUp = ({ navigation }) => {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
-                    onPress={() => navigation.navigate(selectedMode.tabs)}
+                    onPress={() => {
+                        global.ID= ID;
+                        global.password= password;
+                        global.modeTag= selectedMode.name;
+                        navigation.navigate(selectedMode.tabs)}}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>SIGN IN</Text>
                 </TouchableOpacity>

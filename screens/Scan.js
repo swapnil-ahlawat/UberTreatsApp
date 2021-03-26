@@ -17,23 +17,33 @@ import { COLORS, FONTS, SIZES, icons, images } from "../constants";
 
 
 
-const Scan = ({ navigation }) => {
+const Scan = ({route, navigation }) => {
+    var modeTag= null;
+    if(route.params){
+        modeTag= route.params.modeTag;
+    }
+    else{
+        modeTag= global.modeTag;
+    }
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [serialNumber, setSerialNumber]= useState(null);
 
 
-    const unsubscribe = navigation.addListener('focus', () => {
+    const inFocus = navigation.addListener('focus', () => {
         setScanned(false);
+        setSerialNumber(null);
+        if(route.params){
+            modeTag= route.params.modeTag;
+        }
       });
     
       useEffect(() => {    
         return () => {
-          unsubscribe;
+          inFocus;
         };
       }, [navigation]);
-
     useEffect(() => {
         (async () => {
           const { status } = await BarCodeScanner.requestPermissionsAsync();
@@ -50,7 +60,12 @@ const Scan = ({ navigation }) => {
       const handleClicked = () => {
         //   setScanned(false);
           setModalVisible(false);
-          navigation.navigate("PersonnelHome");
+          if(modeTag==="Restaurant"){
+            navigation.navigate("RestaurantHome");
+          }
+          else{
+              navigation.navigate("PersonnelHome");
+          }
         };
     
       if (hasPermission === null) {
@@ -64,13 +79,13 @@ const Scan = ({ navigation }) => {
         return (
             <View style={{ flexDirection: 'row', marginTop: SIZES.padding * 5 }}>
                 <View style={{ flex: 1, marginLeft: SIZES.padding*1 }}>
-                    <Text style={{ color: COLORS.black, ...FONTS.h3 }}>Scan for Payment</Text>
+                    <Text style={{ color: COLORS.black, ...FONTS.h3 }}>Scan Package</Text>
                 </View>
                 <TouchableOpacity
                     style={{
                         width: 40,
                     }}
-                    onPress={() => navigation.navigate("PersonnelHome")}
+                    onPress={handleClicked}
                 >
                     <Image
                         source={icons.close}
@@ -144,6 +159,7 @@ const Scan = ({ navigation }) => {
                         placeholder="Serial Number"
                         placeholderTextColor={COLORS.black}
                         selectionColor={COLORS.black}
+                        value= {serialNumber}
                         onChangeText={(text) => setSerialNumber(text)}
                     />
                 </View>
@@ -174,7 +190,16 @@ const Scan = ({ navigation }) => {
     }
 
     function renderModeModal() {
-
+        var text;
+        if(modeTag==="Restaurant"){
+            text="Thank you for collecting the package."
+        }
+        else if(modeTag==="RestaurantDelivery"){
+            text="Thank you for using Reusable Package."
+        }
+        else{
+            text="Thank you for collecting the package. Please deposit at any collection centre as per your convenience."
+        }
         return (
             <Modal
                 animationType="slide"
@@ -230,7 +255,7 @@ const Scan = ({ navigation }) => {
                                     width: SIZES.width * 0.8
 
 
-                            }}>Thank you for collecting the package. Please deposit at any collection centre as per your convenience.</Text>
+                            }}>{text}</Text>
 
                         </View>
                     </View>

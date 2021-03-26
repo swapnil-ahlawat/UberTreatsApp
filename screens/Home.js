@@ -9,7 +9,6 @@ import {
     FlatList,
     Platform,
     StatusBar,
-    StatusBarIOS
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
@@ -465,8 +464,7 @@ const Home = ({ navigation }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h1 }}>Main</Text>
-                <Text style={{ ...FONTS.h1 }}>Categories</Text>
+                <Text style={{ ...FONTS.h1 }}>Main Categories</Text>
 
                 <FlatList
                     data={categories}
