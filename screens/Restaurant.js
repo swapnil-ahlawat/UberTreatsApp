@@ -23,8 +23,7 @@ const Restaurant = ({ route, navigation }) => {
 
     React.useEffect(() => {
         let { item, currentLocation } = route.params;
-
-        setOrderItems([])
+        global.orderItems=[]
         setRestaurant(item)
         setCurrentLocation(currentLocation)
     })
@@ -98,7 +97,7 @@ const Restaurant = ({ route, navigation }) => {
                             height: 50,
                             width: "90%",
                             justifyContent: 'center',
-                            paddingLeft: SIZES.padding * 2,
+                            paddingLeft: SIZES.padding * 3,
                             borderBottomRightRadius: SIZES.radius,
                             backgroundColor: COLORS.lightGray3
                         }}
@@ -110,19 +109,17 @@ const Restaurant = ({ route, navigation }) => {
                 <TouchableOpacity
                     style={{
                         width: 50,
-                        paddingRight: SIZES.padding * 2,
+                        paddingRight: SIZES.padding,
                         justifyContent: 'center'
                     }}
-                    onPress={() => navigation.navigate("Cart", {
-                        orderItems: orderItems
-                    })}
+                    onPress={() => navigation.goBack()}
                 >
                     <Image
-                        source={icons.basket}
+                        source={icons.close}
                         resizeMode="contain"
                         style={{
-                            width: 30,
-                            height: 30
+                            width: 25,
+                            height: 25
                         }}
                     />
                 </TouchableOpacity>
