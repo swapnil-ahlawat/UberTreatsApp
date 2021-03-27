@@ -43,7 +43,7 @@ const App = () => {
                   <Stack.Screen name="SignUp" component={SignUp} />
                   <Stack.Screen name="Order" component={Order} />
                   <Stack.Screen name="Cart" component={Cart} />
-
+                 
               </Stack.Navigator>
           </NavigationContainer>
       )

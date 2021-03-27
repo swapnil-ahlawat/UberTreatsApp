@@ -8,6 +8,7 @@ import PersonnelHome from "./PersonnelHome"
 import RestaurantHome from "./RestaurantHome"
 import Wallet from "./Wallet"
 import Cart from "./Cart";
+
 export {
     Cart,
     Home,
@@ -18,5 +19,6 @@ export {
     RestaurantHome,
     SignUp,
     Scan,
-    Wallet
+    Wallet,
+   
 }

@@ -63,7 +63,11 @@ const Scan = ({route, navigation }) => {
           if(modeTag==="Restaurant"){
             navigation.navigate("RestaurantHome");
           }
-          else{
+          else if(modeTag === "RestaurantDelivery"){
+              navigation.navigate("RestaurantHome");
+          }
+          else
+          {
               navigation.navigate("PersonnelHome");
           }
         };
@@ -85,7 +89,7 @@ const Scan = ({route, navigation }) => {
                     style={{
                         width: 40,
                     }}
-                    onPress={handleClicked}
+                    onPress={() => navigation.goBack()}
                 >
                     <Image
                         source={icons.close}
@@ -192,10 +196,10 @@ const Scan = ({route, navigation }) => {
     function renderModeModal() {
         var text;
         if(modeTag==="Restaurant"){
-            text="Thank you for collecting the package."
+            text="Thank you for collecting the package. We will soon collect the package for it's cleaning. "
         }
         else if(modeTag==="RestaurantDelivery"){
-            text="Thank you for using Reusable Package."
+            text="Our delivery partner will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats. "
         }
         else{
             text="Thank you for collecting the package. Please deposit at any collection centre as per your convenience."

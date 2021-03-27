@@ -7,7 +7,9 @@ import {
     View,
     Text,
     TouchableOpacity,
+    TouchableWithoutFeedback,
     Platform,
+    Modal,
     StatusBar,
     Image,
     Animated
@@ -23,6 +25,14 @@ const Order = ({ route, navigation }) => {
     const [order, setOrder] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
     const [isSelected, setSelection] = React.useState(false);
+    const [modalVisible, setModalVisible] = React.useState(false);
+
+    const handleClicked = () => {
+        
+          setModalVisible(false);
+          navigation.navigate("RestaurantHome");
+        };
+    
     
 
     React.useEffect(() => {
@@ -155,12 +165,98 @@ const Order = ({ route, navigation }) => {
            
         )
     }
+    function renderButton() {
+        return (
+            <View style={{ margin: SIZES.padding * 3 }}>
+                <TouchableOpacity
+                    style={{
+                        height: 60,
+                        backgroundColor: COLORS.black,
+                        borderRadius: SIZES.radius / 1.5,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                    onPress={() => {
+                        if ( order?.resuablePackage)
+                        { navigation.navigate("Scan",{modeTag: "RestaurantDelivery"})}
+                        else
+                        {
+                          setModalVisible(true)
+                        }
+                    }
+                }
+                >
+                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Order Prepared</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+      function renderModeModal() {
+        return (
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        handleClicked()
+                    }}
+                >
+                    <View style={{ flex: 1, flexDirection: 'column-reverse'}}>
+                        <View
+                            style={{
+                                
+                                height: 500,
+                                width: "100%",
+                                backgroundColor: COLORS.white,
+                                borderRadius: SIZES.radius,
+                                alignItems: 'center'
+                            }}
+                        >   
+                            <View style={{flexDirection:'row', marginTop: 5*SIZES.padding, alignItems: "center"}}>
+                                <Image
+                                    source={icons.success}
+                                    resizeMode="contain"
+                                    style={{
+                                        height: 60,
+                                        width: 60,
+                                        tintColor: COLORS.primary
+                                    }}
+                                />
+                                <Text
+                                    style={{
+                                        color: COLORS.black,
+                                        ...FONTS.body1,
+                                }}>Successful!</Text>
+                            </View>
+
+                            
+                            <Text
+                                style={{
+                                    color: COLORS.black,
+                                    marginVertical: SIZES.padding,
+                                    marginLeft: 3*SIZES.padding,
+                                    ...FONTS.body2,
+                                    width: SIZES.width * 0.8
+
+
+                            }}>{"Our delivery partner will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats. "}</Text>
+
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+        )
+    }
 
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
             {renderUserInfo()}
             {renderOrderInfo()}
+            {renderButton()}
+            {renderModeModal()}
         </SafeAreaView>
     )
 }
