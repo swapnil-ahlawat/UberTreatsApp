@@ -10,7 +10,7 @@ import {
  
 import {images, SIZES, COLORS, FONTS } from '../constants'
  
-const Wallet = ({ navigation }) => {
+const Cart = ({ navigation }) => {
     const specialPromoData = [
         {
             id: 1,
@@ -131,4 +131,4 @@ const Wallet = ({ navigation }) => {
     )   
 }
  
-export default Wallet;
+export default Cart;

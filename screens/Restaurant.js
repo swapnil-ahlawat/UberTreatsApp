@@ -24,6 +24,7 @@ const Restaurant = ({ route, navigation }) => {
     React.useEffect(() => {
         let { item, currentLocation } = route.params;
 
+        setOrderItems([])
         setRestaurant(item)
         setCurrentLocation(currentLocation)
     })
@@ -83,42 +84,22 @@ const Restaurant = ({ route, navigation }) => {
         return total.toFixed(2)
     }
 
-    function renderHeader(z) {
+    function renderHeader() {
         return (
             <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
-                    style={{
-                        width: 50,
-                        paddingLeft: SIZES.padding * 2,
-                        justifyContent: 'center'
-                    }}
-                    onPress={() => navigation.goBack()}
-                >
-                    <Image
-                        source={icons.back}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                    />
-                </TouchableOpacity>
-
                 {/* Restaurant Name Section */}
                 <View
                     style={{
                         flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center'
                     }}
                 >
                     <View
                         style={{
                             height: 50,
-                            alignItems: 'center',
+                            width: "90%",
                             justifyContent: 'center',
-                            paddingHorizontal: SIZES.padding * 3,
-                            borderRadius: SIZES.radius,
+                            paddingLeft: SIZES.padding * 2,
+                            borderBottomRightRadius: SIZES.radius,
                             backgroundColor: COLORS.lightGray3
                         }}
                     >
@@ -132,9 +113,12 @@ const Restaurant = ({ route, navigation }) => {
                         paddingRight: SIZES.padding * 2,
                         justifyContent: 'center'
                     }}
+                    onPress={() => navigation.navigate("Cart", {
+                        orderItems: orderItems
+                    })}
                 >
                     <Image
-                        source={icons.list}
+                        source={icons.basket}
                         resizeMode="contain"
                         style={{
                             width: 30,
@@ -365,20 +349,7 @@ const Restaurant = ({ route, navigation }) => {
                                     tintColor: COLORS.darkgray
                                 }}
                             />
-                            <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }}>Location</Text>
-                        </View>
-
-                        <View style={{ flexDirection: 'row' }}>
-                            <Image
-                                source={icons.master_card}
-                                resizeMode="contain"
-                                style={{
-                                    width: 20,
-                                    height: 20,
-                                    tintColor: COLORS.darkgray
-                                }}
-                            />
-                            <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }}>8888</Text>
+                            <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }}>{currentLocation}</Text>
                         </View>
                     </View>
 
@@ -398,12 +369,13 @@ const Restaurant = ({ route, navigation }) => {
                                 alignItems: 'center',
                                 borderRadius: SIZES.radius
                             }}
-                            onPress={() => navigation.navigate("OrderDelivery", {
+                            onPress={() => navigation.navigate("Cart", {
                                 restaurant: restaurant,
-                                currentLocation: currentLocation
+                                currentLocation: currentLocation,
+                                orderItems: orderItems
                             })}
                         >
-                            <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Order</Text>
+                            <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Go to Cart</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

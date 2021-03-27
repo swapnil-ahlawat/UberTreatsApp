@@ -11,19 +11,12 @@ import {
     StatusBar,
 } from "react-native";
 
-import { icons, images, SIZES, COLORS, FONTS } from '../constants'
+import {icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 const Home = ({ navigation }) => {
-
-    // Dummy data
-
-    const initialCurrentLocation = {
-        streetName: "Kuching",
-        gps: {
-            latitude: 1.5496614931250685,
-            longitude: 110.36381866919922
-        }
-    }
+    global.name="Swapnil Ahlawat"
+    global.address="Najafgarh, New Delhi"
+    global.orderItems=[]
 
     const categoryData = [
         {
@@ -335,8 +328,7 @@ const Home = ({ navigation }) => {
     const [categories, setCategories] = React.useState(categoryData)
     const [selectedCategory, setSelectedCategory] = React.useState(null)
     const [restaurants, setRestaurants] = React.useState(restaurantData)
-    const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
-
+    const [currentLocation, setCurrentLocation] = React.useState(global.address)
 
     function onSelectCategory(category) {
         //filter restaurant
@@ -358,36 +350,19 @@ const Home = ({ navigation }) => {
 
     function renderHeader() {
         return (
-            <SafeAreaView style={{ flexDirection: 'row', height: 50 }}>
-                <TouchableOpacity
-                    style={{
-                        width: 50,
-                        paddingLeft: SIZES.padding * 2,
-                        justifyContent: 'center'
-                    }}
-                >
-                    <Image
-                        source={icons.nearby}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                    />
-                </TouchableOpacity>
- 
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <SafeAreaView style={{ flexDirection: 'row', height: 50 }}> 
+                <View style={{ flex: 1}}>
                     <View
                         style={{
-                            width: '70%',
+                            width: '90%',
                             height: "100%",
                             backgroundColor: COLORS.lightGray3,
-                            alignItems: 'center',
+                            paddingLeft: SIZES.padding*2,
                             justifyContent: 'center',
-                            borderRadius: SIZES.radius
+                            borderBottomRightRadius: SIZES.radius
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 }}>{currentLocation.streetName}</Text>
+                        <Text style={{ ...FONTS.h3 }}>{currentLocation}</Text>
                     </View>
                 </View>
  
@@ -397,6 +372,10 @@ const Home = ({ navigation }) => {
                         paddingRight: SIZES.padding * 2,
                         justifyContent: 'center'
                     }}
+                   
+                    onPress={() => navigation.navigate("Cart", {
+                        orderItems: global.orderItems
+                    })}
                 >
                     <Image
                         source={icons.basket}
