@@ -29,12 +29,14 @@ export const disable_eye= require("../assets/icons/disable_eye.png");
 export const scan= require("../assets/icons/scan.png");
 export const close= require("../assets/icons/close.png");
 export const success = require("../assets/icons/success.png");
+export const cross = require("../assets/icons/cross.png");
 export default {
     arrowDown,
     back,
     car,
     cutlery,
     close,
+    cross,
     eye,
     disable_eye,
     donut,

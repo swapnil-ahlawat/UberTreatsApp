@@ -140,7 +140,9 @@ const RestaurantHome = ({ navigation }) => {
                     marginVertical:0.5*SIZES.padding ,
                     flex: 1, flexDirection: "column", 
                     width: SIZES.width*0.9,backgroundColor:
-                    COLORS.white}}
+                    COLORS.white,
+                    height: 100,
+                    borderRadius: 20}}
                onPress={() => navigation.navigate("Order", {
                     item,
                     currentLocation
@@ -174,7 +176,7 @@ const RestaurantHome = ({ navigation }) => {
         return (
             <View style={{ paddingHorizontal: SIZES.padding * 2,
                 paddingBotto0m: 30}}>
-            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress(3)</Text>
+            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress (3)</Text>
             <FlatList
                 data={orders}
                 keyExtractor={item => `${item.id}`}

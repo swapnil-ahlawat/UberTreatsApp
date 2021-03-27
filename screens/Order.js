@@ -49,8 +49,7 @@ const Order = ({ route, navigation }) => {
                 <TouchableOpacity
                     style={{
                         width: 50,
-                        paddingLeft: SIZES.padding * 2,
-                        paddintTop: SIZES.padding,
+                        paddingTop: SIZES.padding,
                         justifyContent: 'center'
                     }}
                     onPress={() => navigation.goBack()}
@@ -59,13 +58,16 @@ const Order = ({ route, navigation }) => {
                         source={icons.back}
                         resizeMode="contain"
                         style={{
+                            
                             width: 30,
-                            height: 30
+                            height: 30,
+                            marginLeft: SIZES.padding,
+                            tintColor: COLORS.gray
                         }}
                     />
                 </TouchableOpacity>
 
-                {/* User details section */}
+                
                 <View
                     style={{
                         flex: 1,
@@ -78,12 +80,14 @@ const Order = ({ route, navigation }) => {
                             height: 50,
                             alignItems: 'center',
                             justifyContent: 'center',
-                            paddingHorizontal: SIZES.padding * 3,
+                            marginTop: SIZES.padding,
+                            paddingHorizontal: SIZES.padding * 4,
+                            marginRight: SIZES.padding,
                             borderRadius: SIZES.radius,
-                            backgroundColor: COLORS.lightGray3
+                            backgroundColor: COLORS.primary
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 }}>Order Details</Text>
+                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>Order Details</Text>
                     </View>
                 </View>
 
@@ -94,21 +98,24 @@ const Order = ({ route, navigation }) => {
 
     function renderOrderInfo() {
          const renderItem = ({ item }) => (
-            <TouchableOpacity
+            <View
                 style={{ 
                     paddingVertical: 2*SIZES.padding,
                     
                     flex: 1, flexDirection: "column", 
-                    width: SIZES.width,
-                    height: 150,
-                    backgroundColor:COLORS.primary ,
-                    borderBottomColor: COLORS.white,
-                    borderBottomWidth: 1}}
+                    width: SIZES.width*0.95,
+                    marginLeft: SIZES.width*0.025,
+                    height: 100,
+                    backgroundColor:COLORS.white ,
+                    borderBottomColor: COLORS.black,
+                    borderBottomWidth: 1,
+                    borderRadius: 20,
+                    marginBottom: SIZES.padding}}
             >
                 <View style = {{flexDirection: "row"}}>
-                    <Text style = {{paddingLeft:SIZES.padding,width: 0.1*SIZES.width,...FONTS.h3,color: COLORS.white}}>{item.quantity}</Text>
-                    <Text style={{ width: 0.7*SIZES.width,...FONTS.h4,color: COLORS.white }}>{item.name}</Text>
-                    <Text style={{width: 0.2*SIZES.width, ...FONTS.h4,color: COLORS.white }}>${item.price*item.quantity}</Text>
+                    <Text style = {{paddingLeft:SIZES.padding,width: 0.1*SIZES.width,...FONTS.h3,color: COLORS.black}}>{item.quantity}x</Text>
+                    <Text style={{ width: 0.7*SIZES.width,...FONTS.h4,color: COLORS.black }}>{item.name}</Text>
+                    <Text style={{width: 0.2*SIZES.width, ...FONTS.h4,color: COLORS.black }}>${item.price*item.quantity}</Text>
                 </View>
                 <View
                     style={{
@@ -119,12 +126,12 @@ const Order = ({ route, navigation }) => {
                     }}
                     
                 >   
-                    <Text style = {{width: SIZES.width,...FONTS.body3,color: COLORS.white}}>{item.additional_info}</Text>
+                    <Text style = {{width: SIZES.width,...FONTS.body3,color: COLORS.black}}>{item.additional_info}</Text>
                        
                  </View>   
             
              
-            </TouchableOpacity>
+            </View>
         )
 
         return (
@@ -146,32 +153,49 @@ const Order = ({ route, navigation }) => {
 
 
     function renderUserInfo() {
+        var img;
+        if ( isSelected)
+        img = icons.success
+        else
+        img = icons.cross
         return (
-            <View style = {{height: 100,borderBottomWidth:1,marginTop: SIZES.padding,flexDirection: "row"}}>
+            <View style = {{height: 100,marginTop: SIZES.padding,flexDirection: "row"}}>
               <View style = {{justifyContent: 'center'}}>
-                  <Text style={{ ...FONTS.body3,color: COLORS.black,paddingHorizontal: SIZES.padding }}>{order?.name}</Text>
-                  <Text style={{ ...FONTS.h3,color: COLORS.black,paddingHorizontal: SIZES.padding,paddingTop:SIZES.padding }}>{order?.address}</Text>
+                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.name}</Text>
+                  <Text style={{ ...FONTS.h3,color: COLORS.white,paddingHorizontal: SIZES.padding*2,paddingTop:SIZES.padding }}>{order?.address}</Text>
 
               </View>
+             
+
+              
               <View style = {{flexDirection: "row",alignItems:'center'}}>
-                    <Text style={{ ...FONTS.body3,color: COLORS.black,paddingHorizontal: 3*SIZES.padding }}>Resuable Packaging</Text>
-                    <CheckBox
-                        value={isSelected}
-                        onValueChange={setSelection}
-                        style={styles.checkbox}
-                    />
+                    <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: 3*SIZES.padding }}>Resuable Packaging</Text>
+                    <Image
+                                    source={img}
+                                    resizeMode="contain"
+                                    style={{
+                                        height: 25,
+                                        width: 25,
+                                        // tintColor: COLORS.primary
+                                    }}
+                                />
                </View>
             </View>
            
         )
     }
     function renderButton() {
+        var txt;
+        if ( isSelected)
+        txt = "Scan Package"
+        else
+        txt = "Ready to Dispatch"
         return (
             <View style={{ margin: SIZES.padding * 3 }}>
                 <TouchableOpacity
                     style={{
                         height: 60,
-                        backgroundColor: COLORS.black,
+                        backgroundColor: COLORS.primary,
                         borderRadius: SIZES.radius / 1.5,
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -186,7 +210,7 @@ const Order = ({ route, navigation }) => {
                     }
                 }
                 >
-                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Order Prepared</Text>
+                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>{txt}</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -264,8 +288,8 @@ const Order = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2,
-        paddingTop: (Platform.OS==="android")?StatusBar.currentHeight:0
+        backgroundColor: COLORS.black,
+        marginTop: (Platform.OS==="android")?StatusBar.currentHeight:0
     },
     checkboxContainer: {
     flexDirection: "row",
