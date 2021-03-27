@@ -1,6 +1,5 @@
 import React from "react";
 import {
-    
     StyleSheet,
     FlatList,
     SafeAreaView,
@@ -12,7 +11,7 @@ import {
     Modal,
     StatusBar,
     Image,
-    
+    ScrollView    
 } from "react-native";
 
 
@@ -44,8 +43,27 @@ const DeliverOrder = ({ route, navigation }) => {
 
     function renderHeader() {
         return (
-            <View style={{ flexDirection: 'row' }}>
-                <TouchableOpacity
+            <View style={{ flexDirection: 'row' }}>                
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center'
+                    }}
+                >
+                    <View
+                        style={{
+                            height: 50,
+                            width: "90%",
+                            justifyContent: 'center',
+                            paddingHorizontal: SIZES.padding * 3,
+                            borderBottomRightRadius: SIZES.radius,
+                            backgroundColor: COLORS.primary
+                        }}
+                    >
+                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>Order Details</Text>
+                    </View>
+                    </View>
+                    <TouchableOpacity
                     style={{
                         width: 50,
                         paddingTop: SIZES.padding,
@@ -54,43 +72,17 @@ const DeliverOrder = ({ route, navigation }) => {
                     onPress={() => navigation.goBack()}
                 >
                     <Image
-                        source={icons.back}
+                        source={icons.close}
                         resizeMode="contain"
                         style={{
                             
-                            width: 30,
-                            height: 30,
+                            width: 25,
+                            height: 25,
                             marginLeft: SIZES.padding,
                             tintColor: COLORS.gray
                         }}
                     />
-                </TouchableOpacity>
-
-                
-                <View
-                    style={{
-                        flex: 1,
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
-                    <View
-                        style={{
-                            height: 50,
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            marginTop: SIZES.padding,
-                            paddingHorizontal: SIZES.padding * 4,
-                            marginRight: SIZES.padding,
-                            borderRadius: SIZES.radius,
-                            backgroundColor: COLORS.primary
-                        }}
-                    >
-                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>Order Details</Text>
-                    </View>
-                </View>
-
-              
+                </TouchableOpacity>             
             </View>
         )
     }
@@ -115,7 +107,7 @@ const DeliverOrder = ({ route, navigation }) => {
                 <View style = {{flexDirection: "row"}}>
                     <Text style = {{paddingLeft:SIZES.padding,width: 0.1*SIZES.width,...FONTS.h3,color: COLORS.black}}>{item.quantity}x</Text>
                     <Text style={{ width: 0.7*SIZES.width,...FONTS.h4,color: COLORS.black }}>{item.name}</Text>
-                    <Text style={{width: 0.2*SIZES.width, ...FONTS.h4,color: COLORS.black }}>${item.price*item.quantity}</Text>
+                    <Text style={{width: 0.2*SIZES.width, ...FONTS.h4,color: COLORS.black }}>${(item.price*item.quantity).toFixed(2)}</Text>
                 </View>
                 <View
                     style={{
@@ -136,8 +128,7 @@ const DeliverOrder = ({ route, navigation }) => {
 
         return (
 
-            <View style={{ 
-                paddingBotto0m: 30}}>
+            <View>
             <FlatList
                 data={order?.order_details}
                 keyExtractor={item => `${item.food_id}`}
@@ -306,10 +297,12 @@ const DeliverOrder = ({ route, navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
+            <ScrollView>
             {renderOrder()}
             {renderOrderInfo()}
             {<Text style = {{margin: SIZES.padding*2,color: COLORS.white, ...FONTS.body2}}>Payment Mode: {order?.payment_mode}</Text>}
             {renderTotal()}
+            </ScrollView>
             {renderButton()}
             {renderModeModal()}
             

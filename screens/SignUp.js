@@ -150,7 +150,7 @@ const SignUp = ({ navigation }) => {
                             onPress={() => setModalVisible(true)}
                         >
                             <View style={{ justifyContent: 'center',}}>
-                                <Text style={{color: COLORS.white, ...FONTS.body2 }}>{selectedMode.name}</Text>
+                                <Text style={{color: COLORS.white, ...FONTS.body3 }}>{selectedMode.name}</Text>
                             </View>
                             <Image
                                     source={icons.arrowDown}
