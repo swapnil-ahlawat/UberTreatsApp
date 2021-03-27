@@ -10,6 +10,7 @@ import {Restaurant, SignUp, Order, Cart, DeliverOrder } from './screens'
 import CustomerTabs from './navigation/customerTabs'
 import PersonnelTabs from './navigation/personnelTabs'
 import RestaurantTabs from './navigation/restaurantTabs'
+import WarehouseTabs from './navigation/warehouseTabs'
 
 const Stack = createStackNavigator();
 
@@ -38,6 +39,7 @@ const App = () => {
                   <Stack.Screen name="CustomerTabs" component={CustomerTabs} />
                   <Stack.Screen name="PersonnelTabs" component={PersonnelTabs} />
                   <Stack.Screen name="RestaurantTabs" component={RestaurantTabs} />
+                  <Stack.Screen name="WarehouseTabs" component={WarehouseTabs} />
                   <Stack.Screen name="Restaurant" component={Restaurant} />
                   <Stack.Screen name="SignUp" component={SignUp} />
                   <Stack.Screen name="Order" component={Order} />

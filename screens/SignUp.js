@@ -90,6 +90,7 @@ const SignUp = ({ navigation }) => {
                         placeholder="Enter email or phone no."
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
+                        value= {ID}
                         onChangeText={(text) => setID(text)}
                     />
                 </View>
@@ -111,6 +112,7 @@ const SignUp = ({ navigation }) => {
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
                         secureTextEntry={!showPassword}
+                        value={password}
                         onChangeText={(text) => setPassword(text)}
                     />
                     <TouchableOpacity
@@ -186,6 +188,9 @@ const SignUp = ({ navigation }) => {
                         global.ID= ID;
                         global.password= password;
                         global.modeTag= selectedMode.name;
+                        setID(null);
+                        setPassword(null);
+                        setSelectedMode(mode.filter(a => a.name== "Customer")[0])
                         navigation.navigate(selectedMode.tabs)}}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>SIGN IN</Text>

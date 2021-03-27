@@ -200,8 +200,7 @@ const PersonnelHome = ({ navigation }) => {
         )
 
         return (
-            <View style={{ paddingHorizontal: SIZES.padding * 2,
-                paddingBotto0m: 30}}>
+            <View style={{ paddingHorizontal: SIZES.padding * 2,}}>
             <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white,  marginTop:SIZES.padding*2 }}>In Progress (3)</Text>
             <FlatList
                 data={orders}
