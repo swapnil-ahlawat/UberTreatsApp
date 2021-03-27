@@ -43,7 +43,7 @@ const Order = ({ route, navigation }) => {
         setSelection(order?.resuablePackage)
     })
 
-    function renderHeader(z) {
+    function renderHeader() {
         return (
             <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity

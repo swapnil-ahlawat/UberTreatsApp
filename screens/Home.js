@@ -357,7 +357,7 @@ const Home = ({ navigation }) => {
                             width: '90%',
                             height: "100%",
                             backgroundColor: COLORS.lightGray3,
-                            paddingLeft: SIZES.padding*2,
+                            paddingLeft: SIZES.padding*3,
                             justifyContent: 'center',
                             borderBottomRightRadius: SIZES.radius
                         }}
@@ -366,7 +366,7 @@ const Home = ({ navigation }) => {
                     </View>
                 </View>
  
-                <TouchableOpacity
+                {/* <TouchableOpacity
                     style={{
                         width: 50,
                         paddingRight: SIZES.padding * 2,
@@ -385,7 +385,7 @@ const Home = ({ navigation }) => {
                             height: 30
                         }}
                     />
-                </TouchableOpacity>
+                </TouchableOpacity> */}
             </SafeAreaView>
         )
     }
