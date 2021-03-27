@@ -15,16 +15,16 @@ const Wallet = ({ navigation }) => {
         {
             id: 1,
             img: images.promoBanner,
-            title: "Bonus Cashback1",
-            description: "Don't miss it. Grab it now!",
-            promoCode: "UBERGREEN"
+            title: "Special Reward",
+            description: "Get extra 10%* off on your next order!",
+            promoCode: "REUSE1"
         },
         {
             id: 2,
             img: images.promoBanner,
-            title: "Bonus Cashback2",
-            description: "Don't miss it. Grab it now!",
-            promoCode: "UBERGREEN"
+            title: "Special Reward",
+            description: "Get extra 15%* off on your next order!",
+            promoCode: "REUSE2"
         },
     ]
 
@@ -33,7 +33,7 @@ const Wallet = ({ navigation }) => {
     function renderHeader() {
         return (
             <View style={{marginTop: SIZES.padding * 2}}>
-                    <Text style={{color: COLORS.white,...FONTS.h3,  textAlign: "center"}}>User Details</Text>
+                    <Text style={{color: COLORS.white,...FONTS.h3,  textAlign: "center"}}>My profile</Text>
             </View>
         )
     }
@@ -61,7 +61,7 @@ const Wallet = ({ navigation }) => {
                     marginTop: SIZES.padding*3,                    
                 }}
             >
-                <Text style={{color: COLORS.white,textAlign:"center", ...FONTS.body3, margin: SIZES.padding}}>Wallet Amount</Text>
+                <Text style={{color: COLORS.white,textAlign:"center", ...FONTS.body3, margin: SIZES.padding}}>Wallet Balance</Text>
                 <Text style={{color: COLORS.white,textAlign:"center", marginBottom: SIZES.padding, ...FONTS.largeTitle}}>$500</Text>
             </View>
         )
@@ -85,7 +85,7 @@ const Wallet = ({ navigation }) => {
                     marginBottom: SIZES.padding
                 }}
             >
-            <Text style={{color: COLORS.white, ...FONTS.h3 }}>Special Rewards & Promos</Text>
+            <Text style={{color: COLORS.white, ...FONTS.h3 }}>Rewards</Text>
             </View>
 
         )
@@ -103,7 +103,7 @@ const Wallet = ({ navigation }) => {
                 <Text style={{ ...FONTS.h4 }}>{item.title}</Text>
                 <Text style={{ ...FONTS.body4}}>{item.description}</Text>
                 <Text style={{ ...FONTS.body4}}>
-                    <Text>Promo Code: </Text> <Text style={{ ...FONTS.body3 }}>{item.promoCode}</Text>
+                    <Text>Promo Code: </Text> <Text style={{ ...FONTS.body3 }}>{item.promoCode}</Text> <Text style={{ ...FONTS.body6 }}>            *T&C apply</Text>
                 </Text>    
             </View>
         )

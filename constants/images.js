@@ -29,6 +29,7 @@ const sushi = require("../assets/images/sushi.jpg");
 const teh_c_peng = require("../assets/images/teh-c-peng.jpg");
 const tomato_pasta = require("../assets/images/tomato-pasta.jpg");
 const uberEatsLogo= require("../assets/images/UberEatsLogo.png");
+const uberEatsLogoH= require("../assets/images/uber-eats-logo.png");
 const focus= require("../assets/images/focus.png")
 export default {
     avatar_1,
@@ -62,5 +63,6 @@ export default {
     sushi,
     teh_c_peng,
     tomato_pasta,
-    uberEatsLogo
+    uberEatsLogo,
+    uberEatsLogoH
 }

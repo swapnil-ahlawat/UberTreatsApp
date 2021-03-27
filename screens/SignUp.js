@@ -77,7 +77,7 @@ const SignUp = ({ navigation }) => {
             >
                 {/* Full Name */}
                 <View style={{ marginTop: SIZES.padding * 3 }}>
-                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Email Address/ Phone No.</Text>
+                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Email ID or Phone number</Text>
                     <TextInput
                         style={{
                             marginVertical: SIZES.padding,
@@ -87,7 +87,7 @@ const SignUp = ({ navigation }) => {
                             color: COLORS.white,
                             ...FONTS.body3
                         }}
-                        placeholder="Email ID/ Phone No."
+                        placeholder="Enter email or phone no."
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
                         onChangeText={(text) => setID(text)}
@@ -107,7 +107,7 @@ const SignUp = ({ navigation }) => {
                             color: COLORS.white,
                             ...FONTS.body3
                         }}
-                        placeholder="Enter Password"
+                        placeholder="Enter password"
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
                         secureTextEntry={!showPassword}
@@ -136,7 +136,7 @@ const SignUp = ({ navigation }) => {
                 
                 {/* Sign in as */}
                 <View style={{ marginTop: SIZES.padding * 2 }}>
-                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Sign In as:</Text>
+                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Sign in as:</Text>
                         <TouchableOpacity
                             style={{
                                 width: "100%",
