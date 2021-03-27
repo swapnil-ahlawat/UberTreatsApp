@@ -83,7 +83,7 @@ const Restaurant = ({ route, navigation }) => {
         return total.toFixed(2)
     }
 
-    function renderHeader() {
+    function renderHeader(z) {
         return (
             <View style={{ flexDirection: 'row' }}>
                 <TouchableOpacity
