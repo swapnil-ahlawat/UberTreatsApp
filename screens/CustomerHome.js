@@ -13,7 +13,7 @@ import {
 
 import {icons, images, SIZES, COLORS, FONTS } from '../constants'
 
-const Home = ({ navigation }) => {
+const CustomerHome = ({ navigation }) => {
     global.name="Swapnil Ahlawat"
     global.address="Najafgarh, New Delhi"
     global.wallet= 500.00
@@ -604,4 +604,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Home
+export default CustomerHome;

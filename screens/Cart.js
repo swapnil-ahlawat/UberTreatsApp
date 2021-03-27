@@ -251,7 +251,7 @@ const Order = ({ route, navigation }) => {
                 <TouchableWithoutFeedback
                     onPress={() => {
                         setModalVisible(false);
-                        navigation.navigate("Home");
+                        navigation.navigate("CustomerHome");
                     }}
                 >
                     <View style={{ flex: 1, flexDirection: 'column-reverse'}}>

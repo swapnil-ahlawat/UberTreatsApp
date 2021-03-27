@@ -6,7 +6,7 @@ import { useFonts } from 'expo-font';
 
 
 
-import { Restaurant, OrderDelivery, SignUp, Order, Cart, DeliverOrder } from './screens'
+import {Restaurant, OrderDelivery, SignUp, Order, Cart, DeliverOrder } from './screens'
 import CustomerTabs from './navigation/customerTabs'
 import PersonnelTabs from './navigation/personnelTabs'
 import RestaurantTabs from './navigation/restaurantTabs'

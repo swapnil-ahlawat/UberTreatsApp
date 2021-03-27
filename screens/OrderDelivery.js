@@ -303,7 +303,7 @@ const OrderDelivery = ({ route, navigation }) => {
                                 justifyContent: 'center',
                                 borderRadius: 10
                             }}
-                            onPress={() => navigation.navigate("Home")}
+                            onPress={() => navigation.navigate("CustomerHome")}
                         >
                             <Text style={{ ...FONTS.h4, color: COLORS.white }}>Call</Text>
                         </TouchableOpacity>

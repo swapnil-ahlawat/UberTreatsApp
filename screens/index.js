@@ -1,4 +1,4 @@
-import Home from "./Home"
+import CustomerHome from "./CustomerHome"
 import Restaurant from "./Restaurant"
 import OrderDelivery from "./OrderDelivery"
 import SignUp from "./SignUp"
@@ -13,7 +13,7 @@ import DeliverOrder from "./DeliverOrder"
 export {
     Cart,
     DeliverOrder,
-    Home,
+    CustomerHome,
     Restaurant,
     Order,
     OrderDelivery,
