@@ -16,7 +16,7 @@ import {icons, images, SIZES, COLORS, FONTS } from '../constants'
 const Home = ({ navigation }) => {
     global.name="Swapnil Ahlawat"
     global.address="Najafgarh, New Delhi"
-    global.orderItems=[]
+    global.wallet= 500.00
 
     const categoryData = [
         {
@@ -81,6 +81,7 @@ const Home = ({ navigation }) => {
         {
             id: 1,
             name: "ByProgrammers Burger",
+            reusablePackage: true,
             rating: 4.8,
             categories: [5, 7],
             priceRating: affordable,
@@ -124,6 +125,7 @@ const Home = ({ navigation }) => {
         {
             id: 2,
             name: "ByProgrammers Pizza",
+            reusablePackage: false,
             rating: 4.8,
             categories: [2, 4, 6],
             priceRating: expensive,
@@ -175,6 +177,7 @@ const Home = ({ navigation }) => {
         {
             id: 3,
             name: "ByProgrammers Hotdogs",
+            reusablePackage: true,
             rating: 4.8,
             categories: [3],
             priceRating: expensive,
@@ -202,6 +205,7 @@ const Home = ({ navigation }) => {
         {
             id: 4,
             name: "ByProgrammers Sushi",
+            reusablePackage: false,
             rating: 4.8,
             categories: [8],
             priceRating: expensive,
@@ -229,6 +233,7 @@ const Home = ({ navigation }) => {
         {
             id: 5,
             name: "ByProgrammers Cuisine",
+            reusablePackage: false,
             rating: 4.8,
             categories: [1, 2],
             priceRating: affordable,
@@ -282,6 +287,7 @@ const Home = ({ navigation }) => {
 
             id: 6,
             name: "ByProgrammers Dessets",
+            reusablePackage: true,
             rating: 4.9,
             categories: [9, 10],
             priceRating: affordable,

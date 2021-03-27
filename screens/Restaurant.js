@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect}from "react";
 import {
     StyleSheet,
     SafeAreaView,
@@ -8,7 +8,9 @@ import {
     Platform,
     StatusBar,
     Image,
-    Animated
+    Animated,
+    Modal,
+    TouchableWithoutFeedback,
 } from "react-native";
 import { isIphoneX } from 'react-native-iphone-x-helper'
 
@@ -17,12 +19,14 @@ import { icons, COLORS, SIZES, FONTS } from '../constants'
 const Restaurant = ({ route, navigation }) => {
 
     const scrollX = new Animated.Value(0);
-    const [restaurant, setRestaurant] = React.useState(null);
-    const [currentLocation, setCurrentLocation] = React.useState(null);
-    const [orderItems, setOrderItems] = React.useState([]);
+    const [restaurant, setRestaurant] = useState(null);
+    const [currentLocation, setCurrentLocation] = useState(null);
+    const [orderItems, setOrderItems] = useState([]);
+    const [modalVisible, setModalVisible] = useState(false);
+    const [checked, setChecked]= useState(route.params.item.reusablePackage);
 
-    React.useEffect(() => {
-        let { item, currentLocation } = route.params;
+    useEffect(() => {
+        let {item, currentLocation } = route.params;
         global.orderItems=[]
         setRestaurant(item)
         setCurrentLocation(currentLocation)
@@ -52,8 +56,13 @@ const Restaurant = ({ route, navigation }) => {
             if (item.length > 0) {
                 if (item[0]?.qty > 0) {
                     let newQty = item[0].qty - 1
-                    item[0].qty = newQty
-                    item[0].total = newQty * price
+                    if(newQty===0){
+                        orderList= orderList.filter(a=> a.menuId!= item[0].menuId)
+                    }
+                    else{
+                        item[0].qty = newQty
+                        item[0].total = newQty * price
+                    }
                 }
             }
 
@@ -366,11 +375,23 @@ const Restaurant = ({ route, navigation }) => {
                                 alignItems: 'center',
                                 borderRadius: SIZES.radius
                             }}
-                            onPress={() => navigation.navigate("Cart", {
-                                restaurant: restaurant,
-                                currentLocation: currentLocation,
-                                orderItems: orderItems
-                            })}
+                            onPress={()=>{
+                                if(orderItems.length===0){
+                                    alert("No food item selected!")
+                                }
+                                else{
+                                    if(checked){
+                                        setModalVisible(true)
+                                    }
+                                    else{
+                                        navigation.navigate("Cart", {
+                                        restaurant: restaurant,
+                                        currentLocation: currentLocation,
+                                        orderItems: orderItems,
+                                        reusablePackage: checked
+                                    })
+                                    }
+                                }}}
                         >
                             <Text style={{ color: COLORS.white, ...FONTS.h2 }}>Go to Cart</Text>
                         </TouchableOpacity>
@@ -393,12 +414,114 @@ const Restaurant = ({ route, navigation }) => {
             </View>
         )
     }
-
+    function renderPackageModal() {
+        return (
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={modalVisible}
+            >
+                <TouchableWithoutFeedback
+                    onPress={() => {
+                        setModalVisible(false);
+                    }}
+                >
+                    <View style={{ flex: 1, flexDirection: 'column-reverse'}}>
+                        <View
+                            style={{
+                                height: 500,
+                                width: "100%",
+                                backgroundColor: COLORS.white,
+                                borderRadius: SIZES.radius,
+                            }}
+                        >   
+                            <View style={{marginTop: 5*SIZES.padding, marginLeft: 3*SIZES.padding}}>
+                                <Text
+                                    style={{
+                                        color: COLORS.black,
+                                        ...FONTS.body2,
+                                }}>Do you want to Opt for Reusable Packaging?
+                                </Text>
+                                <Text
+                                    style={{
+                                        color: COLORS.black,
+                                        ...FONTS.body4,
+                                }}>The restaurant offers an option for reusable packaging. You'll be charged $4 extra for it.</Text>
+                                 <Text
+                                    style={{
+                                        color: COLORS.black,
+                                        ...FONTS.body4,
+                                }}>But don't worry! It'll be refunded as soon as you'll return the package. </Text>
+                                <Text
+                                    style={{
+                                        color: COLORS.black,
+                                        ...FONTS.body4,
+                                }}>You'll also be rewarded with Uber vouchers and cashbacks coupons for being a part of our Green Initiative!
+                                </Text>
+                                <View style={{flex:1, flexDirection:"row", paddingTop:SIZES.padding}}>                          
+                                    <TouchableOpacity
+                                        style={{
+                                            padding: SIZES.padding*2,
+                                            margin: SIZES.padding,
+                                            backgroundColor: (checked)? COLORS.primary: COLORS.white,
+                                            width:"40%",
+                                            height:50,
+                                            borderRadius:SIZES.radius,
+                                            justifyContent:"center",
+                                            borderWidth:1
+                                        }}
+                                        onPress= {()=>{setChecked(true)}}
+                                    >
+                                        <Text style={{textAlign:"center", ...FONTS.body2}}>Yes</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                    style={{
+                                        margin: SIZES.padding,
+                                        backgroundColor: (!checked)? COLORS.primary: COLORS.white,
+                                        width:"40%",
+                                        height:50,
+                                        borderRadius:SIZES.radius,
+                                        justifyContent:"center",
+                                        borderWidth:1
+                                    }}
+                                    onPress= {()=>{setChecked(false)}}>
+                                        <Text style={{textAlign:"center", ...FONTS.body2}}>No</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </View>
+                            <View style={{ margin: SIZES.padding * 3, marginTop: SIZES.padding*10 }}>
+                                <TouchableOpacity
+                                    style={{
+                                        height: 60,
+                                        backgroundColor: COLORS.primary,
+                                        borderRadius: SIZES.radius,
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                    onPress={() => {
+                                        setModalVisible(false);
+                                        navigation.navigate("Cart", {
+                                        restaurant: restaurant,
+                                        currentLocation: currentLocation,
+                                        orderItems: orderItems,
+                                        reusablePackage: checked
+                                    })}}
+                                >
+                                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>
+                                </TouchableOpacity>
+                            </View>
+                        </View>
+                    </View>
+                </TouchableWithoutFeedback>
+            </Modal>
+        )
+    }
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
             {renderFoodInfo()}
             {renderOrder()}
+            {renderPackageModal()}
         </SafeAreaView>
     )
 }

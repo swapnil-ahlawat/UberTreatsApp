@@ -62,7 +62,7 @@ const Wallet = ({ navigation }) => {
                 }}
             >
                 <Text style={{color: COLORS.white,textAlign:"center", ...FONTS.body3, margin: SIZES.padding}}>Wallet Balance</Text>
-                <Text style={{color: COLORS.white,textAlign:"center", marginBottom: SIZES.padding, ...FONTS.largeTitle}}>$500.00</Text>
+                <Text style={{color: COLORS.white,textAlign:"center", marginBottom: SIZES.padding, ...FONTS.largeTitle}}>${global.wallet.toFixed(2)}</Text>
             </View>
         )
     }
