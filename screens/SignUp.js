@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {
     View,
     Text,
@@ -38,10 +38,12 @@ const SignUp = ({ navigation }) => {
         }
     ]
 
-    const [showPassword, setShowPassword] = React.useState(false)
+    const [showPassword, setShowPassword] = useState(false)
 
-    const [selectedMode, setSelectedMode] = React.useState(mode.filter(a => a.name== "Customer")[0])
-    const [modalVisible, setModalVisible] = React.useState(false)
+    const [selectedMode, setSelectedMode] = useState(mode.filter(a => a.name== "Customer")[0])
+    const [modalVisible, setModalVisible] = useState(false)
+    const [ID, setID]= useState(null);
+    const [password, setPassword]= useState(null);
 
     function renderLogo() {
         return (
@@ -75,7 +77,7 @@ const SignUp = ({ navigation }) => {
             >
                 {/* Full Name */}
                 <View style={{ marginTop: SIZES.padding * 3 }}>
-                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Email Address/ Phone No.</Text>
+                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Email ID or Phone number</Text>
                     <TextInput
                         style={{
                             marginVertical: SIZES.padding,
@@ -85,9 +87,10 @@ const SignUp = ({ navigation }) => {
                             color: COLORS.white,
                             ...FONTS.body3
                         }}
-                        placeholder="Email ID/ Phone No."
+                        placeholder="Enter email or phone no."
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
+                        onChangeText={(text) => setID(text)}
                     />
                 </View>
                 
@@ -104,10 +107,11 @@ const SignUp = ({ navigation }) => {
                             color: COLORS.white,
                             ...FONTS.body3
                         }}
-                        placeholder="Enter Password"
+                        placeholder="Enter password"
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
                         secureTextEntry={!showPassword}
+                        onChangeText={(text) => setPassword(text)}
                     />
                     <TouchableOpacity
                         style={{
@@ -132,7 +136,7 @@ const SignUp = ({ navigation }) => {
                 
                 {/* Sign in as */}
                 <View style={{ marginTop: SIZES.padding * 2 }}>
-                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Sign In as:</Text>
+                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Sign in as:</Text>
                         <TouchableOpacity
                             style={{
                                 width: "100%",
@@ -178,7 +182,11 @@ const SignUp = ({ navigation }) => {
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
-                    onPress={() => navigation.navigate(selectedMode.tabs)}
+                    onPress={() => {
+                        global.ID= ID;
+                        global.password= password;
+                        global.modeTag= selectedMode.name;
+                        navigation.navigate(selectedMode.tabs)}}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>SIGN IN</Text>
                 </TouchableOpacity>

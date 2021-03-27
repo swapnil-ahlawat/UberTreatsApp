@@ -9,14 +9,13 @@ import {
     FlatList,
     Platform,
     StatusBar,
-    StatusBarIOS
 } from "react-native";
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 const Home = ({ navigation }) => {
 
-    // Dummy Datas
+    // Dummy data
 
     const initialCurrentLocation = {
         streetName: "Kuching",
@@ -331,8 +330,6 @@ const Home = ({ navigation }) => {
             ]
 
         }
-
-
     ]
 
     const [categories, setCategories] = React.useState(categoryData)
@@ -378,7 +375,7 @@ const Home = ({ navigation }) => {
                         }}
                     />
                 </TouchableOpacity>
-
+ 
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <View
                         style={{
@@ -393,7 +390,7 @@ const Home = ({ navigation }) => {
                         <Text style={{ ...FONTS.h3 }}>{currentLocation.streetName}</Text>
                     </View>
                 </View>
-
+ 
                 <TouchableOpacity
                     style={{
                         width: 50,
@@ -465,8 +462,7 @@ const Home = ({ navigation }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h1 }}>Main</Text>
-                <Text style={{ ...FONTS.h1 }}>Categories</Text>
+                <Text style={{ ...FONTS.h1 }}>Main Categories</Text>
 
                 <FlatList
                     data={categories}
@@ -477,6 +473,7 @@ const Home = ({ navigation }) => {
                     contentContainerStyle={{ paddingVertical: SIZES.padding * 2 }}
                 />
             </View>
+            
         )
     }
 

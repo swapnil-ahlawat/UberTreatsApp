@@ -371,7 +371,7 @@ const PersonnelHome = ({ navigation }) => {
                             borderRadius: SIZES.radius
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 }}>{currentLocation.streetName}</Text>
+                        <Text style={{ ...FONTS.h3 }}>{global.ID}</Text>
                     </View>
                 </View>
             </SafeAreaView>
