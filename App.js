@@ -6,7 +6,7 @@ import { useFonts } from 'expo-font';
 
 
 
-import { Restaurant, OrderDelivery, SignUp, Order, Cart } from './screens'
+import { Restaurant, OrderDelivery, SignUp, Order, Cart, DeliverOrder } from './screens'
 import CustomerTabs from './navigation/customerTabs'
 import PersonnelTabs from './navigation/personnelTabs'
 import RestaurantTabs from './navigation/restaurantTabs'
@@ -43,6 +43,7 @@ const App = () => {
                   <Stack.Screen name="SignUp" component={SignUp} />
                   <Stack.Screen name="Order" component={Order} />
                   <Stack.Screen name="Cart" component={Cart} />
+                  <Stack.Screen name="DeliverOrder" component={DeliverOrder} />
                  
               </Stack.Navigator>
           </NavigationContainer>

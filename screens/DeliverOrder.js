@@ -1,6 +1,6 @@
 import React from "react";
 import {
-    CheckBox,
+    
     StyleSheet,
     FlatList,
     SafeAreaView,
@@ -12,14 +12,13 @@ import {
     Modal,
     StatusBar,
     Image,
-    Animated
+    
 } from "react-native";
-import { Directions } from "react-native-gesture-handler";
-import { isIphoneX } from 'react-native-iphone-x-helper'
+
 
 import { icons, COLORS, SIZES, FONTS } from '../constants'
 
-const Order = ({ route, navigation }) => {
+const DeliverOrder = ({ route, navigation }) => {
 
   
     const [order, setOrder] = React.useState(null);
@@ -30,7 +29,7 @@ const Order = ({ route, navigation }) => {
     const handleClicked = () => {
         
           setModalVisible(false);
-          navigation.navigate("RestaurantHome");
+          navigation.navigate("PersonnelHome");
         };
     
     
@@ -136,6 +135,7 @@ const Order = ({ route, navigation }) => {
         )
 
         return (
+
             <View style={{ 
                 paddingBotto0m: 30}}>
             <FlatList
@@ -153,44 +153,28 @@ const Order = ({ route, navigation }) => {
    
 
 
-    function renderUserInfo() {
-        var img;
-        if ( isSelected)
-        img = icons.success
-        else
-        img = icons.cross
+    function renderOrder() {
+        
         return (
-            <View style = {{height: 100,marginTop: SIZES.padding,flexDirection: "row"}}>
+            <View style = {{height: 100,marginTop: SIZES.padding,flexDirection: "row",justifyContent: "space-between"}}>
               <View style = {{justifyContent: 'center'}}>
-                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.name}</Text>
+                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.customer_name}</Text>
                   <Text style={{ ...FONTS.h3,color: COLORS.white,paddingHorizontal: SIZES.padding*2,paddingTop:SIZES.padding }}>{order?.address}</Text>
 
               </View>
              
 
               
-              <View style = {{flexDirection: "row",alignItems:'center'}}>
-                    <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: 3*SIZES.padding }}>Resuable Packaging</Text>
-                    <Image
-                                    source={img}
-                                    resizeMode="contain"
-                                    style={{
-                                        height: 25,
-                                        width: 25,
-                                        // tintColor: COLORS.primary
-                                    }}
-                                />
+              <View style = {{alignItems:'center',flexDirection: "row"}}>
+                    <Text style={{ ...FONTS.h2,color: COLORS.white, marginRight: SIZES.padding*5 }}>{order?.restaurant}</Text>
+                    
                </View>
             </View>
            
         )
     }
     function renderButton() {
-        var txt;
-        if ( isSelected)
-        txt = "Scan Package"
-        else
-        txt = "Ready to Dispatch"
+        
         return (
             <View style={{ margin: SIZES.padding * 3 }}>
                 <TouchableOpacity
@@ -202,16 +186,11 @@ const Order = ({ route, navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={() => {
-                        if ( order?.resuablePackage)
-                        { navigation.navigate("Scan",{modeTag: "RestaurantDelivery"})}
-                        else
-                        {
-                          setModalVisible(true)
-                        }
+                       setModalVisible(true)
                     }
                 }
                 >
-                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>{txt}</Text>
+                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Deliver</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -274,14 +253,66 @@ const Order = ({ route, navigation }) => {
             </Modal>
         )
     }
+     function taxOrder() {
+
+        let total = order?.price;
+        return (0.18*total).toFixed(2);
+    }
+     function reusablePackageFee(){
+        if(order?.resuablePackage){
+            return (
+                <View style={{flexDirection: "row"}}>
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Reusable Package Fee</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>$4.00</Text>   
+                </View>
+            )
+        }
+        else{
+            <View></View>
+        }
+    }
+     function calculateTotal(){
+        let total= (parseFloat(order?.price)+ parseFloat(taxOrder())+ parseFloat(5.00)+ parseFloat(((order?.resuablePackage)? 4.00:0.00)));
+        return total.toFixed(2);
+    }
+
+    function renderTotal(){
+        return(
+            <View style={{margin: SIZES.padding * 2}}>
+                <View style={{flexDirection: "row"}}>
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Subtotal</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>${order?.price}</Text>   
+                </View>
+                <View style={{flexDirection: "row"}}>
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Tax</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>${taxOrder()}</Text>   
+                </View>
+                <View style={{flexDirection: "row"}}>
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Delivery Fee</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>$5.00</Text>   
+                </View>
+                {reusablePackageFee()}
+                <View style={{flexDirection: "row", marginVertical:SIZES.padding}}>
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body2, textAlign:"left"}}>Total</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body2, textAlign: "right"}}>${calculateTotal()}</Text>   
+                </View>
+            </View>
+
+
+            
+        )
+    }
 
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
-            {renderUserInfo()}
+            {renderOrder()}
             {renderOrderInfo()}
+            {<Text style = {{margin: SIZES.padding*2,color: COLORS.white, ...FONTS.body2}}>Payment Mode: {order?.payment_mode}</Text>}
+            {renderTotal()}
             {renderButton()}
             {renderModeModal()}
+            
         </SafeAreaView>
     )
 }
@@ -301,4 +332,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Order;
+export default DeliverOrder;

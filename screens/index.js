@@ -8,9 +8,11 @@ import PersonnelHome from "./PersonnelHome"
 import RestaurantHome from "./RestaurantHome"
 import Wallet from "./Wallet"
 import Cart from "./Cart";
+import DeliverOrder from "./DeliverOrder"
 
 export {
     Cart,
+    DeliverOrder,
     Home,
     Restaurant,
     Order,
