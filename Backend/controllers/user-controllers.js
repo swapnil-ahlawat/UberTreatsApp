@@ -2,17 +2,6 @@ const mongoose = require('mongoose');
 const User = require('../database/User');
 const Order= require('../database/Order');
 
-// const userDetails = (req, res, next) => {
-//     const id = req.query['id'];
-
-//     const identifiedUser = DUMMY_USERS.find(u => u.id === id);
-//     if(!identifiedUser){
-//         const error = Error('User not found.');
-//         error.code = 404;
-//         throw error;
-//     }
-//     res.json(identifiedUser);
-// }
 const placeOrder= async(req, res, next) =>{
     const {reusablePackageFlag, restaurantPhoneNo, restaurantCourier, orderItems, customer, walletUsed, total} = req.body;
     let order={customerName:customer.name, customerAddress: customer.address, customerPhoneNo: customer.phoneNo, reusablePackageFlag, foodItems: orderItems}
@@ -73,16 +62,32 @@ const getOrders= async(req, res, next) =>{
 const removeOrder= async(req, res, next) =>{
     const{orderID, phoneNo}= req.body;
 
-    let identifiedUser= await User.updateOne({phoneNo}, {$pull: {orders: {orderID}}});
-    // let orderArray=[]
-    // for (index = 0; index < identifiedUser.orders.length; index++) {
-    //     if(indentifiedUser.orders[index].orderID!==orderID){
-    //         orderArray.push(identifiedUser.orders[index]);
-    //     }
-    // }   
-    // console.log(orderArray);
-    // identifiedUser.orders= orderArray;
-    // identifiedUser.save();
+    const identifiedUser = await User.findOne({phoneNo});
+    if(!identifiedUser)
+    {
+        return res.sendCode(404);
+    }
+    identifiedUser.orders = identifiedUser.orders.filter(p => {
+        return p.orderID !== orderID;
+    });
+    await identifiedUser.save();
+
+    res.json({
+        message: 'Order removed Successfully!',
+        user: identifiedUser
+    });
+}
+
+const addWalletMoney= async(req, res, next) =>{
+    const {phoneNo, amount}= req.body;
+    
+    let identifiedUser= await User.findOne({phoneNo, userType:"Customer"}).exec().catch((error) => {
+        return next(error);
+    });
+    let money= identifiedUser.wallet;
+    money+= parseFloat(amount);
+    identifiedUser.wallet= money;
+    identifiedUser.save();
     res.json({
         message: 'Order removed Successfully!',
         user: identifiedUser
@@ -92,3 +97,4 @@ const removeOrder= async(req, res, next) =>{
 exports.placeOrder = placeOrder;
 exports.getOrders= getOrders;
 exports.removeOrder= removeOrder;
+exports.addWalletMoney= addWalletMoney;
