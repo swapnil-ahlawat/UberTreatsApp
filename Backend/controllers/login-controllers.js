@@ -1,39 +1,23 @@
-const DUMMY_USERS = [
-    {
-        id: 'u1',
-        name: 'Piyush Maheshwari',
-        email: 'piyush',
-        password: 'treats',
-        type: 'customer'        // restaurant, warehouse, delivery
-    },
-    {
-        id: 'u2',
-        name: 'Wandan Tibrewal',
-        email: 'wandan',
-        password: 'treats',
-        type: 'restaurant'
-    },
-    {
-        id: 'u3',
-        name: 'Swapnil Ahlawat',
-        email: 'swapnil',
-        password: 'treats',
-        type: 'customer'
-    }
-]
+const mongoose = require('mongoose');
+const User = require('../database/User');
 
-const login = (req, res, next) => {
-    const { email, password, type } = req.body;
-
-    const identifiedUser = DUMMY_USERS.find(u => u.email === email && u.type === type);
-    if(!identifiedUser || identifiedUser.password !== password){
+const login = async(req, res, next) => {
+    const {phoneNo, password, userType} = req.body;
+    console.log(phoneNo)
+    console.log(password)
+    console.log(userType)
+    const identifiedUser = await User.find({phoneNo, password, userType}).exec().catch((error) => {
+        console.log("Error catched.", error);
+    });
+    console.log(identifiedUser);
+    if(identifiedUser.length===0){
         const error = Error('Invalid credentials.');
         error.code = 401;
-        throw error;
+        return next(error);
     }
     res.json({
         message: 'Logged in successfully!',
-        name: identifiedUser.name
+        user: identifiedUser[0]
     });
 }
 

@@ -3,6 +3,6 @@ const userController = require('../controllers/user-controllers');
 
 const userRouter = express.Router();
 
-userRouter.get('/', userController.userDetails);
+userRouter.post('/placeOrder', userController.placeOrder);
 
 module.exports = userRouter;

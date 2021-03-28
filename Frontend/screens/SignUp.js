@@ -15,13 +15,13 @@ import {
     SafeAreaView,
     Platform
 } from "react-native"
-
+ 
 import {LinearGradient} from 'expo-linear-gradient';
-
+ 
 import { COLORS, SIZES, FONTS, icons, images } from "../constants"
-
+ 
 const SignUp = ({ navigation }) => {
-
+ 
     const mode=[
         {
             name:"Customer",
@@ -40,45 +40,51 @@ const SignUp = ({ navigation }) => {
             tabs: "WarehouseTabs"
         }
     ]
-
+ 
     const [showPassword, setShowPassword] = useState(false)
-
+ 
     const [selectedMode, setSelectedMode] = useState(mode.filter(a => a.name== "Customer")[0])
     const [modalVisible, setModalVisible] = useState(false)
-    const [ID, setID]= useState(null);
+    const [phoneNo, setPhoneNo]= useState(null);
     const [password, setPassword]= useState(null);
-
+ 
     
-  const authSubmitHandler = async event => {
-    event.preventDefault();
+  const authSubmitHandler = async () => {
+    // event.preventDefault();
     
-    
+    console.log(phoneNo)
+    console.log(password)
+    console.log(selectedMode.name)
     try {
-        const response = await fetch('http://localhost:5000/api/users/login', {
+        const response = await fetch('http://4323a6061dfd.ngrok.io/login', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+             Accept: 'application/json',
+             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            phoneNo: ID,
+            phoneNo: phoneNo,
             password: password,
-            userType: selectedMode
+            userType: selectedMode.name
           })
         });
-
+ 
         const responseData = await response.json();
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-       
+        else{
+        global.user = responseData
+        console.log(global.user.user)
         navigation.navigate(selectedMode.tabs)
+        }
       } catch (err) {
-        
+        console.log(err)
         alert('Incorrect Credentials')
       }
   
   };
-
+ 
     function renderLogo() {
         return (
             <View
@@ -102,7 +108,7 @@ const SignUp = ({ navigation }) => {
             </View>
         )
     }
-
+ 
     function renderForm() {
         return (
             <View
@@ -113,7 +119,7 @@ const SignUp = ({ navigation }) => {
             >
                 {/* Full Name */}
                 <View style={{ marginTop: SIZES.padding * 3 }}>
-                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Email ID or Phone number</Text>
+                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Phone number</Text>
                     <TextInput
                         style={{
                             marginVertical: SIZES.padding,
@@ -123,15 +129,15 @@ const SignUp = ({ navigation }) => {
                             color: COLORS.white,
                             ...FONTS.body3
                         }}
-                        placeholder="Enter email or phone no."
+                        placeholder="Enter phone no."
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
-                        value= {ID}
-                        onChangeText={(text) => setID(text)}
+                        value= {phoneNo}
+                        onChangeText={(text) => setPhoneNo(text)}
                     />
                 </View>
                 
-
+ 
                 {/* Password */}
                 <View style={{ marginTop: SIZES.padding * 2 }}>
                     <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Password</Text>
@@ -204,11 +210,11 @@ const SignUp = ({ navigation }) => {
                                 />
                         </TouchableOpacity>
                     </View>
-
+ 
             </View>
         )
     }
-
+ 
     function renderButton() {
         return (
             <View style={{ margin: SIZES.padding * 3 }}>
@@ -221,22 +227,22 @@ const SignUp = ({ navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={() => {
-                        global.ID= ID;
+                        global.phoneNo= phoneNo;
                         global.password= password;
                         global.modeTag= selectedMode.name;
-                        setID(null);
+                        setPhoneNo(null);
                         setPassword(null);
                         setSelectedMode(mode.filter(a => a.name== "Customer")[0])
-                        authSubmitHandler}}
+                        authSubmitHandler()}}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>SIGN IN</Text>
                 </TouchableOpacity>
             </View>
         )
     }
-
+ 
     function renderModeModal() {
-
+ 
         const renderItem = ({ item }) => {
             return (
                 <TouchableOpacity
@@ -250,7 +256,7 @@ const SignUp = ({ navigation }) => {
                 </TouchableOpacity>
             )
         }
-
+ 
         return (
             <Modal
                 animationType="slide"
@@ -285,7 +291,7 @@ const SignUp = ({ navigation }) => {
             </Modal>
         )
     }
-
+ 
     return (
        
         <KeyboardAvoidingView
@@ -307,5 +313,5 @@ const SignUp = ({ navigation }) => {
         
     )
 }
-
+ 
 export default SignUp;

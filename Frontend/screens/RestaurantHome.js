@@ -24,90 +24,38 @@ const RestaurantHome = ({ navigation }) => {
         }
     }
 
-    const orderData = [
-        {
-            id: 1,
-            name: "Swapnil Ahlawat",
-            price: 12.45,
-            quantity: "2 items",
-            address: "Street 6",
-            resuablePackage: true,
-            location: {
-                latitude: 1.5347282806345879,
-                longitude: 110.35632207358996,
-            },
-            order_details: [
-                {   food_id: 1,
-                    name: "Zinger Burger",
-                    price: 7.00,
-                    additional_info: "Extra sauce",
-                    quantity: 1,
-                },
-                  { food_id: 2,
-                    name: "Coke",
-                    price: 6.45,
-                    additional_info: "Room temperature",
-                    quantity: 1,
-                }
-            ]
-
-        },
-        {
-            id: 2,
-            name: "Wandan Tibrewal",
-            price: 8,
-            quantity: "1 item",
-            address: "Pacific A",
-            resuablePackage: false,
-            location: {
-                latitude: 1.5347282806345879,
-                longitude: 120.35632207358996,
-            },
-            order_details: [
-                {  food_id: 1,
-                    name: "Red-sauce Pasta",
-                    price: 4.00,
-                    additional_info: "Extra spicy",
-                    quantity: 2
-                }
-                  
-            ]
-
-        },
-        {
-            id: 3,
-            name: "Piyush Maheshwari",
-            price: 13,
-            quantity: "2 items",
-            address: "Pacific C",
-            resuablePackage: true,
-            location: {
-                latitude: 1.2347282806345879,
-                longitude: 120.35632207358996,
-            },
-            order_details: [
-                {   food_id: 1,
-                    name: "Red-sauce Pasta",
-                    price: 4.00,
-                    additional_info: "Extra spicy",
-                    quantity: 2
-                },
-                 {   food_id: 2,
-                    name: "Sprite",
-                    price: 5.00,
-                    additional_info: "Extra Ice",
-                    quantity: 1
-                }
-                  
-            ]
-
-        }
-        
-    ]
+  
 
     
-    const [orders, setorders] = React.useState(orderData)
+    const [orders, setorders] = React.useState(null)
     const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
+
+    const fetchOrder = async () => {
+        console.log(global.user.user.phoneNo)
+        
+        var url = "http://4323a6061dfd.ngrok.iouser/user/restaurant?phoneNo=" + global.user.user.phoneNo
+        console.log(url)
+        try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+             Accept: 'application/json',
+             'Content-Type': 'application/json'
+          },
+        });
+ 
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        setorders(response)
+        navigation.navigate(selectedMode.tabs)
+      } catch (err) {
+        console.log(err)
+      }
+  
+       
+   };
 
 
 
@@ -207,7 +155,9 @@ const RestaurantHome = ({ navigation }) => {
         )
     }
 
+    fetchOrder();
     return (
+        
         <SafeAreaView style={styles.container}>
             {renderHeader()}
             {renderRestaurantList()}
