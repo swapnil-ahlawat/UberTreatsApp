@@ -229,7 +229,7 @@ const Order = ({ route, navigation }) => {
                     }
                     else{
                         if(checked){
-                            global.wallet-= calculateTotal();
+                            global.wallet -= calculateTotal();
                         }
                         setModalVisible(true);
                     }

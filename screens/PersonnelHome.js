@@ -133,7 +133,7 @@ const PersonnelHome = ({ navigation }) => {
                             borderRadius: SIZES.radius
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>Hello {deliveryPersonData.Name}</Text>
+                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>Hello {deliveryPersonData.Name}!</Text>
                     </View>
                 </View>
             </SafeAreaView>
@@ -163,10 +163,10 @@ const PersonnelHome = ({ navigation }) => {
                         paddingHorizontal: SIZES.padding
                     }}
                 >
-                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>Customer Name: {item.customer_name}</Text>
-                        <Text style={{ ...FONTS.body2,color: COLORS.black }}>Restaurant: {item.restaurant}</Text>
-                        <Text style={{ ...FONTS.body2,color: COLORS.black  }}>Delivery Addresss: {item.address}</Text>
-                    <Text style={{ ...FONTS.body2,color: COLORS.black  }}>Order Deadline: {item.order_deadline}</Text>
+                        <Text style={{ ...FONTS.body2,color: COLORS.black }}>Customer Name: <Text style = {{fontWeight: 'bold'}}>{item.customer_name}</Text></Text>
+                        <Text style={{ ...FONTS.body2,color: COLORS.black }}>Restaurant: <Text style = {{fontWeight: 'bold'}}>{item.restaurant}</Text></Text>
+                        <Text style={{ ...FONTS.body2,color: COLORS.black  }}>Delivery Addresss: <Text style = {{fontWeight: 'bold'}}>{item.address}</Text></Text>
+                    <Text style={{ ...FONTS.body2,color: COLORS.black  }}>Order Deadline: <Text style = {{fontWeight: 'bold'}}>{item.order_deadline}</Text></Text>
                  </View>   
                 
                     

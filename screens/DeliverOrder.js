@@ -14,6 +14,7 @@ import {
     Image,
     
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 
 
 import { icons, COLORS, SIZES, FONTS } from '../constants'
@@ -23,8 +24,8 @@ const DeliverOrder = ({ route, navigation }) => {
   
     const [order, setOrder] = React.useState(null);
     const [currentLocation, setCurrentLocation] = React.useState(null);
-    const [isSelected, setSelection] = React.useState(false);
     const [modalVisible, setModalVisible] = React.useState(false);
+    const [checked, setChecked]= React.useState(true);
 
     const handleClicked = () => {
         
@@ -39,7 +40,7 @@ const DeliverOrder = ({ route, navigation }) => {
 
         setOrder(item)
         setCurrentLocation(currentLocation)
-        setSelection(order?.resuablePackage)
+        
     })
 
     function renderHeader() {
@@ -176,12 +177,11 @@ const DeliverOrder = ({ route, navigation }) => {
     function renderButton() {
         
         return (
-            <View style={{ margin: SIZES.padding * 3 }}>
+            <View >
                 <TouchableOpacity
                     style={{
                         height: 60,
                         backgroundColor: COLORS.primary,
-                        borderRadius: SIZES.radius / 1.5,
                         alignItems: 'center',
                         justifyContent: 'center'
                     }}
@@ -211,10 +211,9 @@ const DeliverOrder = ({ route, navigation }) => {
                         <View
                             style={{
                                 
-                                height: 500,
+                                height: 400,
                                 width: "100%",
                                 backgroundColor: COLORS.white,
-                                borderRadius: SIZES.radius,
                                 alignItems: 'center'
                             }}
                         >   
@@ -232,7 +231,7 @@ const DeliverOrder = ({ route, navigation }) => {
                                     style={{
                                         color: COLORS.black,
                                         ...FONTS.body1,
-                                }}>Successful!</Text>
+                                }}>Delivered!</Text>
                             </View>
 
                             
@@ -242,10 +241,74 @@ const DeliverOrder = ({ route, navigation }) => {
                                     marginVertical: SIZES.padding,
                                     marginLeft: 3*SIZES.padding,
                                     ...FONTS.body2,
-                                    width: SIZES.width * 0.8
+                                    width: SIZES.width * 0.9
 
 
-                            }}>{"Our delivery partner will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats. "}</Text>
+                            }}>{"Thank you for delivering the order"}</Text>
+                            <Text
+                                style={{
+                                    color: COLORS.black,
+                                    marginVertical: SIZES.padding,
+                                    marginLeft: 3*SIZES.padding,
+                                    ...FONTS.body3,
+                                    width: SIZES.width * 0.9
+
+
+                            }}>{"Does the user have any reusable package to return?"}</Text>
+
+                            <View style={{flex:1, flexDirection:"row", paddingTop:SIZES.padding}}>                          
+                                    <TouchableOpacity
+                                        style={{
+                                            padding: SIZES.padding*2,
+                                            margin: SIZES.padding,
+                                            backgroundColor: (checked)? COLORS.primary: COLORS.white,
+                                            width:"40%",
+                                            height:50,
+                                            borderRadius:SIZES.radius,
+                                            justifyContent:"center",
+                                            borderWidth:1
+                                        }}
+                                        onPress= {()=>{setChecked(true)}}
+                                    >
+                                        <Text style={{textAlign:"center", ...FONTS.body2}}>Yes</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity
+                                    style={{
+                                        margin: SIZES.padding,
+                                        backgroundColor: (!checked)? COLORS.primary: COLORS.white,
+                                        width:"40%",
+                                        height:50,
+                                        borderRadius:SIZES.radius,
+                                        justifyContent:"center",
+                                        borderWidth:1
+                                    }}
+                                    onPress= {()=>{setChecked(false)}}>
+                                        <Text style={{textAlign:"center", ...FONTS.body2}}>No</Text>
+                                    </TouchableOpacity>
+                                </View>
+                                 
+                                <TouchableOpacity
+                                    style={{
+                                        height: 60,
+                                        width: '100%',
+                                        backgroundColor: COLORS.primary,
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
+                                    }}
+                                    onPress={() => {
+                                        setModalVisible(false);
+                                        if(checked)
+                                        navigation.navigate("Scan", {modeTag: "Personnel"})
+                                        else
+                                        navigation.navigate("PersonnelHome")
+
+                                    
+                                    }}
+
+                                >
+                                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>
+                                </TouchableOpacity>
+                            
 
                         </View>
                     </View>
@@ -306,10 +369,12 @@ const DeliverOrder = ({ route, navigation }) => {
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}
+            <ScrollView>
             {renderOrder()}
             {renderOrderInfo()}
             {<Text style = {{margin: SIZES.padding*2,color: COLORS.white, ...FONTS.body2}}>Payment Mode: {order?.payment_mode}</Text>}
             {renderTotal()}
+            </ScrollView>
             {renderButton()}
             {renderModeModal()}
             
