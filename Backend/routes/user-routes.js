@@ -4,5 +4,6 @@ const userController = require('../controllers/user-controllers');
 const userRouter = express.Router();
 
 userRouter.post('/placeOrder', userController.placeOrder);
+userRouter.get('/restaurant', userController.getOrders);
 
 module.exports = userRouter;

@@ -15,19 +15,19 @@ const Order= require('../database/Order');
 // }
 const placeOrder= async(req, res, next) =>{
     const {reusablePackageFlag, restaurantPhoneNo, restaurantCourier, orderItems, customer, walletUsed, total} = req.body;
-    let order={customerName:customer.name, customerAddress: customer.address, reusablePackageFlag, foodItems: orderItems}
+    let order={customerName:customer.name, customerAddress: customer.address, customerPhoneNo: customer.phoneNo, reusablePackageFlag, foodItems: orderItems}
     let orderModel = new Order(order);
     await orderModel.save();
     
     let identifiedRestaurant = await User.findOne({phoneNo: restaurantPhoneNo, userType: "Restaurant"}).exec().catch((error) => {
-        console.log("Error catched.", error);
+        return next(error);
     });
 
     identifiedRestaurant.orders.push({orderID: orderModel._id.toString()});
     await identifiedRestaurant.save();
 
     let identifiedPersonnel = await User.findOne({name: restaurantCourier, userType: "Personnel"}).exec().catch((error) => {
-        console.log("Error catched.", error);
+        return next(error);
     });
 
     identifiedPersonnel.orders.push({orderID: orderModel._id.toString()});
@@ -35,7 +35,7 @@ const placeOrder= async(req, res, next) =>{
     await identifiedPersonnel.save();
     if(walletUsed){
         let identifiedUser = await User.findOne({phoneNo: customer.phoneNo}).exec().catch((error) => {
-            console.log("Error catched.", error);
+            return next(error);
         });
         identifiedUser.wallet = identifiedUser.wallet- parseFloat(total);
         await identifiedUser.save();
@@ -46,4 +46,28 @@ const placeOrder= async(req, res, next) =>{
     });
 }
 
+
+const getOrders= async(req, res, next) =>{
+    const phoneNo= req.query.phoneNo;
+    
+    let identifiedRestaurant = await User.findOne({phoneNo: phoneNo, userType: "Restaurant"}).exec().catch((error) => {
+        return next(error);
+    });
+
+    async function getOrderfromOrderID(item){
+        return await Order.findOne({_id:mongoose.Types.ObjectId(item.orderID)}).exec().catch((error) => {
+            return next(error);
+        });
+    }
+    let pendingOrders=[]
+    for (index = 0; index < identifiedRestaurant.orders.length; index++) {
+        pendingOrders.push(await getOrderfromOrderID(identifiedRestaurant.orders[index]));
+    }    
+    res.json({
+        pendingOrders
+    });
+}
+
+
 exports.placeOrder = placeOrder;
+exports.getOrders= getOrders;

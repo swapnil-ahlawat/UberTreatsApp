@@ -56,10 +56,11 @@ const SignUp = ({ navigation }) => {
     console.log(password)
     console.log(selectedMode.name)
     try {
-        const response = await fetch('https://localhost:5000/login', {
+        const response = await fetch('http://01ba8b191ae3.ngrok.io/login', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+             Accept: 'application/json',
+             'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             phoneNo: ID,
@@ -68,7 +69,7 @@ const SignUp = ({ navigation }) => {
           })
         });
  
-        const responseData = await response.json();
+        const responseData = await response.text();
         if (!response.ok) {
           throw new Error(responseData.message);
         }

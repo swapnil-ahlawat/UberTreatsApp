@@ -4,6 +4,7 @@ const User = require('./database/User');
 
 const loginRouter = require('./routes/login-routes');
 const userRouter = require('./routes/user-routes');
+const packageRouter = require('./routes/package-routes');
 // const restaurantRouter = require('./routes/restaurant-routes');
 // const deliveryRouter = require('./routes/delivery-routes');
 
@@ -32,6 +33,7 @@ const DUMMY_USERS = [
         phoneNo: '9818284672',
         password: 'treats',
         userType: 'Customer', 
+        address: "Dwarka, New Delhi",
         wallet: 500.10
     }
 ]
@@ -39,16 +41,18 @@ connectDB();
 // User.insertMany(DUMMY_USERS);
 
 app.use(express.json({extended:false}));
-app.use((req, res, next) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Headers','*');
-    res.setHeader('*');
+app.use(express.urlencoded({extended:false}));
+// app.use((req, res, next) => {
+//     res.setHeader('Access-Control-Allow-Origin', '*');
+//     res.setHeader('Access-Control-Allow-Headers','*');
+//     res.setHeader('*');
   
-    next();
-});
+//     next();
+// });
 
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
+app.use('/package', packageRouter);
 // app.use('/restaurant', restaurantRouter);
 // app.use('/delivery', deliveryRouter);
 

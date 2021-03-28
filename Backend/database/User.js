@@ -24,7 +24,11 @@ const user = new mongoose.Schema({
     type: Float, default:0.00
   },
   orders:[
-    {type:String}
+    {
+      orderID:{
+        type: String
+      }
+    }
   ]
 });
 

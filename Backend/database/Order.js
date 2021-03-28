@@ -8,8 +8,8 @@ const order = new mongoose.Schema({
     customerAddress:{
         type:String
     },
-    reusablePackageFlag: {
-        type: Boolean, default:false
+    customerPhoneNo:{
+        type:String
     },
     reusablePackageSerialNumber:{
         type: String
