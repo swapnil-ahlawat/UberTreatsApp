@@ -56,7 +56,7 @@ const SignUp = ({ navigation }) => {
     console.log(password)
     console.log(selectedMode.name)
     try {
-        const response = await fetch('http://01ba8b191ae3.ngrok.io/login', {
+        const response = await fetch('http://c47f3fbd2a93.ngrok.io/login', {
           method: 'POST',
           headers: {
              Accept: 'application/json',
@@ -69,13 +69,13 @@ const SignUp = ({ navigation }) => {
           })
         });
  
-        const responseData = await response.text();
+        const responseData = await response.json();
         if (!response.ok) {
           throw new Error(responseData.message);
         }
         else{
-        global.user = responseData
-        console.log(global.user.user)
+        global.user = responseData.user
+        console.log(global.user)
         navigation.navigate(selectedMode.tabs)
         }
       } catch (err) {

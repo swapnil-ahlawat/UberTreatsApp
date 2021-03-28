@@ -49,6 +49,7 @@ const placeOrder= async(req, res, next) =>{
 
 const getOrders= async(req, res, next) =>{
     const phoneNo= req.query.phoneNo;
+    console.log(phoneNo)
     
     let identifiedRestaurant = await User.findOne({phoneNo: phoneNo, userType: "Restaurant"}).exec().catch((error) => {
         return next(error);
