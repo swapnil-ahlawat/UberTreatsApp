@@ -56,7 +56,7 @@ const SignUp = ({ navigation }) => {
     console.log(password)
     console.log(selectedMode.name)
     try {
-        const response = await fetch('http://c47f3fbd2a93.ngrok.io/login', {
+        const response = await fetch('http://2d368f8dcb73.ngrok.io/login', {
           method: 'POST',
           headers: {
              Accept: 'application/json',

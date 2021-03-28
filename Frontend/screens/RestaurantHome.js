@@ -11,11 +11,11 @@ import {
     StatusBar
 } from "react-native";
 import { icons, images, SIZES, COLORS, FONTS } from '../constants'
-
+ 
 const RestaurantHome = ({ navigation }) => {
-
+ 
     // Dummy Datas
-
+ 
     const initialCurrentLocation = {
         address: "KFC",
         gps: {
@@ -23,24 +23,26 @@ const RestaurantHome = ({ navigation }) => {
             longitude: 110.36381866919922
         }
     }
-
+ 
   
-
+ 
     const [currentLocation,setCurrentLocation] = React.useState(initialCurrentLocation)
     const [orders, setOrders] = React.useState(null)
     const [fetchFlag,setFetchFlag] = React.useState(true)
-    
-    
 
+    React.useState(() => { setFetchFlag(true)})
     
-
+    
+ 
+    
+ 
     async function fetchOrder(){
         if (fetchFlag)
         {
         setFetchFlag(false)
         console.log(global.user.phoneNo)
         
-        var url = "http://c47f3fbd2a93.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
+        var url = "http://b51c079841e0.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
         console.log(url)
         try {
         const response = await fetch(url, {
@@ -63,13 +65,11 @@ const RestaurantHome = ({ navigation }) => {
         console.log(err)
         return null
       }
-    }
-  
-       
+    }      
     };
-
-
-
+ 
+ 
+ 
     function renderHeader() {
         return (
             <SafeAreaView style={{ flexDirection: 'row', height: 50,justifyContent: 'space-between'}}>
@@ -109,7 +109,7 @@ const RestaurantHome = ({ navigation }) => {
             </SafeAreaView>
         )
     }
-
+ 
     function renderRestaurantList() {
         const renderItem = ({ item }) => (
             <TouchableOpacity
@@ -135,7 +135,7 @@ const RestaurantHome = ({ navigation }) => {
                     }}
                 >
                         <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item.customerName}</Text>
-                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>${item.customerPhoneNo}</Text>
+                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item.foodItems.length}</Text>
                  </View>   
                 <View
                     style={{
@@ -145,18 +145,18 @@ const RestaurantHome = ({ navigation }) => {
                      }}
                 >
                     {/* <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.address}</Text> */}
-                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}></Text>
+                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.customerPhoneNo}</Text>
                 </View>
              
             </TouchableOpacity>
         )
-
+ 
         return (
             <View style={{ paddingHorizontal: SIZES.padding * 2,  marginTop:SIZES.padding*2}}>
-            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress ({orders?.pendingorders?.length})</Text>
+            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress ({orders?.length})</Text>
             <FlatList
-                data={orders?.pendingOrders}
-                keyExtractor={item => `${item['_id']}`}
+                data={orders}
+                keyExtractor={item => `${item._id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingBottom: 30
@@ -165,7 +165,7 @@ const RestaurantHome = ({ navigation }) => {
             </View>
         )
     }
-
+ 
     fetchOrder()
     return (
         
@@ -175,7 +175,7 @@ const RestaurantHome = ({ navigation }) => {
         </SafeAreaView>
     )
 }
-
+ 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -184,5 +184,5 @@ const styles = StyleSheet.create({
     },
   
 })
-
+ 
 export default RestaurantHome

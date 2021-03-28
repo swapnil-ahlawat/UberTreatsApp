@@ -25,21 +25,49 @@ const Order = ({ route, navigation }) => {
     const [isSelected, setSelection] = React.useState(false);
     const [modalVisible, setModalVisible] = React.useState(false);
 
-    const handleClicked = () => {
-        
-          setModalVisible(false);
-          navigation.navigate("RestaurantHome");
-        };
+  
     
     
-
     React.useEffect(() => {
         let { item, currentLocation } = route.params;
 
         setOrder(item)
         setCurrentLocation(currentLocation)
-        setSelection(order?.resuablePackage)
+        setSelection(order?.reusablePackageFlag)
     })
+    async function deleteOrder(){
+         var url = "http://b51c079841e0.ngrok.io/user/removeOrder";
+        try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+             Accept: 'application/json',
+             'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            orderID: order._id,
+            phoneNo: global.user.phoneNo
+
+          })
+        });
+ 
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        else{
+          console.log(responseData)
+        }
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    function handleOrderDispatch(){
+         deleteOrder();
+         console.log("HEEEEEEEE")
+         setModalVisible(false);
+        navigation.navigate("RestaurantHome");
+    }
 
     function renderHeader() {
         return (
@@ -96,7 +124,7 @@ const Order = ({ route, navigation }) => {
                     flex: 1, flexDirection: "column", 
                     width: SIZES.width*0.95,
                     marginLeft: SIZES.width*0.025,
-                    height: 100,
+                    height: 80,
                     backgroundColor:COLORS.white ,
                     borderBottomColor: COLORS.black,
                     borderBottomWidth: 1,
@@ -105,22 +133,11 @@ const Order = ({ route, navigation }) => {
                     justifyContent:'center'}}
             >
                 <View style = {{flexDirection: "row"}}>
-                    <Text style = {{paddingLeft:SIZES.padding,width: 0.1*SIZES.width,...FONTS.h3,color: COLORS.black}}>{item.quantity}x</Text>
-                    <Text style={{ width: 0.7*SIZES.width,...FONTS.h4,color: COLORS.black }}>{item.name}</Text>
-                    <Text style={{width: 0.2*SIZES.width, ...FONTS.h4,color: COLORS.black }}>${(item.price*item.quantity).toFixed(2)}</Text>
+                    <Text style = {{paddingLeft:SIZES.padding,width: 0.20*SIZES.width,...FONTS.h3,color: COLORS.black}}>{item.quantity}x</Text>
+                    <Text style={{ width: 0.55*SIZES.width,...FONTS.h4,color: COLORS.black }}>{item.name}</Text>
+                    <Text style={{width: 0.25*SIZES.width, ...FONTS.h4,color: COLORS.black,paddingRight:SIZES.padding }}>${(item.price*item.quantity).toFixed(2)}</Text>
                 </View>
-                <View
-                    style={{
-                        flexDirection: "row",
-                        justifyContent: "space-between",
-                        paddingVertical: SIZES.padding,
-                        paddingHorizontal: SIZES.width*0.1
-                    }}
-                    
-                >   
-                    <Text style = {{width: SIZES.width,...FONTS.body3,color: COLORS.black}}>{item.additional_info}</Text>
-                       
-                 </View>   
+               
             
              
             </View>
@@ -130,8 +147,8 @@ const Order = ({ route, navigation }) => {
             <View style={{ 
                 paddingBotto0m: 30}}>
             <FlatList
-                data={order?.order_details}
-                keyExtractor={item => `${item.food_id}`}
+                data={order?.foodItems}
+                keyExtractor={item => `${item._id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingBottom: 30
@@ -153,8 +170,8 @@ const Order = ({ route, navigation }) => {
         return (
             <View style = {{height: 100,marginTop: SIZES.padding,flexDirection: "row"}}>
               <View style = {{justifyContent: 'center'}}>
-                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.name}</Text>
-                  <Text style={{ ...FONTS.h3,color: COLORS.white,paddingHorizontal: SIZES.padding*2,paddingTop:SIZES.padding }}>{order?.address}</Text>
+                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.customerName}</Text>
+                  <Text style={{ ...FONTS.h3,color: COLORS.white,paddingHorizontal: SIZES.padding*2,paddingTop:SIZES.padding }}>{order?.customerPhoneNo}</Text>
 
               </View>
              
@@ -193,8 +210,10 @@ const Order = ({ route, navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={() => {
-                        if ( order?.resuablePackage)
-                        { navigation.navigate("Scan",{modeTag: "RestaurantDelivery"})}
+                        if ( order?.resuablePackageFlag)
+                        {   
+                            navigation.navigate("Scan",{modeTag: "RestaurantDelivery",order})
+                        }
                         else
                         {
                           setModalVisible(true)
@@ -216,7 +235,7 @@ const Order = ({ route, navigation }) => {
             >
                 <TouchableWithoutFeedback
                     onPress={() => {
-                        handleClicked()
+                        handleOrderDispatch()
                     }}
                 >
                     <View style={{ flex: 1, flexDirection: 'column-reverse'}}>
