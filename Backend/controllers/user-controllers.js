@@ -49,19 +49,18 @@ const placeOrder= async(req, res, next) =>{
 
 const getOrders= async(req, res, next) =>{
     const phoneNo= req.query.phoneNo;
-    
-    let identifiedRestaurant = await User.findOne({phoneNo: phoneNo, userType: "Restaurant"}).exec().catch((error) => {
+    const userType= req.query.userType;
+    let identifiedUser= await User.findOne({phoneNo: phoneNo, userType}).exec().catch((error) => {
         return next(error);
     });
-
     async function getOrderfromOrderID(item){
         return await Order.findOne({_id:mongoose.Types.ObjectId(item.orderID)}).exec().catch((error) => {
             return next(error);
         });
     }
     let pendingOrders=[]
-    for (index = 0; index < identifiedRestaurant.orders.length; index++) {
-        pendingOrders.push(await getOrderfromOrderID(identifiedRestaurant.orders[index]));
+    for (index = 0; index < identifiedUser.orders.length; index++) {
+        pendingOrders.push(await getOrderfromOrderID(identifiedUser.orders[index]));
     }    
     res.json({
         pendingOrders
@@ -69,5 +68,25 @@ const getOrders= async(req, res, next) =>{
 }
 
 
+const removeOrder= async(req, res, next) =>{
+    const{orderID, phoneNo}= req.body;
+
+    let identifiedUser= await User.updateOne({phoneNo}, {$pull: {orders:{orderID:orderID}}});
+    // let orderArray=[]
+    // for (index = 0; index < identifiedUser.orders.length; index++) {
+    //     if(indentifiedUser.orders[index].orderID!==orderID){
+    //         orderArray.push(identifiedUser.orders[index]);
+    //     }
+    // }   
+    // console.log(orderArray);
+    // identifiedUser.orders= orderArray;
+    // identifiedUser.save();
+    res.json({
+        message: 'Order removed Successfully!',
+        user: identifiedUser
+    });
+}
+
 exports.placeOrder = placeOrder;
 exports.getOrders= getOrders;
+exports.removeOrder= removeOrder;

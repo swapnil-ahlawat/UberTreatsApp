@@ -1,10 +1,10 @@
 const express = require('express');
 const connectDB = require('./database/connection');
-const User = require('./database/User');
 
 const loginRouter = require('./routes/login-routes');
 const userRouter = require('./routes/user-routes');
 const packageRouter = require('./routes/package-routes');
+const orderRouter = require('./routes/order-routes');
 // const restaurantRouter = require('./routes/restaurant-routes');
 // const deliveryRouter = require('./routes/delivery-routes');
 
@@ -17,7 +17,6 @@ const DUMMY_USERS = [
         phoneNo: '9818284670',
         password: 'treats',
         userType: 'Personnel',
-        wallet: 500.00  
     },
     {
         name: 'Wandan Tibrewal',
@@ -42,11 +41,11 @@ connectDB();
 
 app.use(express.json({extended:false}));
 app.use(express.urlencoded({extended:false}));
+
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
 app.use('/package', packageRouter);
-// app.use('/restaurant', restaurantRouter);
-// app.use('/delivery', deliveryRouter);
+app.use('/order', orderRouter);
 
 app.use((error, req, res, next) => {
     if(res.headerSent){
