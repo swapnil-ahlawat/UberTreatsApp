@@ -62,16 +62,16 @@ const getOrders= async(req, res, next) =>{
 const removeOrder= async(req, res, next) =>{
     const{orderID, phoneNo}= req.body;
 
-    let identifiedUser= await User.updateOne({phoneNo}, {$pull: {orders: {orderID}}});
-    // let orderArray=[]
-    // for (index = 0; index < identifiedUser.orders.length; index++) {
-    //     if(indentifiedUser.orders[index].orderID!==orderID){
-    //         orderArray.push(identifiedUser.orders[index]);
-    //     }
-    // }   
-    // console.log(orderArray);
-    // identifiedUser.orders= orderArray;
-    // identifiedUser.save();
+    const identifiedUser = await User.findOne({phoneNo});
+    if(!identifiedUser)
+    {
+        return res.sendCode(404);
+    }
+    identifiedUser.orders = identifiedUser.orders.filter(p => {
+        return p.orderID !== orderID;
+    });
+    await identifiedUser.save();
+
     res.json({
         message: 'Order removed Successfully!',
         user: identifiedUser
