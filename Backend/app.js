@@ -16,27 +16,27 @@ const DUMMY_USERS = [
         emailID: 'piyush',
         phoneNo: '9818284672',
         password: 'treats',
-        type: 'customer'        // restaurant, warehouse, delivery
+        userType: 'customer'        // restaurant, warehouse, delivery
     },
     {
         name: 'Wandan Tibrewal',
         emailID: 'wandan',
         phoneNo: '9818284672',
         password: 'treats',
-        type: 'restaurant'
+        userType: 'restaurant'
     },
     {
         name: 'Swapnil Ahlawat',
         emailID: 'swapnil',
         phoneNo: '9818284672',
         password: 'treats',
-        type: 'customer'
+        userType: 'customer'
     }
 ]
 
 connectDB();
 // User.insertMany(DUMMY_USERS);
-app.use(bodyParser.json({extended:true}));
+app.use(express.json());
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
 // app.use('/restaurant', restaurantRouter);

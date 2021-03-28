@@ -1,13 +1,11 @@
 const mongoose = require('mongoose');
 const User = require('../database/User');
 
-
-
 const login = async(req, res, next) => {
     const {phoneNo, password, userType } = req.body;
 
-    const identifiedUser = User.findOne({phoneNo, password, userType}).pretty();
-
+    const identifiedUser = User.findOne({phoneNo, password, userType});
+    console.log(identifiedUser);
     if(!identifiedUser){
         const error = Error('Invalid credentials.');
         error.code = 401;
