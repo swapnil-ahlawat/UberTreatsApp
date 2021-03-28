@@ -26,17 +26,21 @@ const RestaurantHome = ({ navigation }) => {
 
   
 
-    
+    const [currentLocation,setCurrentLocation] = React.useState(initialCurrentLocation)
     const [orders, setOrders] = React.useState(null)
+    const [fetchFlag,setFetchFlag] = React.useState(true)
     
-    React.useEffect(() => setOrders(fetchOrder()), [orders]);
+    
 
     
 
     async function fetchOrder(){
+        if (fetchFlag)
+        {
+        setFetchFlag(false)
         console.log(global.user.phoneNo)
         
-        var url = "http://c47f3fbd2a93.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo
+        var url = "http://c47f3fbd2a93.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
         console.log(url)
         try {
         const response = await fetch(url, {
@@ -53,12 +57,13 @@ const RestaurantHome = ({ navigation }) => {
         }
         else{
         console.log(responseData)
-        return responseData
+        setOrders(responseData.pendingOrders)
       }
      } catch (err) {
         console.log(err)
         return null
       }
+    }
   
        
     };
@@ -130,7 +135,7 @@ const RestaurantHome = ({ navigation }) => {
                     }}
                 >
                         <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item.customerName}</Text>
-                        {/* <Text style={{ ...FONTS.body3,color: COLORS.black }}>${item.price.toFixed(2)}</Text> */}
+                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>${item.customerPhoneNo}</Text>
                  </View>   
                 <View
                     style={{
@@ -148,10 +153,10 @@ const RestaurantHome = ({ navigation }) => {
 
         return (
             <View style={{ paddingHorizontal: SIZES.padding * 2,  marginTop:SIZES.padding*2}}>
-            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress ()</Text>
+            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress ({orders?.pendingorders?.length})</Text>
             <FlatList
-                data={orders}
-                keyExtractor={item => `${item.id}`}
+                data={orders?.pendingOrders}
+                keyExtractor={item => `${item['_id']}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingBottom: 30
@@ -161,7 +166,7 @@ const RestaurantHome = ({ navigation }) => {
         )
     }
 
-    
+    fetchOrder()
     return (
         
         <SafeAreaView style={styles.container}>
