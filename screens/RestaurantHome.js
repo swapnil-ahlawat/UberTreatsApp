@@ -17,7 +17,7 @@ const RestaurantHome = ({ navigation }) => {
     // Dummy Datas
 
     const initialCurrentLocation = {
-        streetName: "Restaurant",
+        address: "KFC",
         gps: {
             latitude: 1.5496614931250685,
             longitude: 110.36381866919922
@@ -113,21 +113,40 @@ const RestaurantHome = ({ navigation }) => {
 
     function renderHeader() {
         return (
-            <SafeAreaView style={{ marginTop: SIZES.padding,    flexDirection: 'row', height: 50 }}>
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+            <SafeAreaView style={{ flexDirection: 'row', height: 50,justifyContent: 'space-between'}}>
+               
                     <View
-                        style={{
-                            width: '70%',
-                            height: "100%",
-                            backgroundColor: COLORS.primary,
-                            alignItems: 'center',
+                       style={{
+                            height: 50,
+                            width: "40%",
                             justifyContent: 'center',
-                            borderRadius: SIZES.radius
+                            borderBottomRightRadius: SIZES.radius,
+                            backgroundColor: COLORS.primary,
+                            paddingLeft: SIZES.padding,
+                            
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>{currentLocation.streetName}</Text>
+                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>{currentLocation.address}</Text>
                     </View>
-                </View>
+                <TouchableOpacity
+                    style={{
+                        width: 50,
+                        paddingRight: SIZES.padding,
+                        justifyContent: 'center'
+                    }}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Image
+                        source={icons.signOut}
+                        resizeMode="contain"
+                        style={{
+                            width: 25,
+                            height: 25,
+                            tintColor: COLORS.gray
+                            
+                        }}
+                    />
+                </TouchableOpacity>
             </SafeAreaView>
         )
     }
