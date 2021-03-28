@@ -48,6 +48,37 @@ const SignUp = ({ navigation }) => {
     const [ID, setID]= useState(null);
     const [password, setPassword]= useState(null);
 
+    
+  const authSubmitHandler = async event => {
+    event.preventDefault();
+    
+    
+    try {
+        const response = await fetch('http://localhost:5000/api/users/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            phoneNo: ID,
+            password: password,
+            userType: selectedMode
+          })
+        });
+
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+       
+        navigation.navigate(selectedMode.tabs)
+      } catch (err) {
+        
+        alert('Incorrect Credentials')
+      }
+  
+  };
+
     function renderLogo() {
         return (
             <View
@@ -196,7 +227,7 @@ const SignUp = ({ navigation }) => {
                         setID(null);
                         setPassword(null);
                         setSelectedMode(mode.filter(a => a.name== "Customer")[0])
-                        navigation.navigate(selectedMode.tabs)}}
+                        authSubmitHandler}}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>SIGN IN</Text>
                 </TouchableOpacity>
