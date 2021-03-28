@@ -4,9 +4,9 @@ const User = require('../database/User');
 const login = async(req, res, next) => {
     const {phoneNo, password, userType } = req.body;
 
-    const identifiedUser = User.findOne({phoneNo, password, userType});
+    const identifiedUser = await User.find({phoneNo, password, userType}).exec();
     console.log(identifiedUser);
-    if(!identifiedUser){
+    if(identifiedUser.length===0){
         const error = Error('Invalid credentials.');
         error.code = 401;
         throw error;

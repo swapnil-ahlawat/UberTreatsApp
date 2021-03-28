@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const connectDB = require('./database/connection');
 const User = require('./database/User');
 
@@ -14,14 +13,14 @@ const DUMMY_USERS = [
     {
         name: 'Piyush Maheshwari',
         emailID: 'piyush',
-        phoneNo: '9818284672',
+        phoneNo: '9818284670',
         password: 'treats',
         userType: 'customer'        // restaurant, warehouse, delivery
     },
     {
         name: 'Wandan Tibrewal',
         emailID: 'wandan',
-        phoneNo: '9818284672',
+        phoneNo: '9818284671',
         password: 'treats',
         userType: 'restaurant'
     },
@@ -33,10 +32,10 @@ const DUMMY_USERS = [
         userType: 'customer'
     }
 ]
-
 connectDB();
 // User.insertMany(DUMMY_USERS);
-app.use(express.json());
+
+app.use(express.json({extended:false}));
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
 // app.use('/restaurant', restaurantRouter);
