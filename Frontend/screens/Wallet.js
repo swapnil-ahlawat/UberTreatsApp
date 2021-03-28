@@ -1,5 +1,4 @@
-import React from "react";
-import { unstable_renderSubtreeIntoContainer } from "react-dom";
+import React, {useState, useEffect} from "react";
 import {
     SafeAreaView,
     View,
@@ -32,13 +31,18 @@ const Wallet = ({ navigation }) => {
         },
     ]
  
-    const [specialPromos, setSpecialPromos] = React.useState(specialPromoData)
-    const [walletAmount,setWalletAmount] = React.useState(0)
+    const [specialPromos, setSpecialPromos] = useState(specialPromoData)
+    const [walletAmount,setWalletAmount] = useState(0)
 
-    React.useEffect(() => {
-        setWalletAmount(global.wallet)
-        
-    })
+    const inFocus = navigation.addListener('focus', () => {
+        setWalletAmount(global.user.wallet) 
+      });
+    
+      useEffect(() => {    
+        return () => {
+          inFocus;
+        };
+      }, [navigation]);
     
     function renderHeader() {
         return (
@@ -92,9 +96,9 @@ const Wallet = ({ navigation }) => {
       
             <View style={{ flex: 1, marginVertical: SIZES.padding * 2, paddingHorizontal: SIZES.padding * 3 }}>
                 <Text style={{color: COLORS.white, ...FONTS.body3 }}>User</Text>
-                <Text style={{color: COLORS.white, ...FONTS.body2, marginBottom: SIZES.padding}}>Swapnil Ahlawat</Text>
-                <Text style={{color: COLORS.white, ...FONTS.body3 }}>Email ID/Phone No.</Text>
-                <Text style={{color: COLORS.white, ...FONTS.body2}}>{global.ID}</Text>
+                <Text style={{color: COLORS.white, ...FONTS.body2, marginBottom: SIZES.padding}}>{global.user.name}</Text>
+                <Text style={{color: COLORS.white, ...FONTS.body3 }}>Phone No.</Text>
+                <Text style={{color: COLORS.white, ...FONTS.body2}}>{global.user.phoneNo}</Text>
             </View>
    
         )

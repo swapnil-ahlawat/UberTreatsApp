@@ -22,16 +22,17 @@ const placeOrder= async(req, res, next) =>{
     identifiedPersonnel.orders.push({orderID: orderModel._id.toString()});
    
     await identifiedPersonnel.save();
+    let identifiedUser = await User.findOne({phoneNo: customer.phoneNo}).exec().catch((error) => {
+        return next(error);
+    });
     if(walletUsed){
-        let identifiedUser = await User.findOne({phoneNo: customer.phoneNo}).exec().catch((error) => {
-            return next(error);
-        });
         identifiedUser.wallet = identifiedUser.wallet- parseFloat(total);
         await identifiedUser.save();
     }
 
     res.json({
-        message: "OrderPlaced!"
+        message: "OrderPlaced!",
+        user: identifiedUser
     });
 }
 

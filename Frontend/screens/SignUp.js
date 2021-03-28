@@ -50,13 +50,12 @@ const SignUp = ({ navigation }) => {
  
     
   const authSubmitHandler = async () => {
-    // event.preventDefault();
     
     console.log(phoneNo)
     console.log(password)
     console.log(selectedMode.name)
     try {
-        const response = await fetch('http://c47f3fbd2a93.ngrok.io/login', {
+        const response = await fetch('http://b51c079841e0.ngrok.io/login', {
           method: 'POST',
           headers: {
              Accept: 'application/json',
@@ -68,7 +67,6 @@ const SignUp = ({ navigation }) => {
             userType: selectedMode.name
           })
         });
- 
         const responseData = await response.json();
         if (!response.ok) {
           throw new Error(responseData.message);

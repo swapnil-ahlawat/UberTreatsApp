@@ -11,8 +11,8 @@ const order = new mongoose.Schema({
     customerPhoneNo:{
         type:String
     },
-    reusablePackageSerialNumber:{
-        type: String
+    reusablePackageFlag:{
+        type:Boolean, default: false
     },
     foodItems: [{
         quantity: {

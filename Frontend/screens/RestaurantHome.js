@@ -40,7 +40,7 @@ const RestaurantHome = ({ navigation }) => {
         setFetchFlag(false)
         console.log(global.user.phoneNo)
         
-        var url = "http://c47f3fbd2a93.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
+        var url = "http://b51c079841e0.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
         console.log(url)
         try {
         const response = await fetch(url, {
@@ -63,9 +63,7 @@ const RestaurantHome = ({ navigation }) => {
         console.log(err)
         return null
       }
-    }
-  
-       
+    }      
     };
 
 
@@ -153,10 +151,10 @@ const RestaurantHome = ({ navigation }) => {
 
         return (
             <View style={{ paddingHorizontal: SIZES.padding * 2,  marginTop:SIZES.padding*2}}>
-            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress ({orders?.pendingorders?.length})</Text>
+            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress ({orders?.length})</Text>
             <FlatList
-                data={orders?.pendingOrders}
-                keyExtractor={item => `${item['_id']}`}
+                data={orders}
+                keyExtractor={item => `${item._id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingBottom: 30

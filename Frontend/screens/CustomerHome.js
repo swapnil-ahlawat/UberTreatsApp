@@ -85,6 +85,7 @@ const CustomerHome = ({ navigation }) => {
             rating: 4.8,
             categories: [5, 7],
             priceRating: affordable,
+            phoneNo: 9818284671,
             photo: images.burger_restaurant_1,
             duration: "30 - 45 min",
             location: {
@@ -93,7 +94,7 @@ const CustomerHome = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_1,
-                name: "Amy"
+                name: "Piyush Maheshwari"
             },
             menu: [
                 {
@@ -129,6 +130,7 @@ const CustomerHome = ({ navigation }) => {
             rating: 4.8,
             categories: [2, 4, 6],
             priceRating: expensive,
+            phoneNo: 9818284671,
             photo: images.pizza_restaurant,
             duration: "15 - 20 min",
             location: {
@@ -181,6 +183,7 @@ const CustomerHome = ({ navigation }) => {
             rating: 4.8,
             categories: [3],
             priceRating: expensive,
+            phoneNo: 9818284671,
             photo: images.hot_dog_restaurant,
             duration: "20 - 25 min",
             location: {
@@ -209,6 +212,7 @@ const CustomerHome = ({ navigation }) => {
             rating: 4.8,
             categories: [8],
             priceRating: expensive,
+            phoneNo: 9818284671,
             photo: images.japanese_restaurant,
             duration: "10 - 15 min",
             location: {
@@ -237,6 +241,7 @@ const CustomerHome = ({ navigation }) => {
             rating: 4.8,
             categories: [1, 2],
             priceRating: affordable,
+            phoneNo: 9818284671,
             photo: images.noodle_shop,
             duration: "15 - 20 min",
             location: {
@@ -291,6 +296,7 @@ const CustomerHome = ({ navigation }) => {
             rating: 4.9,
             categories: [9, 10],
             priceRating: affordable,
+            phoneNo: 9818284671,
             photo: images.kek_lapis_shop,
             duration: "35 - 40 min",
             location: {
@@ -334,7 +340,6 @@ const CustomerHome = ({ navigation }) => {
     const [categories, setCategories] = React.useState(categoryData)
     const [selectedCategory, setSelectedCategory] = React.useState(null)
     const [restaurants, setRestaurants] = React.useState(restaurantData)
-    const [currentLocation, setCurrentLocation] = React.useState(global.address)
 
     function onSelectCategory(category) {
         //filter restaurant
@@ -368,7 +373,7 @@ const CustomerHome = ({ navigation }) => {
                             borderBottomRightRadius: SIZES.radius
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>{currentLocation}</Text>
+                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>{global.user.address}</Text>
                     </View>
                 </View>
  
@@ -494,7 +499,6 @@ const CustomerHome = ({ navigation }) => {
                 style={{ marginBottom: SIZES.padding * 2 }}
                 onPress={() => navigation.navigate("Restaurant", {
                     item,
-                    currentLocation
                 })}
             >
                 {/* Image */}

@@ -13,14 +13,12 @@ import {
     TouchableWithoutFeedback
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Colors } from "react-native/Libraries/NewAppScreen";
 
 import { icons, COLORS, SIZES, FONTS } from '../constants'
 
 const Order = ({ route, navigation }) => {
 
     const [restaurant, setRestaurant] = useState(null);
-    const [currentLocation, setCurrentLocation] = useState(null);
     const [orderItems, setOrderItems] = useState([]);
     const [reusablePackage, setReusablePackage] = useState(null);
     const [checked, setChecked]= useState(true);
@@ -28,11 +26,10 @@ const Order = ({ route, navigation }) => {
     
 
     React.useEffect(() => {
-        let {restaurant, currentLocation, orderItems, reusablePackage} = route.params;
+        let {restaurant, orderItems, reusablePackage} = route.params;
         if(restaurant){
             setReusablePackage(reusablePackage);
             setRestaurant(restaurant)
-            setCurrentLocation(currentLocation)
             setOrderItems(orderItems)
         }
     })
@@ -88,9 +85,9 @@ const Order = ({ route, navigation }) => {
         <View style={{margin: SIZES.padding * 2, marginBottom: SIZES.padding}}>
             <Text style={{color: COLORS.white, ...FONTS.h2, textAlign:"center" }}>{restaurant?.name}</Text>
             <Text style={{marginBottom: SIZES.padding*2, color: COLORS.darkgray, ...FONTS.body3, paddingTop: SIZES.padding,textAlign:"center" }}>Delivery Time: {restaurant?.duration}</Text>
-            <Text style={{color: COLORS.white, ...FONTS.body2}}>Swapnil Ahlawat</Text>
-            <Text style={{color: COLORS.white, ...FONTS.body3}}>{currentLocation}</Text>
-            <Text style={{color: COLORS.white, ...FONTS.body3}}>Phone Number : {global.id}</Text>
+            <Text style={{color: COLORS.white, ...FONTS.body2}}>{global.user.name}</Text>
+            <Text style={{color: COLORS.white, ...FONTS.body3}}>{global.user.address}</Text>
+            <Text style={{color: COLORS.white, ...FONTS.body3}}>Phone Number : {global.user.phoneNo}</Text>
             <Text style={{marginTop: SIZES.padding, color: COLORS.white, ...FONTS.body2,fontWeight: 'bold'}}>Order Details</Text>
         </View>
         )
@@ -112,9 +109,9 @@ const Order = ({ route, navigation }) => {
                     justifyContent:"center"}}
             >
                 <View style = {{flexDirection: "row", }}>
-                    <Text style = {{ width:"10%",paddingLeft:SIZES.padding,...FONTS.body3, color: COLORS.black, justifyContent:"center"}}>{item.qty}x</Text>
+                    <Text style = {{ width:"10%",paddingLeft:SIZES.padding,...FONTS.body3, color: COLORS.black, justifyContent:"center"}}>{item.quantity}x</Text>
                     <Text style = {{paddingLeft:SIZES.padding, width:"55%", ...FONTS.body3,color: COLORS.black}}>{restaurant["menu"].filter(a => a.menuId===item.menuId)[0].name}</Text>
-                    <Text style={{ width:"35%", textAlign: "right", paddingRight:SIZES.padding,...FONTS.body3,color: COLORS.black}}>${item.total.toFixed(2)}</Text>
+                    <Text style={{ width:"35%", textAlign: "right", paddingRight:SIZES.padding,...FONTS.body3,color: COLORS.black}}>${item.price.toFixed(2)}</Text>
                 </View>
             </View>
         )
@@ -131,8 +128,7 @@ const Order = ({ route, navigation }) => {
     }
 
     function sumOrder() {
-        let total = orderItems.reduce((a, b) => a + (b.total || 0), 0)
-
+        let total = orderItems.reduce((a, b) => a + (b.price|| 0), 0)
         return total.toFixed(2)
     }
     function taxOrder() {
@@ -169,7 +165,7 @@ const Order = ({ route, navigation }) => {
                 </View>
                 <View style={{flexDirection: "row"}}>
                     <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Delivery Fee</Text>  
-                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>$5.00</Text>   
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>$4.00</Text>   
                 </View>
                 {reusablePackageFee()}
                 <View style={{flexDirection: "row", marginVertical:SIZES.padding}}>
@@ -219,6 +215,39 @@ const Order = ({ route, navigation }) => {
         )
     }
     function renderPlaceOrderButton(){
+        const placeOrderHandler = async () => {
+            try {
+                const response = await fetch('http://b51c079841e0.ngrok.io/user/placeOrder', {
+                  method: 'POST',
+                  headers: {
+                     Accept: 'application/json',
+                     'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                    reusablePackageFlag: reusablePackage,
+                    restaurantPhoneNo: restaurant.phoneNo,
+                    restaurantCourier: restaurant.courier.name,
+                    orderItems: orderItems,
+                    customer: global.user,
+                    walletUsed: checked,
+                    total: calculateTotal()
+                  })
+                });
+                const responseData = await response.json();
+                if (!response.ok) {
+                  alert('Error in placing order. Please try again later.')
+                  throw new Error(responseData.message);
+                }
+                else{
+                    global.user= responseData.user;
+                    setModalVisible(true);
+                }
+              } catch (err) {
+                console.log(err);
+                alert('Error in placing order. Please try again later.')
+              }
+          
+          };
         return(
             <TouchableOpacity
                 style={{
@@ -237,10 +266,7 @@ const Order = ({ route, navigation }) => {
                         setChecked(false);
                     }
                     else{
-                        if(checked){
-                            global.wallet -= calculateTotal();
-                        }
-                        setModalVisible(true);
+                        placeOrderHandler();
                     }
                     
                 }}

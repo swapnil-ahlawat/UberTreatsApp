@@ -34,6 +34,14 @@ const DUMMY_USERS = [
         userType: 'Customer', 
         address: "Dwarka, New Delhi",
         wallet: 500.10
+    },
+    {
+        name: 'Swapnil Ahlawat',
+        emailID: 'swapnil',
+        phoneNo: '9818284672',
+        password: 'treats',
+        userType: 'Warehouse', 
+        address: "Dwarka, New Delhi",
     }
 ]
 connectDB();

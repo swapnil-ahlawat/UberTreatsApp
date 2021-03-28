@@ -20,33 +20,31 @@ const Restaurant = ({ route, navigation }) => {
 
     const scrollX = new Animated.Value(0);
     const [restaurant, setRestaurant] = useState(null);
-    const [currentLocation, setCurrentLocation] = useState(null);
     const [orderItems, setOrderItems] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [checked, setChecked]= useState(route.params.item.reusablePackage);
 
     useEffect(() => {
-        let {item, currentLocation } = route.params;
+        let {item} = route.params;
         global.orderItems=[]
         setRestaurant(item)
-        setCurrentLocation(currentLocation)
     })
 
-    function editOrder(action, menuId, price) {
+    function editOrder(action, menuId, price, name) {
         let orderList = orderItems.slice()
         let item = orderList.filter(a => a.menuId == menuId)
 
         if (action == "+") {
             if (item.length > 0) {
-                let newQty = item[0].qty + 1
-                item[0].qty = newQty
-                item[0].total = item[0].qty * price
+                let newQty = item[0].quantity + 1
+                item[0].quantity = newQty
+                item[0].price = item[0].quantity * price
             } else {
                 const newItem = {
                     menuId: menuId,
-                    qty: 1,
-                    price: price,
-                    total: price
+                    name:name,
+                    quantity: 1,
+                    price: price
                 }
                 orderList.push(newItem)
             }
@@ -54,14 +52,14 @@ const Restaurant = ({ route, navigation }) => {
             setOrderItems(orderList)
         } else {
             if (item.length > 0) {
-                if (item[0]?.qty > 0) {
-                    let newQty = item[0].qty - 1
+                if (item[0]?.quantity > 0) {
+                    let newQty = item[0].quantity - 1
                     if(newQty===0){
                         orderList= orderList.filter(a=> a.menuId!= item[0].menuId)
                     }
                     else{
-                        item[0].qty = newQty
-                        item[0].total = newQty * price
+                        item[0].quantity = newQty
+                        item[0].price = newQty * price
                     }
                 }
             }
@@ -74,22 +72,22 @@ const Restaurant = ({ route, navigation }) => {
         let orderItem = orderItems.filter(a => a.menuId == menuId)
 
         if (orderItem.length > 0) {
-            return orderItem[0].qty
+            return orderItem[0].quantity
         }
 
         return 0
     }
 
     function getBasketItemCount() {
-        let itemCount = orderItems.reduce((a, b) => a + (b.qty || 0), 0)
+        let itemCount = orderItems.reduce((a, b) => a + (b.quantity || 0), 0)
 
         return itemCount
     }
 
     function sumOrder() {
-        let total = orderItems.reduce((a, b) => a + (b.total || 0), 0)
+        let price = orderItems.reduce((a, b) => a + (b.price || 0), 0)
 
-        return total.toFixed(2)
+        return price.toFixed(2)
     }
 
     function renderHeader() {
@@ -186,7 +184,7 @@ const Restaurant = ({ route, navigation }) => {
                                             borderTopLeftRadius: 25,
                                             borderBottomLeftRadius: 25
                                         }}
-                                        onPress={() => editOrder("-", item.menuId, item.price)}
+                                        onPress={() => editOrder("-", item.menuId, item.price, item.name)}
                                     >
                                         <Text style={{ ...FONTS.body1,color: COLORS.black }}>-</Text>
                                     </TouchableOpacity>
@@ -211,7 +209,7 @@ const Restaurant = ({ route, navigation }) => {
                                             borderTopRightRadius: 25,
                                             borderBottomRightRadius: 25
                                         }}
-                                        onPress={() => editOrder("+", item.menuId, item.price)}
+                                        onPress={() => editOrder("+", item.menuId, item.price, item.name)}
                                     >
                                         <Text style={{ ...FONTS.body1,color: COLORS.black }}>+</Text>
                                     </TouchableOpacity>
@@ -356,7 +354,7 @@ const Restaurant = ({ route, navigation }) => {
                                     tintColor: COLORS.darkgray
                                 }}
                             />
-                            <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }}>{currentLocation}</Text>
+                            <Text style={{ marginLeft: SIZES.padding, ...FONTS.h4 }}>{global.user.address}</Text>
                         </View>
                     </View>
 
@@ -387,7 +385,6 @@ const Restaurant = ({ route, navigation }) => {
                                     else{
                                         navigation.navigate("Cart", {
                                         restaurant: restaurant,
-                                        currentLocation: currentLocation,
                                         orderItems: orderItems,
                                         reusablePackage: checked
                                     })
@@ -504,7 +501,6 @@ const Restaurant = ({ route, navigation }) => {
                                         setModalVisible(false);
                                         navigation.navigate("Cart", {
                                         restaurant: restaurant,
-                                        currentLocation: currentLocation,
                                         orderItems: orderItems,
                                         reusablePackage: checked
                                     })}}
