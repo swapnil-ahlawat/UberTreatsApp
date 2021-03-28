@@ -108,10 +108,10 @@ const Restaurant = ({ route, navigation }) => {
                             justifyContent: 'center',
                             paddingLeft: SIZES.padding * 3,
                             borderBottomRightRadius: SIZES.radius,
-                            backgroundColor: COLORS.lightGray3
+                            backgroundColor: COLORS.primary
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 }}>{restaurant?.name}</Text>
+                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>{restaurant?.name}</Text>
                     </View>
                 </View>
 
@@ -128,7 +128,8 @@ const Restaurant = ({ route, navigation }) => {
                         resizeMode="contain"
                         style={{
                             width: 25,
-                            height: 25
+                            height: 25,
+                            tintColor: COLORS.gray
                         }}
                     />
                 </TouchableOpacity>
@@ -187,7 +188,7 @@ const Restaurant = ({ route, navigation }) => {
                                         }}
                                         onPress={() => editOrder("-", item.menuId, item.price)}
                                     >
-                                        <Text style={{ ...FONTS.body1 }}>-</Text>
+                                        <Text style={{ ...FONTS.body1,color: COLORS.black }}>-</Text>
                                     </TouchableOpacity>
 
                                     <View
@@ -212,7 +213,7 @@ const Restaurant = ({ route, navigation }) => {
                                         }}
                                         onPress={() => editOrder("+", item.menuId, item.price)}
                                     >
-                                        <Text style={{ ...FONTS.body1 }}>+</Text>
+                                        <Text style={{ ...FONTS.body1,color: COLORS.black }}>+</Text>
                                     </TouchableOpacity>
                                 </View>
                             </View>
@@ -226,8 +227,8 @@ const Restaurant = ({ route, navigation }) => {
                                     paddingHorizontal: SIZES.padding * 2
                                 }}
                             >
-                                <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2 }}>{item.name} - {item.price.toFixed(2)}</Text>
-                                <Text style={{ ...FONTS.body3 }}>{item.description}</Text>
+                                <Text style={{ marginVertical: 10, textAlign: 'center', ...FONTS.h2,color: COLORS.white }}>{item.name} - {item.price.toFixed(2)}</Text>
+                                <Text style={{ ...FONTS.body3,color: COLORS.white }}>{item.description}</Text>
                             </View>
 
                             {/* Calories */}
@@ -247,7 +248,7 @@ const Restaurant = ({ route, navigation }) => {
                                 />
 
                                 <Text style={{
-                                    ...FONTS.body3, color: COLORS.darygray
+                                    ...FONTS.body3, color: COLORS.white
                                 }}>{item.calories.toFixed(2)} cal</Text>
                             </View>
                         </View>
@@ -468,7 +469,7 @@ const Restaurant = ({ route, navigation }) => {
                                             height:50,
                                             borderRadius:SIZES.radius,
                                             justifyContent:"center",
-                                            borderWidth:1
+                                            borderWidth:0.5
                                         }}
                                         onPress= {()=>{setChecked(true)}}
                                     >
@@ -489,10 +490,11 @@ const Restaurant = ({ route, navigation }) => {
                                     </TouchableOpacity>
                                 </View>
                             </View>
-                            <View style={{ margin: SIZES.padding * 3, marginTop: SIZES.padding*10 }}>
+                            <View style={{ margin: SIZES.padding*2, marginTop: SIZES.padding*15 }}>
                                 <TouchableOpacity
                                     style={{
                                         height: 60,
+                                        width: "100%",
                                         backgroundColor: COLORS.primary,
                                         borderRadius: SIZES.radius,
                                         alignItems: 'center',
@@ -529,8 +531,8 @@ const Restaurant = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2,
-        paddingTop: (Platform.OS==="android")?StatusBar.currentHeight:0
+        backgroundColor: COLORS.black,
+        marginTop: (Platform.OS==="android")?StatusBar.currentHeight:0
     }
 })
 

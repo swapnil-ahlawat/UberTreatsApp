@@ -13,6 +13,7 @@ import {
     TouchableWithoutFeedback
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 import { icons, COLORS, SIZES, FONTS } from '../constants'
 
@@ -53,10 +54,10 @@ const Order = ({ route, navigation }) => {
                             justifyContent: 'center',
                             paddingHorizontal: SIZES.padding * 3,
                             borderBottomRightRadius: SIZES.radius,
-                            backgroundColor: COLORS.lightGray3
+                            backgroundColor: COLORS.primary
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 }}>Order Cart</Text>
+                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>Order Cart</Text>
                     </View>
                 </View>
                 <TouchableOpacity
@@ -73,6 +74,7 @@ const Order = ({ route, navigation }) => {
                         style={{
                             width: 25,
                             height: 25,
+                            tintColor: COLORS.gray
                             
                         }}
                     />
@@ -84,12 +86,12 @@ const Order = ({ route, navigation }) => {
     function renderInfo(){
         return (
         <View style={{margin: SIZES.padding * 2, marginBottom: SIZES.padding}}>
-            <Text style={{color: COLORS.black, ...FONTS.h2, textAlign:"center" }}>{restaurant?.name}</Text>
+            <Text style={{color: COLORS.white, ...FONTS.h2, textAlign:"center" }}>{restaurant?.name}</Text>
             <Text style={{marginBottom: SIZES.padding*2, color: COLORS.darkgray, ...FONTS.body3, paddingTop: SIZES.padding,textAlign:"center" }}>Delivery Time: {restaurant?.duration}</Text>
-            <Text style={{color: COLORS.black, ...FONTS.body2}}>Swapnil Ahlawat</Text>
-            <Text style={{color: COLORS.black, ...FONTS.body3}}>{currentLocation}</Text>
-            <Text style={{color: COLORS.black, ...FONTS.body3}}>Phone No.: {global.id}</Text>
-            <Text style={{marginTop: SIZES.padding, color: COLORS.black, ...FONTS.body2 }}>Order Details</Text>
+            <Text style={{color: COLORS.white, ...FONTS.body2}}>Swapnil Ahlawat</Text>
+            <Text style={{color: COLORS.white, ...FONTS.body3}}>{currentLocation}</Text>
+            <Text style={{color: COLORS.white, ...FONTS.body3}}>Phone Number : {global.id}</Text>
+            <Text style={{marginTop: SIZES.padding, color: COLORS.white, ...FONTS.body2,fontWeight: 'bold'}}>Order Details</Text>
         </View>
         )
     }
@@ -141,8 +143,8 @@ const Order = ({ route, navigation }) => {
         if(reusablePackage){
             return (
                 <View style={{flexDirection: "row"}}>
-                    <Text style={{width:"75%", color: COLORS.black, ...FONTS.body3, textAlign:"left"}}>Reusable Package Fee</Text>  
-                    <Text style={{width:"25%",color: COLORS.black, ...FONTS.body3, textAlign: "right"}}>$4.00</Text>   
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Reusable Package Fee</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>$4.00</Text>   
                 </View>
             )
         }
@@ -158,21 +160,21 @@ const Order = ({ route, navigation }) => {
         return(
             <View style={{marginHorizontal: SIZES.padding * 2}}>
                 <View style={{flexDirection: "row"}}>
-                    <Text style={{width:"75%", color: COLORS.black, ...FONTS.body3, textAlign:"left"}}>Subtotal</Text>  
-                    <Text style={{width:"25%",color: COLORS.black, ...FONTS.body3, textAlign: "right"}}>${sumOrder()}</Text>   
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Subtotal</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>${sumOrder()}</Text>   
                 </View>
                 <View style={{flexDirection: "row"}}>
-                    <Text style={{width:"75%", color: COLORS.black, ...FONTS.body3, textAlign:"left"}}>Tax</Text>  
-                    <Text style={{width:"25%",color: COLORS.black, ...FONTS.body3, textAlign: "right"}}>${taxOrder()}</Text>   
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Tax</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>${taxOrder()}</Text>   
                 </View>
                 <View style={{flexDirection: "row"}}>
-                    <Text style={{width:"75%", color: COLORS.black, ...FONTS.body3, textAlign:"left"}}>Delivery Fee</Text>  
-                    <Text style={{width:"25%",color: COLORS.black, ...FONTS.body3, textAlign: "right"}}>$5.00</Text>   
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Delivery Fee</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>$5.00</Text>   
                 </View>
                 {reusablePackageFee()}
                 <View style={{flexDirection: "row", marginVertical:SIZES.padding}}>
-                    <Text style={{width:"75%", color: COLORS.black, ...FONTS.body2, textAlign:"left"}}>Total</Text>  
-                    <Text style={{width:"25%",color: COLORS.black, ...FONTS.body2, textAlign: "right"}}>${calculateTotal()}</Text>   
+                    <Text style={{width:"75%", color: COLORS.white, ...FONTS.body2, textAlign:"left"}}>Total</Text>  
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body2, textAlign: "right"}}>${calculateTotal()}</Text>   
                 </View>
             </View>
         )
@@ -180,35 +182,38 @@ const Order = ({ route, navigation }) => {
 
     function renderPaymentMode(){
         return (
-            <View style={{flex:1, margin: SIZES.padding, marginTop:0}}>
-                <Text style={{...FONTS.body2, marginBottom: SIZES.padding}}>Payment Method</Text>                       
+            <View style={{flex:1, margin: SIZES.padding, marginTop:0,alignItems:'center'}}>
+                <Text style={{...FONTS.body2, marginBottom: SIZES.padding,color: COLORS.white,fontWeight:'bold'}}>Payment Method</Text>                       
                 <TouchableOpacity
                     style={{
                         marginBottom:SIZES.padding,
                         backgroundColor: (checked)? COLORS.primary: COLORS.white,
-                        width:"100%",
+                        width:"60%",
                         height:50,
-          
+                        borderRadius: 20,
                         justifyContent:"center",
                         borderWidth:1
                     }}
                     onPress= {()=>{setChecked(true)}}
                 >
 
-                    <Text style={{textAlign:"center", ...FONTS.body2}}>Uber Wallet</Text>
+                    <Text style={{textAlign:"center", ...FONTS.body2, color: (!checked)? COLORS.black: COLORS.white}}>Uber Wallet</Text>
 
                 </TouchableOpacity>
                 <TouchableOpacity
                 style={{
                     backgroundColor: (!checked)? COLORS.primary: COLORS.white,
-                    width:"100%",
+                    width:"60%",
                     height:50,
+                    borderRadius: 20,
+                    
+                    marginBottom: SIZES.padding,
             
                     justifyContent:"center",
                     borderWidth:1
                 }}
                 onPress= {()=>{setChecked(false)}}>
-                    <Text style={{textAlign:"center", ...FONTS.body2}}>Cash on Delivery</Text>
+                    <Text style={{textAlign:"center", ...FONTS.body2,color: (checked)? COLORS.black: COLORS.white}}>Cash on Delivery</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -220,7 +225,11 @@ const Order = ({ route, navigation }) => {
                     height: 60,
                     backgroundColor: COLORS.primary,
                     alignItems: 'center',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    borderRadius: 20,
+                    marginHorizontal: SIZES.padding,
+                    marginBottom: SIZES.padding
+
                 }}
                 onPress={() => {
                     if(checked && global.wallet<calculateTotal()){
@@ -328,7 +337,7 @@ const Order = ({ route, navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray2,
+        backgroundColor: COLORS.black,
         paddingTop: (Platform.OS==="android")?StatusBar.currentHeight:0
     },
     checkboxContainer: {

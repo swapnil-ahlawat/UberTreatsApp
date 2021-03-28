@@ -10,6 +10,9 @@ import {
     FlatList,
     KeyboardAvoidingView,
     ScrollView,
+    StyleSheet,
+    StatusBar,
+    SafeAreaView,
     Platform
 } from "react-native"
 
@@ -52,7 +55,8 @@ const SignUp = ({ navigation }) => {
                     marginTop: SIZES.padding * 10,
                     height: 100,
                     alignItems: 'center',
-                    justifyContent: 'center'
+                    justifyContent: 'center',
+                    
                 }}
             >
                 <Image
@@ -60,7 +64,8 @@ const SignUp = ({ navigation }) => {
                     resizeMode="contain"
                     style={{
                         height: "150%",
-                        width: "50%"
+                        width: "50%",
+                       
                     }}
                 />
             </View>
@@ -179,7 +184,7 @@ const SignUp = ({ navigation }) => {
                 <TouchableOpacity
                     style={{
                         height: 60,
-                        backgroundColor: COLORS.black,
+                        backgroundColor: COLORS.primary,
                         borderRadius: SIZES.radius / 1.5,
                         alignItems: 'center',
                         justifyContent: 'center'
@@ -251,12 +256,13 @@ const SignUp = ({ navigation }) => {
     }
 
     return (
+       
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : null}
-            style={{ flex: 1 }}
+            style={{ flex: 1, marginTop: (Platform.OS==="android")?StatusBar.currentHeight:0 }}
         >
             <LinearGradient
-                colors={[COLORS.lime, COLORS.emerald]}
+                colors={[COLORS.black, COLORS.black]}
                 style={{ flex: 1 }}
             >
                 <ScrollView>
@@ -267,6 +273,7 @@ const SignUp = ({ navigation }) => {
             </LinearGradient>
             {renderModeModal()}
         </KeyboardAvoidingView>
+        
     )
 }
 

@@ -125,7 +125,7 @@ const WarehouseTabs = () => {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <Image
-                            source={icons.cutlery}
+                            source={icons.warehouse}
                             resizeMode="contain"
                             style={{
                                 width: 25,

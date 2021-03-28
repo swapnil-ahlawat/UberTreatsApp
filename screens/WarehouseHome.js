@@ -17,32 +17,45 @@ import { COLORS, SIZES, FONTS, icons, images } from "../constants"
 const WarehouseHome = ({ navigation }) => {
 
     const [restaurant, setRestaurant]= useState(null);
-    const [startingSerialNumber, setStartingSerialNumber]= useState(null);
-    const [endingSerialNumber, setEndingSerialNumber]= useState(null);
+    const [lotNumber, SetLotNumber]= useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
     function renderHeader() {
         return (
-            <View style={{ flexDirection: 'row' }}>                
-                <View
-                    style={{
-                        flex: 1,
-                        justifyContent: 'center'
-                    }}
-                >
+            <View style={{ flexDirection: 'row',justifyContent: 'space-between' }}>                
+                
                     <View
                         style={{
                             height: 50,
-                            width: "90%",
+                            width: "40%",
                             justifyContent: 'center',
                             paddingHorizontal: SIZES.padding * 3,
                             borderBottomRightRadius: SIZES.radius,
                             backgroundColor: COLORS.primary
                         }}
                     >
-                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>Add Packages in Transit</Text>
-                    </View>
-                </View>            
+                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>Dispatch</Text>
+                    </View>  
+
+                      <TouchableOpacity
+                    style={{
+                        width: 50,
+                        paddingRight: SIZES.padding,
+                        justifyContent: 'center'
+                    }}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Image
+                        source={icons.signOut}
+                        resizeMode="contain"
+                        style={{
+                            width: 25,
+                            height: 25,
+                            tintColor: COLORS.gray
+                            
+                        }}
+                    />
+                </TouchableOpacity>
             </View>
         )
     }
@@ -75,7 +88,7 @@ const WarehouseHome = ({ navigation }) => {
                 </View>
         
                 <View style={{ marginTop: SIZES.padding * 3 }}>
-                    <Text style={{ color: COLORS.white, ...FONTS.body2 }}>Enter Starting Serial Number</Text>
+                    <Text style={{ color: COLORS.white, ...FONTS.body2 }}>Enter Box Lot Number</Text>
                     <TextInput
                         style={{
                             marginVertical: SIZES.padding,
@@ -85,39 +98,22 @@ const WarehouseHome = ({ navigation }) => {
                             color: COLORS.white,
                             ...FONTS.body3
                         }}
-                        placeholder="Enter starting serial number"
+                        placeholder="Enter Lot Number"
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
-                        value= {startingSerialNumber}
-                        onChangeText={(text) => setStartingSerialNumber(text)}
+                        value= {lotNumber}
+                        onChangeText={(text) => SetLotNumber(text)}
                     />
                 </View>
 
-                <View style={{ marginTop: SIZES.padding * 3 }}>
-                    <Text style={{ color: COLORS.white, ...FONTS.body2 }}>Enter Ending Serial Number</Text>
-                    <TextInput
-                        style={{
-                            marginVertical: SIZES.padding,
-                            borderBottomColor: COLORS.white,
-                            borderBottomWidth: 1,
-                            height: 40,
-                            color: COLORS.white,
-                            ...FONTS.body3
-                        }}
-                        placeholder="Enter ending serial number"
-                        placeholderTextColor={COLORS.white}
-                        selectionColor={COLORS.white}
-                        value= {endingSerialNumber}
-                        onChangeText={(text) => setEndingSerialNumber(text)}
-                    />
-                </View>
+               
             </View> 
         )
     }
 
     function renderButton() {
         return (
-            <View style={{ margin: SIZES.padding * 5 }}>
+             <View style={{ margin: SIZES.padding * 3 }}>
                 <TouchableOpacity
                     style={{
                         height: 60,
@@ -146,8 +142,8 @@ const WarehouseHome = ({ navigation }) => {
                 <TouchableWithoutFeedback
                     onPress={() => {
                         setRestaurant(null);
-                        setStartingSerialNumber(null);
-                        setEndingSerialNumber(null);
+                        SetLotNumber(null);
+                        
                         setModalVisible(false);
                     }}
                 >
@@ -187,7 +183,7 @@ const WarehouseHome = ({ navigation }) => {
                                     width: SIZES.width * 0.8
 
 
-                            }}>Packages from Serial no. {startingSerialNumber} to {endingSerialNumber} are now in transit to {restaurant}.</Text>
+                            }}>Packages in Lot no. {lotNumber} are now in transit to {restaurant}.</Text>
 
                         </View>
                     </View>

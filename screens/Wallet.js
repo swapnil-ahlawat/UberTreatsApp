@@ -33,6 +33,12 @@ const Wallet = ({ navigation }) => {
     ]
  
     const [specialPromos, setSpecialPromos] = React.useState(specialPromoData)
+    const [walletAmount,setWalletAmount] = React.useState(0)
+
+    React.useEffect(() => {
+        setWalletAmount(global.wallet)
+        
+    })
     
     function renderHeader() {
         return (
@@ -106,7 +112,7 @@ const Wallet = ({ navigation }) => {
                 }}
             >
                 <Text style={{color: COLORS.white,textAlign:"center", ...FONTS.body3, margin: SIZES.padding}}>Wallet Balance</Text>
-                <Text style={{color: COLORS.white,textAlign:"center", marginBottom: SIZES.padding, ...FONTS.largeTitle}}>${global.wallet.toFixed(2)}</Text>
+                <Text style={{color: COLORS.white,textAlign:"center", marginBottom: SIZES.padding, ...FONTS.largeTitle}}>${walletAmount.toFixed(2)}</Text>
             </View>
         )
     }

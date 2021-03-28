@@ -31,6 +31,7 @@ const PersonnelHome = ({ navigation }) => {
             price: 13.45,
             quantity: "2 items",
             payment_mode: "Cash on delivery",
+            delivery_made: false,
             location: {
                 latitude: 1.5347282806345879,
                 longitude: 110.35632207358996,
@@ -55,6 +56,7 @@ const PersonnelHome = ({ navigation }) => {
             order_id: 2,
             customer_name: "Wandan Tibrewal",
             address: "Pacific A",
+            delivery_made: false,
             price: 8,
             quantity: "1 item",
             resuablePackage: false,
@@ -107,6 +109,7 @@ const PersonnelHome = ({ navigation }) => {
             restaurant: "KFC",
             price: 13,
             quantity: "2 items",
+            delivery_made: false,
             order_deadline: "March 24,2019 15:47",
             address: "Pacific C",
             payment_mode: "Cash on delivery",

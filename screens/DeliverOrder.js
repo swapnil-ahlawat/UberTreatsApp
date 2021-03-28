@@ -13,7 +13,7 @@ import {
     Image,
     ScrollView    
 } from "react-native";
-import { ScrollView } from "react-native-gesture-handler";
+
 
 
 import { icons, COLORS, SIZES, FONTS } from '../constants'
@@ -174,7 +174,10 @@ const DeliverOrder = ({ route, navigation }) => {
                         height: 60,
                         backgroundColor: COLORS.primary,
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        borderRadius: 20,
+                        marginBottom: SIZES.padding,
+                        marginHorizontal: SIZES.padding
                     }}
                     onPress={() => {
                        setModalVisible(true)
@@ -281,10 +284,13 @@ const DeliverOrder = ({ route, navigation }) => {
                                 <TouchableOpacity
                                     style={{
                                         height: 60,
-                                        width: '100%',
+                                        width: '90%',
                                         backgroundColor: COLORS.primary,
                                         alignItems: 'center',
-                                        justifyContent: 'center'
+                                        justifyContent: 'center',
+                                        borderRadius: 20,
+                                        
+                                    
                                     }}
                                     onPress={() => {
                                         setModalVisible(false);

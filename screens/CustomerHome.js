@@ -362,13 +362,13 @@ const CustomerHome = ({ navigation }) => {
                         style={{
                             width: '90%',
                             height: "100%",
-                            backgroundColor: COLORS.lightGray3,
+                            backgroundColor: COLORS.primary,
                             paddingLeft: SIZES.padding*3,
                             justifyContent: 'center',
                             borderBottomRightRadius: SIZES.radius
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 }}>{currentLocation}</Text>
+                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>{currentLocation}</Text>
                     </View>
                 </View>
  
@@ -447,7 +447,7 @@ const CustomerHome = ({ navigation }) => {
 
         return (
             <View style={{ padding: SIZES.padding * 2 }}>
-                <Text style={{ ...FONTS.h1 }}>Main Categories</Text>
+                <Text style={{ ...FONTS.h1,color: COLORS.white }}>Main Categories</Text>
 
                 <FlatList
                     data={categories}
@@ -533,7 +533,7 @@ const CustomerHome = ({ navigation }) => {
                 </View>
 
                 {/* Restaurant Info */}
-                <Text style={{ ...FONTS.body2 }}>{item.name}</Text>
+                <Text style={{ ...FONTS.body2, color: COLORS.white }}>{item.name}</Text>
 
                 <View
                     style={{
@@ -551,7 +551,7 @@ const CustomerHome = ({ navigation }) => {
                             marginRight: 10
                         }}
                     />
-                    <Text style={{ ...FONTS.body3 }}>{item.rating}</Text>
+                    <Text style={{ ...FONTS.body3,color: COLORS.white }}>{item.rating}</Text>
 
                     {/* Categories */}
                     <View
@@ -567,8 +567,8 @@ const CustomerHome = ({ navigation }) => {
                                         style={{ flexDirection: 'row' }}
                                         key={categoryId}
                                     >
-                                        <Text style={{ ...FONTS.body3 }}>{getCategoryNameById(categoryId)}</Text>
-                                        <Text style={{ ...FONTS.h3, color: COLORS.darkgray }}> . </Text>
+                                        <Text style={{ ...FONTS.body3,color: COLORS.white }}>{getCategoryNameById(categoryId)}</Text>
+                                        <Text style={{ ...FONTS.h3, color: COLORS.white }}> . </Text>
                                     </View>
                                 )
                             })
@@ -581,7 +581,7 @@ const CustomerHome = ({ navigation }) => {
                                     key={priceRating}
                                     style={{
                                         ...FONTS.body3,
-                                        color: (priceRating <= item.priceRating) ? COLORS.black : COLORS.darkgray
+                                        color: (priceRating <= item.priceRating) ? COLORS.white : COLORS.darkgray
                                     }}
                                 >$</Text>
                             ))
@@ -616,8 +616,8 @@ const CustomerHome = ({ navigation }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: COLORS.lightGray4,
-        paddingTop: (Platform.OS==="android")?StatusBar.currentHeight:0
+        backgroundColor: COLORS.black,
+        marginTop: (Platform.OS==="android")?StatusBar.currentHeight:0
     },
     shadow: {
         shadowColor: "#000",

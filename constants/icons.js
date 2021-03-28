@@ -30,6 +30,8 @@ export const scan= require("../assets/icons/scan.png");
 export const close= require("../assets/icons/close.png");
 export const success = require("../assets/icons/success.png");
 export const cross = require("../assets/icons/cross.png");
+export const warehouse = require("../assets/icons/warehouse.webp")
+export const signOut = require("../assets/icons/signOut.png")
 export default {
     arrowDown,
     back,
@@ -62,5 +64,7 @@ export default {
     star,
     success,
     sushi,
-    user
+    user,
+    warehouse,
+    signOut
 }
