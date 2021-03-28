@@ -44,5 +44,21 @@ const addPackage= async(req, res, next) => {
     });
 }
 
+
+const removePackage = async(req, res, next) => {
+    const {serialNumber} = req.body;
+    await Package.deleteOne({serialNumber}, function(error) {
+        if(error){
+            sendStatus(404);
+        }
+    })
+    
+    res.json({
+        message: 'Package removed successfully!',
+    });
+}
+
+
 exports.scanPackage = scanPackage;
 exports.addPackage = addPackage;
+exports.removePackage= removePackage;

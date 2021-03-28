@@ -2,17 +2,6 @@ const mongoose = require('mongoose');
 const User = require('../database/User');
 const Order= require('../database/Order');
 
-// const userDetails = (req, res, next) => {
-//     const id = req.query['id'];
-
-//     const identifiedUser = DUMMY_USERS.find(u => u.id === id);
-//     if(!identifiedUser){
-//         const error = Error('User not found.');
-//         error.code = 404;
-//         throw error;
-//     }
-//     res.json(identifiedUser);
-// }
 const placeOrder= async(req, res, next) =>{
     const {reusablePackageFlag, restaurantPhoneNo, restaurantCourier, orderItems, customer, walletUsed, total} = req.body;
     let order={customerName:customer.name, customerAddress: customer.address, customerPhoneNo: customer.phoneNo, reusablePackageFlag, foodItems: orderItems}
@@ -89,6 +78,23 @@ const removeOrder= async(req, res, next) =>{
     });
 }
 
+const addWalletMoney= async(req, res, next) =>{
+    const {phoneNo, amount}= req.body;
+    
+    let identifiedUser= await User.findOne({phoneNo, userType:"Customer"}).exec().catch((error) => {
+        return next(error);
+    });
+    let money= identifiedUser.wallet;
+    money+= parseFloat(amount);
+    identifiedUser.wallet= money;
+    identifiedUser.save();
+    res.json({
+        message: 'Order removed Successfully!',
+        user: identifiedUser
+    });
+}
+
 exports.placeOrder = placeOrder;
 exports.getOrders= getOrders;
 exports.removeOrder= removeOrder;
+exports.addWalletMoney= addWalletMoney;
