@@ -1,4 +1,5 @@
 import React from "react";
+import { unstable_renderSubtreeIntoContainer } from "react-dom";
 import {
     SafeAreaView,
     View,
@@ -6,9 +7,12 @@ import {
     FlatList,
     Platform,
     StatusBar,
+    TouchableOpacity,
+    Image
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
  
-import {images, SIZES, COLORS, FONTS } from '../constants'
+import {images, SIZES, COLORS, FONTS, icons } from '../constants'
  
 const Wallet = ({ navigation }) => {
     const specialPromoData = [
@@ -32,16 +36,55 @@ const Wallet = ({ navigation }) => {
     
     function renderHeader() {
         return (
-            <View style={{marginTop: SIZES.padding * 2}}>
-                    <Text style={{color: COLORS.white,...FONTS.h3,  textAlign: "center"}}>My profile</Text>
+            <View style={{ flexDirection: 'row' }}>                
+                <View
+                    style={{
+                        flex: 1,
+                        justifyContent: 'center'
+                    }}
+                >
+                    <View
+                        style={{
+                            height: 50,
+                            width: "90%",
+                            justifyContent: 'center',
+                            paddingHorizontal: SIZES.padding * 3,
+                            borderBottomRightRadius: SIZES.radius,
+                            backgroundColor: COLORS.primary
+                        }}
+                    >
+                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>My Profile</Text>
+                    </View>
+                    </View>
+                    <TouchableOpacity
+                    style={{
+                        width: 50,
+                        paddingTop: SIZES.padding,
+                        justifyContent: 'center'
+                    }}
+                    onPress={() => navigation.goBack()}
+                >
+                    <Image
+                        source={icons.close}
+                        resizeMode="contain"
+                        style={{
+                            
+                            width: 25,
+                            height: 25,
+                            marginLeft: SIZES.padding,
+                            tintColor: COLORS.gray
+                        }}
+                    />
+                </TouchableOpacity>             
             </View>
         )
     }
+
  
     function renderUserDetails() {
         return (
       
-            <View style={{ flex: 1, marginVertical: SIZES.padding * 2 }}>
+            <View style={{ flex: 1, marginVertical: SIZES.padding * 2, paddingHorizontal: SIZES.padding * 3 }}>
                 <Text style={{color: COLORS.white, ...FONTS.body3 }}>User</Text>
                 <Text style={{color: COLORS.white, ...FONTS.body2, marginBottom: SIZES.padding}}>Swapnil Ahlawat</Text>
                 <Text style={{color: COLORS.white, ...FONTS.body3 }}>Email ID/Phone No.</Text>
@@ -58,7 +101,8 @@ const Wallet = ({ navigation }) => {
                     borderRadius: 20,
                     backgroundColor:COLORS.primary,
                     marginBottom:SIZES.padding*5,
-                    marginTop: SIZES.padding*3,                    
+                    marginTop: SIZES.padding*3, 
+                    marginHorizontal: SIZES.padding * 3                    
                 }}
             >
                 <Text style={{color: COLORS.white,textAlign:"center", ...FONTS.body3, margin: SIZES.padding}}>Wallet Balance</Text>
@@ -70,14 +114,6 @@ const Wallet = ({ navigation }) => {
  
     function renderPromos() {
  
-        const HeaderComponent = () => (
-            <View>
-                {renderHeader()}
-                {renderUserDetails()}
-                {renderBanner()}
-                {renderPromoHeader()}
-            </View>
-        )
  
         const renderPromoHeader = () => (
             <View
@@ -110,23 +146,47 @@ const Wallet = ({ navigation }) => {
  
         return (
             <FlatList
-                ListHeaderComponent={HeaderComponent}
+                ListHeaderComponent={renderPromoHeader}
                 contentContainerStyle={{ paddingHorizontal: SIZES.padding * 3 }}
                 data={specialPromos}
                 keyExtractor={item => `${item.id}`}
                 renderItem={renderItem}
                 showsVerticalScrollIndicator={false}
-                ListFooterComponent={
-                    <View style={{ marginBottom: 80 }}>
-                    </View>
-                }
             />
         )
     }
- 
+    
+    function renderButton() {
+        return (
+            <View style={{ marginHorizontal: SIZES.padding *3, marginBottom: SIZES.padding*7, marginTop: SIZES.padding*2}}>
+                <TouchableOpacity
+                    style={{
+                        height: 60,
+                        backgroundColor: COLORS.primary,
+                        borderRadius: SIZES.radius / 1.5,
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                    onPress={() => {
+                       navigation.navigate("SignUp")
+                    }
+                }
+                >
+                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Sign Out</Text>
+                </TouchableOpacity>
+            </View>
+        )
+    }
+
     return (
         <SafeAreaView style={{ flex: 1, backgroundColor: COLORS.black, marginTop: (Platform.OS==="android")? StatusBar.currentHeight:0}}>
+            {renderHeader()}
+            <ScrollView>
+            {renderUserDetails()}
+            {renderBanner()}
             {renderPromos()}
+            </ScrollView>
+            {renderButton()}
         </SafeAreaView>
     )   
 }

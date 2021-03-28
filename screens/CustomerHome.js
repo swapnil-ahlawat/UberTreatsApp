@@ -13,7 +13,7 @@ import {
 
 import {icons, images, SIZES, COLORS, FONTS } from '../constants'
 
-const Home = ({ navigation }) => {
+const CustomerHome = ({ navigation }) => {
     global.name="Swapnil Ahlawat"
     global.address="Najafgarh, New Delhi"
     global.wallet= 500.00
@@ -463,6 +463,32 @@ const Home = ({ navigation }) => {
     }
 
     function renderRestaurantList() {
+        function greenTag(item){
+            if(item.reusablePackage){
+                return(
+                    <View
+                        style={{
+                            position: 'absolute',
+                            bottom: 0,
+                            right:0,
+                            height: 40,
+                            width: SIZES.width * 0.5,
+                            backgroundColor: COLORS.primary,
+                            borderTopLeftRadius: SIZES.radius,
+                            borderBottomRightRadius: SIZES.radius,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            ...styles.shadow
+                        }}
+                    >
+                        <Text style={{ ...FONTS.body3, color: COLORS.white}}>Environment Friendly</Text>
+                    </View>
+                )
+            }
+            else{
+                <View></View>
+            }
+        }
         const renderItem = ({ item }) => (
             <TouchableOpacity
                 style={{ marginBottom: SIZES.padding * 2 }}
@@ -503,6 +529,7 @@ const Home = ({ navigation }) => {
                     >
                         <Text style={{ ...FONTS.h4 }}>{item.duration}</Text>
                     </View>
+                    {greenTag(item)}
                 </View>
 
                 {/* Restaurant Info */}
@@ -604,4 +631,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default Home
+export default CustomerHome;

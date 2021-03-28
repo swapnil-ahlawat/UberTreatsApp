@@ -2,7 +2,6 @@ import React, {useState, useEffect} from "react";
 import {
     View,
     Text,
-    Button,
     Image,
     Modal,
     TouchableOpacity,
@@ -65,6 +64,9 @@ const Scan = ({route, navigation }) => {
           }
           else if(modeTag === "RestaurantDelivery"){
               navigation.navigate("RestaurantHome");
+          }
+          else if(modeTag === "Warehouse"){
+              navigation.navigate("WarehouseHome");
           }
           else
           {
@@ -199,7 +201,10 @@ const Scan = ({route, navigation }) => {
             text="Thank you for collecting the package. We will soon collect the package for it's cleaning. "
         }
         else if(modeTag==="RestaurantDelivery"){
-            text="Our delivery partner will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats. "
+            text="Our delivery personnel will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats. "
+        }
+        else if(modeTag==="Warehouse"){
+            text="The Package has been successfully collected at Warehouse."
         }
         else{
             text="Thank you for collecting the package. Please deposit at any collection centre as per your convenience."

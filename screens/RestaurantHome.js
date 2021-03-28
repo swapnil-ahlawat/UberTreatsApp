@@ -157,7 +157,7 @@ const RestaurantHome = ({ navigation }) => {
                     }}
                 >
                         <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item.name}</Text>
-                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>${item.price}</Text>
+                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>${item.price.toFixed(2)}</Text>
                  </View>   
                 <View
                     style={{
@@ -174,8 +174,7 @@ const RestaurantHome = ({ navigation }) => {
         )
 
         return (
-            <View style={{ paddingHorizontal: SIZES.padding * 2,
-                paddingBotto0m: 30}}>
+            <View style={{ paddingHorizontal: SIZES.padding * 2,  marginTop:SIZES.padding*2}}>
             <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress (3)</Text>
             <FlatList
                 data={orders}

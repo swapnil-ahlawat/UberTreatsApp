@@ -58,7 +58,7 @@ const PersonnelHome = ({ navigation }) => {
             price: 8,
             quantity: "1 item",
             resuablePackage: false,
-            restaurant: "KFC",
+            restaurant: "Amrik Sukhdev Dhaba",
             order_deadline: "March 24,2019 15:42",
             payment_mode: "Uber Wallet",
             location: {
@@ -67,6 +67,30 @@ const PersonnelHome = ({ navigation }) => {
             },
              order_details: [
                 {  food_id: 1,
+                    name: "Red-sauce Pasta",
+                    price: 4.00,
+                    additional_info: "Extra spicy",
+                    quantity: 2
+                },
+                {  food_id: 2,
+                    name: "Red-sauce Pasta",
+                    price: 4.00,
+                    additional_info: "Extra spicy",
+                    quantity: 2
+                },
+                {  food_id: 3,
+                    name: "Red-sauce Pasta",
+                    price: 4.00,
+                    additional_info: "Extra spicy",
+                    quantity: 2
+                },
+                {  food_id: 4,
+                    name: "Red-sauce Pasta",
+                    price: 4.00,
+                    additional_info: "Extra spicy",
+                    quantity: 2
+                },
+                {  food_id: 5,
                     name: "Red-sauce Pasta",
                     price: 4.00,
                     additional_info: "Extra spicy",
@@ -176,9 +200,8 @@ const PersonnelHome = ({ navigation }) => {
         )
 
         return (
-            <View style={{ paddingHorizontal: SIZES.padding * 2,
-                paddingBotto0m: 30}}>
-            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress (3)</Text>
+            <View style={{ paddingHorizontal: SIZES.padding * 2,}}>
+            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white,  marginTop:SIZES.padding*2 }}>In Progress (3)</Text>
             <FlatList
                 data={orders}
                 keyExtractor={item => `${item.order_id}`}
