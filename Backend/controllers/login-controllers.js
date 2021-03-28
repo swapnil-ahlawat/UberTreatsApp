@@ -2,8 +2,10 @@ const mongoose = require('mongoose');
 const User = require('../database/User');
 
 const login = async(req, res, next) => {
-    const {phoneNo, password, userType } = req.body;
-
+    const {phoneNo, password, userType} = req.body;
+    console.log(phoneNo)
+    console.log(password)
+    console.log(userType)
     const identifiedUser = await User.find({phoneNo, password, userType}).exec().catch((error) => {
         console.log("Error catched.", error);
     });
@@ -15,8 +17,7 @@ const login = async(req, res, next) => {
     }
     res.json({
         message: 'Logged in successfully!',
-        name: identifiedUser.name,
-        phoneNumber: identifiedUser.phoneNo
+        user: identifiedUser[0]
     });
 }
 

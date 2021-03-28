@@ -1,60 +1,49 @@
-const DUMMY_USERS = [
-    {
-        id: 'u1',
-        name: 'Piyush Maheshwari',
-        email: 'piyush@test.com',
-        walletBalance: 40,
-        pastOrders:[
-            {
-                date: "1 Feb",
-                restaurant: "CafeXYZ",
-                orderValue: 50
-            }
-        ]
-    },
-    {
-        id: 'u2',
-        name: 'Wandan Tibrewal',
-        email: 'wandan@test.com',
-        walletBalance: 40,
-        pastOrders:[
-            {
-                date: "1 Jan",
-                restaurant: "CafeABC",
-                orderValue: 20
-            }
-        ]
-    },
-    {
-        id: 'u3',
-        name: 'Swapnil Ahlawat',
-        email: 'swapnil@test.com',
-        walletBalance: 20,
-        pastOrders:[
-            {
-                date: "1 Feb",
-                restaurant: "CafeXYZ",
-                orderValue: 50
-            },
-            {
-                date: "1 Jan",
-                restaurant: "CafeABC",
-                orderValue: 20
-            }
-        ]
-    }
-]
+const mongoose = require('mongoose');
+const User = require('../database/User');
+const Order= require('../database/Order');
 
-const userDetails = (req, res, next) => {
-    const id = req.query['id'];
+// const userDetails = (req, res, next) => {
+//     const id = req.query['id'];
 
-    const identifiedUser = DUMMY_USERS.find(u => u.id === id);
-    if(!identifiedUser){
-        const error = Error('User not found.');
-        error.code = 404;
-        throw error;
+//     const identifiedUser = DUMMY_USERS.find(u => u.id === id);
+//     if(!identifiedUser){
+//         const error = Error('User not found.');
+//         error.code = 404;
+//         throw error;
+//     }
+//     res.json(identifiedUser);
+// }
+const placeOrder= async(req, res, next) =>{
+    const {reusablePackageFlag, restaurantPhoneNo, restaurantCourier, orderItems, customer, walletUsed, total} = req.body;
+    let order={customerName:customer.name, customerAddress: customer.address, reusablePackageFlag, foodItems: orderItems}
+    let orderModel = new Order(order);
+    await orderModel.save();
+    
+    let identifiedRestaurant = await User.findOne({phoneNo: restaurantPhoneNo, userType: "Restaurant"}).exec().catch((error) => {
+        console.log("Error catched.", error);
+    });
+
+    identifiedRestaurant.orders.push({orderID: orderModel._id.toString()});
+    await identifiedRestaurant.save();
+
+    let identifiedPersonnel = await User.findOne({name: restaurantCourier, userType: "Personnel"}).exec().catch((error) => {
+        console.log("Error catched.", error);
+    });
+
+    identifiedPersonnel.orders.push({orderID: orderModel._id.toString()});
+   
+    await identifiedPersonnel.save();
+    if(walletUsed){
+        let identifiedUser = await User.findOne({phoneNo: customer.phoneNo}).exec().catch((error) => {
+            console.log("Error catched.", error);
+        });
+        identifiedUser.wallet = identifiedUser.wallet- parseFloat(total);
+        await identifiedUser.save();
     }
-    res.json(identifiedUser);
+
+    res.json({
+        message: "OrderPlaced!"
+    });
 }
 
-exports.userDetails = userDetails;
+exports.placeOrder = placeOrder;

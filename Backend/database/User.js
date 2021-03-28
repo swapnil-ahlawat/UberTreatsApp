@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+var Float = require('mongoose-float').loadType(mongoose, 2); 
 
 const user = new mongoose.Schema({
   name: {
@@ -15,7 +16,16 @@ const user = new mongoose.Schema({
   },
   userType:{
     type: String, required: true
-  }
+  },
+  address:{
+    type: String
+  },
+  wallet:{
+    type: Float, default:0.00
+  },
+  orders:[
+    {type:String}
+  ]
 });
 
 module.exports = User = mongoose.model('User', user);

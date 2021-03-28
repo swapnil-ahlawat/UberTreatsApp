@@ -15,13 +15,13 @@ import {
     SafeAreaView,
     Platform
 } from "react-native"
-
+ 
 import {LinearGradient} from 'expo-linear-gradient';
-
+ 
 import { COLORS, SIZES, FONTS, icons, images } from "../constants"
-
+ 
 const SignUp = ({ navigation }) => {
-
+ 
     const mode=[
         {
             name:"Customer",
@@ -40,14 +40,47 @@ const SignUp = ({ navigation }) => {
             tabs: "WarehouseTabs"
         }
     ]
-
+ 
     const [showPassword, setShowPassword] = useState(false)
-
+ 
     const [selectedMode, setSelectedMode] = useState(mode.filter(a => a.name== "Customer")[0])
     const [modalVisible, setModalVisible] = useState(false)
     const [ID, setID]= useState(null);
     const [password, setPassword]= useState(null);
-
+ 
+    
+  const authSubmitHandler = async () => {
+    // event.preventDefault();
+    
+    console.log(ID)
+    console.log(password)
+    console.log(selectedMode.name)
+    try {
+        const response = await fetch('https://localhost:5000/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            phoneNo: ID,
+            password: password,
+            userType: selectedMode.name
+          })
+        });
+ 
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+       
+        navigation.navigate(selectedMode.tabs)
+      } catch (err) {
+        console.log(err)
+        alert('Incorrect Credentials')
+      }
+  
+  };
+ 
     function renderLogo() {
         return (
             <View
@@ -71,7 +104,7 @@ const SignUp = ({ navigation }) => {
             </View>
         )
     }
-
+ 
     function renderForm() {
         return (
             <View
@@ -100,7 +133,7 @@ const SignUp = ({ navigation }) => {
                     />
                 </View>
                 
-
+ 
                 {/* Password */}
                 <View style={{ marginTop: SIZES.padding * 2 }}>
                     <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Password</Text>
@@ -173,11 +206,11 @@ const SignUp = ({ navigation }) => {
                                 />
                         </TouchableOpacity>
                     </View>
-
+ 
             </View>
         )
     }
-
+ 
     function renderButton() {
         return (
             <View style={{ margin: SIZES.padding * 3 }}>
@@ -196,16 +229,16 @@ const SignUp = ({ navigation }) => {
                         setID(null);
                         setPassword(null);
                         setSelectedMode(mode.filter(a => a.name== "Customer")[0])
-                        navigation.navigate(selectedMode.tabs)}}
+                        authSubmitHandler()}}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>SIGN IN</Text>
                 </TouchableOpacity>
             </View>
         )
     }
-
+ 
     function renderModeModal() {
-
+ 
         const renderItem = ({ item }) => {
             return (
                 <TouchableOpacity
@@ -219,7 +252,7 @@ const SignUp = ({ navigation }) => {
                 </TouchableOpacity>
             )
         }
-
+ 
         return (
             <Modal
                 animationType="slide"
@@ -254,7 +287,7 @@ const SignUp = ({ navigation }) => {
             </Modal>
         )
     }
-
+ 
     return (
        
         <KeyboardAvoidingView
@@ -276,5 +309,5 @@ const SignUp = ({ navigation }) => {
         
     )
 }
-
+ 
 export default SignUp;

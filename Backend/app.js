@@ -15,27 +15,38 @@ const DUMMY_USERS = [
         emailID: 'piyush',
         phoneNo: '9818284670',
         password: 'treats',
-        userType: 'customer'        // restaurant, warehouse, delivery
+        userType: 'Personnel',
+        wallet: 500.00  
     },
     {
         name: 'Wandan Tibrewal',
         emailID: 'wandan',
         phoneNo: '9818284671',
         password: 'treats',
-        userType: 'restaurant'
+        userType: 'Restaurant',
+        orders:[]
     },
     {
         name: 'Swapnil Ahlawat',
         emailID: 'swapnil',
         phoneNo: '9818284672',
         password: 'treats',
-        userType: 'customer'
+        userType: 'Customer', 
+        wallet: 500.10
     }
 ]
 connectDB();
 // User.insertMany(DUMMY_USERS);
 
 app.use(express.json({extended:false}));
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Headers','*');
+    res.setHeader('*');
+  
+    next();
+});
+
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
 // app.use('/restaurant', restaurantRouter);
