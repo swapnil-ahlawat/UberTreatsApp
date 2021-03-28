@@ -45,14 +45,14 @@ const SignUp = ({ navigation }) => {
  
     const [selectedMode, setSelectedMode] = useState(mode.filter(a => a.name== "Customer")[0])
     const [modalVisible, setModalVisible] = useState(false)
-    const [ID, setID]= useState(null);
+    const [phoneNo, setPhoneNo]= useState(null);
     const [password, setPassword]= useState(null);
  
     
   const authSubmitHandler = async () => {
     // event.preventDefault();
     
-    console.log(ID)
+    console.log(phoneNo)
     console.log(password)
     console.log(selectedMode.name)
     try {
@@ -63,7 +63,7 @@ const SignUp = ({ navigation }) => {
              'Content-Type': 'application/json'
           },
           body: JSON.stringify({
-            phoneNo: ID,
+            phoneNo: phoneNo,
             password: password,
             userType: selectedMode.name
           })
@@ -73,8 +73,11 @@ const SignUp = ({ navigation }) => {
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-       
+        else{
+        global.user = responseData
+        console.log(global.user.user)
         navigation.navigate(selectedMode.tabs)
+        }
       } catch (err) {
         console.log(err)
         alert('Incorrect Credentials')
@@ -116,7 +119,7 @@ const SignUp = ({ navigation }) => {
             >
                 {/* Full Name */}
                 <View style={{ marginTop: SIZES.padding * 3 }}>
-                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Email ID or Phone number</Text>
+                    <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Phone number</Text>
                     <TextInput
                         style={{
                             marginVertical: SIZES.padding,
@@ -126,11 +129,11 @@ const SignUp = ({ navigation }) => {
                             color: COLORS.white,
                             ...FONTS.body3
                         }}
-                        placeholder="Enter email or phone no."
+                        placeholder="Enter phone no."
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
-                        value= {ID}
-                        onChangeText={(text) => setID(text)}
+                        value= {phoneNo}
+                        onChangeText={(text) => setPhoneNo(text)}
                     />
                 </View>
                 
@@ -224,10 +227,10 @@ const SignUp = ({ navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={() => {
-                        global.ID= ID;
+                        global.phoneNo= phoneNo;
                         global.password= password;
                         global.modeTag= selectedMode.name;
-                        setID(null);
+                        setPhoneNo(null);
                         setPassword(null);
                         setSelectedMode(mode.filter(a => a.name== "Customer")[0])
                         authSubmitHandler()}}

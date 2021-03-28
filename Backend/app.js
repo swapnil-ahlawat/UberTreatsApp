@@ -42,14 +42,6 @@ connectDB();
 
 app.use(express.json({extended:false}));
 app.use(express.urlencoded({extended:false}));
-// app.use((req, res, next) => {
-//     res.setHeader('Access-Control-Allow-Origin', '*');
-//     res.setHeader('Access-Control-Allow-Headers','*');
-//     res.setHeader('*');
-  
-//     next();
-// });
-
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
 app.use('/package', packageRouter);
