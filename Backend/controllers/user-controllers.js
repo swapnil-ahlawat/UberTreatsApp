@@ -50,9 +50,11 @@ const placeOrder= async(req, res, next) =>{
 const getOrders= async(req, res, next) =>{
     const phoneNo= req.query.phoneNo;
     const userType= req.query.userType;
+    
     let identifiedUser= await User.findOne({phoneNo: phoneNo, userType}).exec().catch((error) => {
         return next(error);
     });
+    
     async function getOrderfromOrderID(item){
         return await Order.findOne({_id:mongoose.Types.ObjectId(item.orderID)}).exec().catch((error) => {
             return next(error);
@@ -71,7 +73,7 @@ const getOrders= async(req, res, next) =>{
 const removeOrder= async(req, res, next) =>{
     const{orderID, phoneNo}= req.body;
 
-    let identifiedUser= await User.updateOne({phoneNo}, {$pull: {orders:{orderID:orderID}}});
+    let identifiedUser= await User.updateOne({phoneNo}, {$pull: {orders: {orderID}}});
     // let orderArray=[]
     // for (index = 0; index < identifiedUser.orders.length; index++) {
     //     if(indentifiedUser.orders[index].orderID!==orderID){

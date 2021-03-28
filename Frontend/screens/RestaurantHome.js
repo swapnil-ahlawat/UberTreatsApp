@@ -27,13 +27,16 @@ const RestaurantHome = ({ navigation }) => {
   
 
     
-    const [orders, setorders] = React.useState(null)
-    const [currentLocation, setCurrentLocation] = React.useState(initialCurrentLocation)
+    const [orders, setOrders] = React.useState(null)
+    
+    React.useEffect(() => setOrders(fetchOrder()), [orders]);
 
-    const fetchOrder = async () => {
-        console.log(global.user.user.phoneNo)
+    
+
+    async function fetchOrder(){
+        console.log(global.user.phoneNo)
         
-        var url = "http://4323a6061dfd.ngrok.iouser/user/restaurant?phoneNo=" + global.user.user.phoneNo
+        var url = "http://c47f3fbd2a93.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo
         console.log(url)
         try {
         const response = await fetch(url, {
@@ -41,21 +44,24 @@ const RestaurantHome = ({ navigation }) => {
           headers: {
              Accept: 'application/json',
              'Content-Type': 'application/json'
-          },
+          }
         });
  
         const responseData = await response.json();
         if (!response.ok) {
           throw new Error(responseData.message);
         }
-        setorders(response)
-        navigation.navigate(selectedMode.tabs)
-      } catch (err) {
+        else{
+        console.log(responseData)
+        return responseData
+      }
+     } catch (err) {
         console.log(err)
+        return null
       }
   
        
-   };
+    };
 
 
 
@@ -74,7 +80,7 @@ const RestaurantHome = ({ navigation }) => {
                             
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>{currentLocation.address}</Text>
+                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>{global.user.address}</Text>
                     </View>
                 <TouchableOpacity
                     style={{
@@ -123,8 +129,8 @@ const RestaurantHome = ({ navigation }) => {
                         paddingHorizontal: SIZES.padding
                     }}
                 >
-                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item.name}</Text>
-                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>${item.price.toFixed(2)}</Text>
+                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item.customerName}</Text>
+                        {/* <Text style={{ ...FONTS.body3,color: COLORS.black }}>${item.price.toFixed(2)}</Text> */}
                  </View>   
                 <View
                     style={{
@@ -133,8 +139,8 @@ const RestaurantHome = ({ navigation }) => {
                         paddingHorizontal: SIZES.padding
                      }}
                 >
-                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.address}</Text>
-                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.quantity}</Text>
+                    {/* <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.address}</Text> */}
+                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}></Text>
                 </View>
              
             </TouchableOpacity>
@@ -142,7 +148,7 @@ const RestaurantHome = ({ navigation }) => {
 
         return (
             <View style={{ paddingHorizontal: SIZES.padding * 2,  marginTop:SIZES.padding*2}}>
-            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress (3)</Text>
+            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress ()</Text>
             <FlatList
                 data={orders}
                 keyExtractor={item => `${item.id}`}
@@ -155,7 +161,7 @@ const RestaurantHome = ({ navigation }) => {
         )
     }
 
-    fetchOrder();
+    
     return (
         
         <SafeAreaView style={styles.container}>
