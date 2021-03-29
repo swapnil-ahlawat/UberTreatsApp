@@ -225,8 +225,6 @@ const SignUp = ({ navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={() => {
-                        global.phoneNo= phoneNo;
-                        global.password= password;
                         global.modeTag= selectedMode.name;
                         setPhoneNo(null);
                         setPassword(null);

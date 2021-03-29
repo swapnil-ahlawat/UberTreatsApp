@@ -34,7 +34,7 @@ const Wallet = ({ navigation }) => {
     const [specialPromos, setSpecialPromos] = useState(specialPromoData)
     const [walletAmount,setWalletAmount] = useState(0)
 
-    const inFocus = navigation.addListener('focus', () => {
+    const inFocus = navigation.addListener('state', () => {
         setWalletAmount(global.user.wallet) 
       });
     

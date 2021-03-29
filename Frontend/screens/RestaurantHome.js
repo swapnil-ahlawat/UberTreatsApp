@@ -10,14 +10,14 @@ import {
     Platform,
     StatusBar
 } from "react-native";
-import { icons, images, SIZES, COLORS, FONTS } from '../constants'
+import { icons, images, SIZES, COLORS, FONTS, LINK } from '../constants'
  
-const RestaurantHome = ({ navigation }) => {
+const RestaurantHome = ({route, navigation }) => {
  
     const [orders, setOrders] = useState(null)
     const [fetchFlag,setFetchFlag] = useState(true)
 
-    const inFocus = navigation.addListener('focus', () => {
+    const inFocus = navigation.addListener('state', () => {
         setFetchFlag(true) 
       });
     
@@ -27,17 +27,13 @@ const RestaurantHome = ({ navigation }) => {
         };
       }, [navigation]);
     
-    
- 
-    
- 
     async function fetchOrder(){
         if (fetchFlag)
         {
         setFetchFlag(false)
         console.log(global.user.phoneNo)
         
-        var url = "https://4c77f765204e.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
+        var url = LINK+"/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
         console.log(url)
         try {
         const response = await fetch(url, {
@@ -57,8 +53,8 @@ const RestaurantHome = ({ navigation }) => {
         setOrders(responseData.pendingOrders)
       }
      } catch (err) {
-        console.log(err)
-        return null
+        console.log(err);
+        alert("Server Unreachable.");
       }
     }      
     };
@@ -88,7 +84,7 @@ const RestaurantHome = ({ navigation }) => {
                         paddingRight: SIZES.padding,
                         justifyContent: 'center'
                     }}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => navigation.navigate("SignUp")}
                 >
                     <Image
                         source={icons.signOut}
@@ -128,8 +124,8 @@ const RestaurantHome = ({ navigation }) => {
                         paddingHorizontal: SIZES.padding
                     }}
                 >
-                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item.customerName}</Text>
-                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item.foodItems.length}</Text>
+                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item?.customerName}</Text>
+                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>{item?.foodItems.length}</Text>
                  </View>   
                 <View
                     style={{
@@ -139,7 +135,7 @@ const RestaurantHome = ({ navigation }) => {
                      }}
                 >
                     {/* <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.address}</Text> */}
-                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.customerAddress}</Text>
+                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item?.customerAddress}</Text>
                 </View>
                 <View
                     style={{
@@ -149,7 +145,7 @@ const RestaurantHome = ({ navigation }) => {
                      }}
                 >
                     {/* <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.address}</Text> */}
-                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.customerPhoneNo}</Text>
+                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item?.customerPhoneNo}</Text>
                 </View>
              
             </TouchableOpacity>
@@ -160,7 +156,7 @@ const RestaurantHome = ({ navigation }) => {
             <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress ({orders?.length})</Text>
             <FlatList
                 data={orders}
-                keyExtractor={item => `${item._id}`}
+                keyExtractor={item => `${item?._id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingBottom: 30

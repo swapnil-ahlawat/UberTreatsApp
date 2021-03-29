@@ -15,13 +15,6 @@ import { COLORS, FONTS, SIZES, icons, images, LINK } from "../constants";
 
 
 const Scan = ({route, navigation }) => {
-    var modeTag= null;
-    if(route.params){
-        modeTag= route.params.modeTag;
-    }
-    else{
-        modeTag= global.modeTag;
-    }
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
@@ -29,15 +22,17 @@ const Scan = ({route, navigation }) => {
     const [order, setOrder]= useState(null);
     const [phoneNo, setPhoneNo]= useState(null);
     const [packageTag, setPackageTag]= useState(null); 
-
-    const inFocus = navigation.addListener('focus', () => {
+    const [modeTag, setModeTag]= useState(null);
+    
+    const inFocus = navigation.addListener('state', () => {
         setScanned(false);
         setSerialNumber(null);
         setOrder(null);
         setPhoneNo(global.user.phoneNo);
+        setModeTag(global.modeTag)
         let orderTemp=null;
         if(route.params){
-            modeTag= route.params.modeTag;
+            setModeTag(route.params.modeTag);
             orderTemp= route.params.order;
         }
         if(orderTemp){
@@ -69,6 +64,7 @@ const Scan = ({route, navigation }) => {
       }, []);
 
       async function addWalletMoney(){
+        console.log(modeTag);
         console.log(phoneNo);
         var url = LINK+"/user/addWalletMoney";
         try {
@@ -124,6 +120,36 @@ const Scan = ({route, navigation }) => {
         alert("Can't Process Order");
      }
    }
+
+   async function deletePackage(){
+        var url = LINK+ "/package/removePackage";
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    serialNumber: serialNumber,
+                })
+        });
+
+        const responseData = await response.json();
+        if (!response.ok) {
+            console.log("hi")
+            throw new Error(responseData.message);
+        }
+        else{
+            setModalVisible(true);
+        }
+        } catch (err) {
+            console.log(err)
+            alert("Cant Find Package");
+            setScanned(false);
+            setSerialNumber(null);
+        }
+    }
     async function scanPackage(){
         var url = LINK+ "/package/scanPackage";
         try {
@@ -142,6 +168,7 @@ const Scan = ({route, navigation }) => {
 
         const responseData = await response.json();
         if (!response.ok) {
+            console.log("hi")
             throw new Error(responseData.message);
         }
         else{
@@ -169,24 +196,29 @@ const Scan = ({route, navigation }) => {
       const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
         setSerialNumber(data);
-        scanPackage();
+        if(modeTag==="Warehouse"){
+            deletePackage();
+        }
+        else{
+            scanPackage();
+        }
       };
 
       const handleClicked = () => {
         //   setScanned(false);
           setModalVisible(false);
           if(modeTag==="Restaurant"){
-            navigation.navigate("RestaurantHome");
+            navigation.navigate("RestaurantHome", {fetch:false});
           }
           else if(modeTag === "RestaurantDelivery"){
-              navigation.navigate("RestaurantHome");
+              navigation.navigate("RestaurantHome", {fetch:false});
           }
           else if(modeTag === "Warehouse"){
               navigation.navigate("WarehouseHome");
           }
           else
           {
-              navigation.navigate("PersonnelHome");
+                navigation.navigate("PersonnelHome", {fetch:false});
           }
         };
     
@@ -302,7 +334,12 @@ const Scan = ({route, navigation }) => {
                     }}
                     onPress={() => {
                         setScanned(true);
-                        scanPackage();
+                        if(modeTag==="Warehouse"){
+                            deletePackage();
+                        }
+                        else{
+                            scanPackage();
+                        }
                     }}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>

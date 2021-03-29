@@ -1,6 +1,6 @@
 import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("window");
-export const LINK= "https://2fe833c33bc6.ngrok.io"
+export const LINK= "https://882406c64343.ngrok.io"
 export const COLORS = {
     // base colors
     primary: "#3FC060", // green

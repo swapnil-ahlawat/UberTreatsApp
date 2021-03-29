@@ -139,7 +139,7 @@ const CustomerHome = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_2,
-                name: "Jackson"
+                name: "Piyush Maheshwari"
             },
             menu: [
                 {
@@ -192,7 +192,7 @@ const CustomerHome = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_3,
-                name: "James"
+                name: "Piyush Maheshwari"
             },
             menu: [
                 {
@@ -221,7 +221,7 @@ const CustomerHome = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_4,
-                name: "Ahmad"
+                name: "Piyush Maheshwari"
             },
             menu: [
                 {
@@ -250,7 +250,7 @@ const CustomerHome = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_4,
-                name: "Muthu"
+                name: "Piyush Maheshwari"
             },
             menu: [
                 {
@@ -305,7 +305,7 @@ const CustomerHome = ({ navigation }) => {
             },
             courier: {
                 avatar: images.avatar_1,
-                name: "Jessie"
+                name: "Piyush Maheshwari"
             },
             menu: [
                 {

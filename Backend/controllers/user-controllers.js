@@ -3,15 +3,14 @@ const User = require('../database/User');
 const Order= require('../database/Order');
 
 const placeOrder= async(req, res, next) =>{
-    const {reusablePackageFlag, restaurantPhoneNo, restaurantCourier, orderItems, customer, walletUsed, total} = req.body;
-    let order={customerName:customer.name, customerAddress: customer.address, customerPhoneNo: customer.phoneNo, reusablePackageFlag, foodItems: orderItems}
+    const {reusablePackageFlag, restaurantPhoneNo, restaurantCourier, orderItems, customer, walletUsed, total, subtotal} = req.body;
+    let order={customerName:customer.name, customerAddress: customer.address, customerPhoneNo: customer.phoneNo, reusablePackageFlag, foodItems: orderItems, total:total, subtotal: subtotal}
     let orderModel = new Order(order);
     await orderModel.save();
     
     let identifiedRestaurant = await User.findOne({phoneNo: restaurantPhoneNo, userType: "Restaurant"}).exec().catch((error) => {
         return next(error);
     });
-
     identifiedRestaurant.orders.push({orderID: orderModel._id.toString()});
     await identifiedRestaurant.save();
 
@@ -85,6 +84,9 @@ const addWalletMoney= async(req, res, next) =>{
     let identifiedUser= await User.findOne({phoneNo, userType:"Customer"}).exec().catch((error) => {
         return next(error);
     });
+    if(!identifiedUser){
+        res.sendStatus(404);
+    }
     let money= identifiedUser.wallet;
     money+= parseFloat(amount);
     identifiedUser.wallet= money;

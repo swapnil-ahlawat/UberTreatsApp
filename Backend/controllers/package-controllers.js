@@ -8,11 +8,14 @@ const scanPackage= async(req, res, next) => {
     const identifiedPackage = await Package.findOne({serialNumber}).exec().catch((error) => {
         return next(error);
     });
+    if(!identifiedPackage){
+        res.sendStatus(404);
+    }
     let userPhoneNo= identifiedPackage.userPhoneNo;
     identifiedPackage.userPhoneNo= phoneNo;
     identifiedPackage.packageTag= packageTag;
     identifiedPackage.save();
-
+    console.log(userPhoneNo);
     res.json({
         message: 'Tag changed sucessfully!',
         userPhoneNo: userPhoneNo
@@ -42,6 +45,7 @@ const addPackage= async(req, res, next) => {
     
     res.json({
         message: 'Added the packages successfully!',
+        restaurant: identifiedRestaurant.name
     });
 }
 
@@ -50,7 +54,7 @@ const removePackage = async(req, res, next) => {
     const {serialNumber} = req.body;
     await Package.deleteOne({serialNumber}, function(error) {
         if(error){
-            sendStatus(404);
+            res.sendStatus(404);
         }
     })
     

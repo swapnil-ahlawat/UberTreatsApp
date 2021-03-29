@@ -12,13 +12,46 @@ import {
     Image
 } from "react-native"
 
-import { COLORS, SIZES, FONTS, icons, images } from "../constants"
+import { COLORS, SIZES, FONTS, icons, images, LINK } from "../constants"
 
 const WarehouseHome = ({ navigation }) => {
 
     const [restaurant, setRestaurant]= useState(null);
     const [lotNumber, SetLotNumber]= useState(null);
+    const [lotSize, SetLotSize]= useState(null);
     const [modalVisible, setModalVisible] = useState(false);
+    const [restaurantName, setRestaurantName] = useState(null);
+
+    const addPackageHandler = async () => {
+    
+        try {
+            const response = await fetch(LINK+'/package/addPackage', {
+              method: 'POST',
+              headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                lotNumber: lotNumber, 
+                restaurantPhoneNo: restaurant, 
+                numPackages:lotSize
+              })
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+              throw new Error(responseData.message);
+            }
+            else{
+                console.log("Successful");
+                setRestaurantName(responseData.restaurant);
+                setModalVisible(true);
+            }
+          } catch (err) {
+            console.log(err)
+            alert('Cannot Process')
+          }
+      
+    };
 
     function renderHeader() {
         return (
@@ -43,7 +76,7 @@ const WarehouseHome = ({ navigation }) => {
                         paddingRight: SIZES.padding,
                         justifyContent: 'center'
                     }}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => navigation.navigate("SignUp")}
                 >
                     <Image
                         source={icons.signOut}
@@ -106,6 +139,25 @@ const WarehouseHome = ({ navigation }) => {
                     />
                 </View>
 
+                <View style={{ marginTop: SIZES.padding * 3 }}>
+                    <Text style={{ color: COLORS.white, ...FONTS.body2 }}>Enter Lot Size</Text>
+                    <TextInput
+                        style={{
+                            marginVertical: SIZES.padding,
+                            borderBottomColor: COLORS.white,
+                            borderBottomWidth: 1,
+                            height: 40,
+                            color: COLORS.white,
+                            ...FONTS.body3
+                        }}
+                        placeholder="Enter Lot Size"
+                        placeholderTextColor={COLORS.white}
+                        selectionColor={COLORS.white}
+                        value= {lotSize}
+                        onChangeText={(text) => SetLotSize(text)}
+                    />
+                </View>
+
                
             </View> 
         )
@@ -123,7 +175,7 @@ const WarehouseHome = ({ navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={()=>{
-                        setModalVisible(true)
+                        addPackageHandler();
                     }}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Add Packages</Text>
@@ -143,7 +195,7 @@ const WarehouseHome = ({ navigation }) => {
                     onPress={() => {
                         setRestaurant(null);
                         SetLotNumber(null);
-                        
+                        SetLotSize(null);
                         setModalVisible(false);
                     }}
                 >
@@ -183,7 +235,7 @@ const WarehouseHome = ({ navigation }) => {
                                     width: SIZES.width * 0.8
 
 
-                            }}>Packages in Lot no. {lotNumber} are now in transit to {restaurant}.</Text>
+                            }}>Packages with Lot no. {lotNumber} are now in transit to {restaurantName}.</Text>
 
                         </View>
                     </View>

@@ -24,7 +24,14 @@ const order = new mongoose.Schema({
         price:{
             type: Float, required: true       
         }
-    }]
+    },  
+    ],
+    total:{
+        type:Number,
+    },
+    subtotal:{
+        type:Number
+    }
 });
 
 module.exports = Order = mongoose.model('Order', order);

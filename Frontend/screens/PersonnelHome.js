@@ -14,12 +14,6 @@ import { icons, images, SIZES, COLORS, FONTS, LINK } from '../constants'
 
 const PersonnelHome = ({ navigation }) => {
 
-    // Dummy Datas
-
-    const deliveryPersonData = {
-        Name: "Prakash",
-    }
-
     const deliveryData = [
         {
             order_id: 1,
@@ -32,10 +26,6 @@ const PersonnelHome = ({ navigation }) => {
             quantity: "2 items",
             payment_mode: "Cash on delivery",
             delivery_made: false,
-            location: {
-                latitude: 1.5347282806345879,
-                longitude: 110.35632207358996,
-            },
               order_details: [
                 {   food_id: 1,
                     name: "Zinger Burger",
@@ -63,10 +53,6 @@ const PersonnelHome = ({ navigation }) => {
             restaurant: "Amrik Sukhdev Dhaba",
             order_deadline: "March 24,2019 15:42",
             payment_mode: "Uber Wallet",
-            location: {
-                latitude: 1.5347282806345879,
-                longitude: 120.35632207358996,
-            },
              order_details: [
                 {  food_id: 1,
                     name: "Red-sauce Pasta",
@@ -114,10 +100,6 @@ const PersonnelHome = ({ navigation }) => {
             address: "Pacific C",
             payment_mode: "Cash on delivery",
             resuablePackage: true,
-            location: {
-                latitude: 1.2347282806345879,
-                longitude: 120.35632207358996,
-            },
               order_details: [
                 {   food_id: 1,
                     name: "Red-sauce Pasta",
@@ -143,7 +125,7 @@ const PersonnelHome = ({ navigation }) => {
     const [orders, setOrders] = useState(null)
     const [fetchFlag,setFetchFlag] = useState(true)
 
-    const inFocus = navigation.addListener('focus', () => {
+    const inFocus = navigation.addListener('state', () => {
         setFetchFlag(true) 
     });
     
@@ -180,7 +162,7 @@ const PersonnelHome = ({ navigation }) => {
         }
         } catch (err) {
             console.log(err)
-            return null
+            alert("Server Unreachable.");
         }
     }};
  
@@ -210,7 +192,7 @@ const PersonnelHome = ({ navigation }) => {
                         paddingRight: SIZES.padding,
                         justifyContent: 'center'
                     }}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => navigation.navigate("SignUp")}
                 >
                     <Image
                         source={icons.signOut}

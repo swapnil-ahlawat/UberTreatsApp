@@ -216,6 +216,15 @@ const Order = ({ route, navigation }) => {
     }
     function renderPlaceOrderButton(){
         const placeOrderHandler = async () => {
+            let hello={reusablePackageFlag: reusablePackage,
+                restaurantPhoneNo: restaurant.phoneNo,
+                restaurantCourier: restaurant.courier.name,
+                orderItems: orderItems,
+                customer: global.user,
+                walletUsed: checked,
+                total: calculateTotal(),
+                subtotal: sumOrder()}
+            console.log(hello);
             try {
                 const response = await fetch(LINK+'/user/placeOrder', {
                   method: 'POST',
@@ -230,7 +239,8 @@ const Order = ({ route, navigation }) => {
                     orderItems: orderItems,
                     customer: global.user,
                     walletUsed: checked,
-                    total: sumOrder()
+                    total: calculateTotal(),
+                    subtotal: sumOrder()
                   })
                 });
                 const responseData = await response.json();
