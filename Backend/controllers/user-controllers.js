@@ -73,7 +73,9 @@ const removeOrder= async(req, res, next) =>{
     const identifiedUser = await User.findOne({phoneNo});
     if(!identifiedUser)
     {
-        return res.sendCode(404);
+        return res.status(404).send({
+            message: "User Not Found."
+         });
     }
     identifiedUser.orders = identifiedUser.orders.filter(p => {
         return p.orderID !== orderID;
@@ -93,14 +95,42 @@ const addWalletMoney= async(req, res, next) =>{
         return next(error);
     });
     if(!identifiedUser){
-        res.sendStatus(404);
+        return res.status(404).send({
+            message: "User Not Found."
+         });
     }
     let money= identifiedUser.wallet;
     money+= parseFloat(amount);
     identifiedUser.wallet= money;
     identifiedUser.save();
     res.json({
-        message: 'Order removed Successfully!',
+        message: 'Money Added Successfully!',
+        user: identifiedUser
+    });
+}
+
+const givePromoReward= async(req, res, next) =>{
+    const {phoneNo}= req.body;
+    
+    let identifiedUser= await User.findOne({phoneNo, userType:"Customer"}).exec().catch((error) => {
+        return next(error);
+    });
+    if(!identifiedUser){
+        return res.status(404).send({
+            message: "User Not Found."
+         })
+    }
+    let discountAmount= Math.floor((Math.random() * 10) + 10);
+    let code= Math.floor((Math.random() * 10000));
+    let promo= {
+        title: "Special Reward",
+        description: "Get extra "+discountAmount+"%* off on your next order!",
+        promoCode: "REUSE"+code
+    }
+    identifiedUser.promos.push(promo);
+    identifiedUser.save();
+    res.json({
+        message: 'Promo Rewarded Successfully!',
         user: identifiedUser
     });
 }
@@ -109,3 +139,4 @@ exports.placeOrder = placeOrder;
 exports.getOrders= getOrders;
 exports.removeOrder= removeOrder;
 exports.addWalletMoney= addWalletMoney;
+exports.givePromoReward=givePromoReward;

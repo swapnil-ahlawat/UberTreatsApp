@@ -33,7 +33,7 @@ const RestaurantHome = ({route, navigation }) => {
         setFetchFlag(false)
         console.log(global.user.phoneNo)
         
-        var url = LINK+"/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
+        var url = LINK+"/user/getOrders?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
         console.log(url)
         try {
         const response = await fetch(url, {

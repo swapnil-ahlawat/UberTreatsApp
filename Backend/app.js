@@ -4,9 +4,6 @@ const connectDB = require('./database/connection');
 const loginRouter = require('./routes/login-routes');
 const userRouter = require('./routes/user-routes');
 const packageRouter = require('./routes/package-routes');
-const orderRouter = require('./routes/order-routes');
-// const restaurantRouter = require('./routes/restaurant-routes');
-// const deliveryRouter = require('./routes/delivery-routes');
 
 const app = express();
 
@@ -33,7 +30,12 @@ const DUMMY_USERS = [
         password: 'treats',
         userType: 'Customer', 
         address: "Dwarka, New Delhi",
-        wallet: 500.10
+        wallet: 500.10,
+        promos:[{
+            title: "Special Reward",
+            description: "Get extra 10%* off on your next order!",
+            promoCode: "REUSE1"
+        },]
     },
     {
         name: 'Swapnil Ahlawat',
@@ -53,7 +55,6 @@ app.use(express.urlencoded({extended:false}));
 app.use('/login', loginRouter);
 app.use('/user', userRouter);
 app.use('/package', packageRouter);
-app.use('/order', orderRouter);
 
 app.use((error, req, res, next) => {
     if(res.headerSent){

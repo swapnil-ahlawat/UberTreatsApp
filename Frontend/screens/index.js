@@ -9,6 +9,7 @@ import Wallet from "./Wallet"
 import Cart from "./Cart";
 import DeliverOrder from "./DeliverOrder"
 import WarehouseHome from "./WarehouseHome"
+import WarehouseRestaurant from "./WarehouseRestaurant"
 
 export {
     Cart,
@@ -21,6 +22,6 @@ export {
     SignUp,
     Scan,
     Wallet,
-    WarehouseHome
-   
+    WarehouseHome,
+    WarehouseRestaurant   
 }

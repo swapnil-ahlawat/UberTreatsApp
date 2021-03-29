@@ -34,6 +34,55 @@ const Order = ({ route, navigation }) => {
         }
     })
 
+    const placeOrderHandler = async () => {
+        let hello={reusablePackageFlag: reusablePackage,
+            restaurantPhoneNo: restaurant.phoneNo,
+            restaurantCourier: restaurant.courier.name,
+            orderItems: orderItems,
+            customer: global.user,
+            walletUsed: checked,
+            total: calculateTotal(),
+            subtotal: sumOrder()}
+        console.log(hello);
+        try {
+            const response = await fetch(LINK+'/user/placeOrder', {
+              method: 'POST',
+              headers: {
+                 Accept: 'application/json',
+                 'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                reusablePackageFlag: reusablePackage,
+                restaurantPhoneNo: restaurant.phoneNo,
+                restaurantCourier: restaurant.courier.name,
+                orderItems: orderItems,
+                customer: global.user,
+                walletUsed: checked,
+                total: calculateTotal(),
+                subtotal: sumOrder()
+              })
+            });
+            const responseData = await response.json();
+            if (!response.ok) {
+              alert('Error in placing order. Please try again later.')
+              throw new Error(responseData.message);
+            }
+            else{
+                if(response.message ==="NotEnough"){
+                    alert("Not Enough Money in Wallet!");
+                }
+                else{
+                    setModalVisible(true);
+                }
+                global.user= responseData.user;  
+            }
+          } 
+        catch (err) {
+            console.log(err);
+            alert('Error in placing order. Please try again later.')
+        }
+      
+    };
     function renderHeader() {
         return (
             <View style={{ flexDirection: 'row' }}>
@@ -215,54 +264,6 @@ const Order = ({ route, navigation }) => {
         )
     }
     function renderPlaceOrderButton(){
-        const placeOrderHandler = async () => {
-            let hello={reusablePackageFlag: reusablePackage,
-                restaurantPhoneNo: restaurant.phoneNo,
-                restaurantCourier: restaurant.courier.name,
-                orderItems: orderItems,
-                customer: global.user,
-                walletUsed: checked,
-                total: calculateTotal(),
-                subtotal: sumOrder()}
-            console.log(hello);
-            try {
-                const response = await fetch(LINK+'/user/placeOrder', {
-                  method: 'POST',
-                  headers: {
-                     Accept: 'application/json',
-                     'Content-Type': 'application/json'
-                  },
-                  body: JSON.stringify({
-                    reusablePackageFlag: reusablePackage,
-                    restaurantPhoneNo: restaurant.phoneNo,
-                    restaurantCourier: restaurant.courier.name,
-                    orderItems: orderItems,
-                    customer: global.user,
-                    walletUsed: checked,
-                    total: calculateTotal(),
-                    subtotal: sumOrder()
-                  })
-                });
-                const responseData = await response.json();
-                if (!response.ok) {
-                  alert('Error in placing order. Please try again later.')
-                  throw new Error(responseData.message);
-                }
-                else{
-                    if(response.message ==="NotEnough"){
-                        alert("Not Enough Money in Wallet!");
-                    }
-                    else{
-                        setModalVisible(true);
-                    }
-                    global.user= responseData.user;  
-                }
-              } catch (err) {
-                console.log(err);
-                alert('Error in placing order. Please try again later.')
-              }
-          
-          };
         return(
             <TouchableOpacity
                 style={{

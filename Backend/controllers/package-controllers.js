@@ -9,61 +9,80 @@ const scanPackage= async(req, res, next) => {
         return next(error);
     });
     if(!identifiedPackage){
-        res.sendStatus(404);
+        return res.status(404).send({
+            message: "Package Not Found."
+         });
     }
+
     let userPhoneNo= identifiedPackage.userPhoneNo;
     identifiedPackage.userPhoneNo= phoneNo;
     identifiedPackage.packageTag= packageTag;
+    if(packageTag==="Warehouse"){
+        identifiedPackage.count+=1;
+        identifiedPackage.userPhoneNo=null;
+    }
     identifiedPackage.save();
     console.log(userPhoneNo);
     res.json({
         message: 'Tag changed sucessfully!',
         userPhoneNo: userPhoneNo
     });  
+
 }
 
 const addPackage= async(req, res, next) => {
-    const {lotNumber, restaurantPhoneNo, numPackages} = req.body;
+    const {lotNumber,  numPackages} = req.body;
     
-    let identifiedRestaurant = await User.findOne({phoneNo: restaurantPhoneNo, userType: "Restaurant"}).exec().catch((error) => {
-        return next(error);
-    });
-
-    if(!identifiedRestaurant)
-    {
-        return res.sendStatus(404);
-    }
     for(i=0; i<parseInt(numPackages); i++)
     {
         let newPackage = new Package({
             serialNumber: lotNumber.concat(("00" + i).slice (-3)),
-            userPhoneNo: restaurantPhoneNo,
-            packageTag: "Restaurant"
+            userPhoneNo: null,
+            packageTag: "Warehouse"
         }); 
         await newPackage.save();
     }
     
     res.json({
         message: 'Added the packages successfully!',
-        restaurant: identifiedRestaurant.name
     });
 }
 
+const sendPackage= async(req, res, next) => {
+    const {phoneNo,  numPackages} = req.body;
+    
+    let identifiedRestaurant = await User.findOne({phoneNo: phoneNo, userType: "Restaurant"}).exec().catch((error) => {
+        return next(error);
+    });
 
-const removePackage = async(req, res, next) => {
-    const {serialNumber} = req.body;
-    await Package.deleteOne({serialNumber}, function(error) {
-        if(error){
-            res.sendStatus(404);
-        }
-    })
+    if(!identifiedRestaurant){
+        return res.status(404).send({
+            message: "Restaurant not found!"
+         });
+    }
+    let packages = await Package.find({packageTag:"Warehouse"}).exec().catch((error) => {
+        return next(error);
+    });
+
+    if(packages.length<numPackages){
+        return res.status(404).send({
+            message: "Not enough packages!"
+         });
+    }
+
+    for(i=0; i<parseInt(numPackages); i++)
+    {
+        packages[i].packageTag= "Restaurant";
+        packages[i].userPhoneNo= phoneNo; 
+        await packages[i].save();
+    }
     
     res.json({
-        message: 'Package removed successfully!',
+        message: 'Packages sent successfully!',
+        restaurantName: identifiedRestaurant.name
     });
 }
-
 
 exports.scanPackage = scanPackage;
 exports.addPackage = addPackage;
-exports.removePackage= removePackage;
+exports.sendPackage= sendPackage;

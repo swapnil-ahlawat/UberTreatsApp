@@ -29,6 +29,19 @@ const user = new mongoose.Schema({
         type: String
       }
     }
+  ],
+  promos:[
+    {
+        title: {
+          type:String
+        },
+        description:{
+          type:String
+        },
+        promoCode:{
+          type:String
+        }
+    }
   ]
 });
 

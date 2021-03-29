@@ -94,7 +94,7 @@ const SignUp = ({ navigation }) => {
                     
                 }}
             >
-                <Image
+                {/* <Image
                     source={images.uberEatsLogo}
                     resizeMode="contain"
                     style={{
@@ -102,7 +102,9 @@ const SignUp = ({ navigation }) => {
                         width: "50%",
                        
                     }}
-                />
+                /> */}
+                <Text style={{...FONTS.largeTitle,fontSize: 60, color: COLORS.white}}>Uber</Text>
+                <Text style={{...FONTS.largeTitle,fontSize: 45, color: COLORS.primary}}>Treats</Text>
             </View>
         )
     }
@@ -115,7 +117,7 @@ const SignUp = ({ navigation }) => {
                     marginHorizontal: SIZES.padding * 3,
                 }}
             >
-                {/* Full Name */}
+        
                 <View style={{ marginTop: SIZES.padding * 3 }}>
                     <Text style={{ color: COLORS.lightGreen, ...FONTS.body2 }}>Phone number</Text>
                     <TextInput

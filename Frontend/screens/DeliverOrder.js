@@ -36,31 +36,6 @@ const DeliverOrder = ({ route, navigation }) => {
         let {item} = route.params;
         setOrder(item)
     })
-    async function deleteOrderFromDatabase(){
-        var url = LINK+"/order";
-       try {
-       const response = await fetch(url, {
-         method: 'POST',
-         headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json'
-         },
-         body: JSON.stringify({
-           orderID: order._id,
-         })
-       });
-
-       const responseData = await response.json();
-       if (!response.ok) {
-         throw new Error(responseData.message);
-       }
-       else{
-           console.log("Package Deleted from Database")
-       }
-     } catch (err) {
-       console.log(err)
-     }
-   }
 
     async function deleteOrder(){
         var url = LINK+"/user/removeOrder";
@@ -84,7 +59,6 @@ const DeliverOrder = ({ route, navigation }) => {
        }
        else{
            global.user= responseData.user;
-           deleteOrderFromDatabase();
            setModalVisible(true)
        }
      } catch (err) {

@@ -13,24 +13,26 @@ import {
 } from "react-native"
 
 import { COLORS, SIZES, FONTS, icons, images, LINK } from "../constants"
+import Restaurant from "./Restaurant";
 
-const WarehouseHome = ({ navigation }) => {
+const WarehouseRestaurant = ({ navigation }) => {
 
-    const [lotNumber, SetLotNumber]= useState(null);
-    const [lotSize, SetLotSize]= useState(null);
+    const [phoneNumber, setPhoneNumber]= useState(null);
+    const [lotSize, setLotSize]= useState(null);
+    const [restaurant, setRestaurant]= useState(null);
     const [modalVisible, setModalVisible] = useState(false);
 
-    const addPackageHandler = async () => {
+    const sendPackageHandler = async () => {
     
         try {
-            const response = await fetch(LINK+'/package/addPackage', {
+            const response = await fetch(LINK+'/package/sendPackage', {
               method: 'POST',
               headers: {
                  Accept: 'application/json',
                  'Content-Type': 'application/json'
               },
               body: JSON.stringify({
-                lotNumber: lotNumber, 
+                phoneNo: phoneNumber, 
                 numPackages:lotSize
               })
             });
@@ -40,11 +42,12 @@ const WarehouseHome = ({ navigation }) => {
             }
             else{
                 console.log("Successful");
+                setRestaurant(responseData.restaurantName);
                 setModalVisible(true);
             }
           } catch (err) {
             console.log(err)
-            alert('Cannot Process')
+            alert(err)
           }
       
     };
@@ -56,14 +59,14 @@ const WarehouseHome = ({ navigation }) => {
                     <View
                         style={{
                             height: 50,
-                            width: "60%",
+                            width: "70%",
                             justifyContent: 'center',
                             paddingHorizontal: SIZES.padding * 3,
                             borderBottomRightRadius: SIZES.radius,
                             backgroundColor: COLORS.primary
                         }}
                     >
-                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>Get Packages</Text>
+                        <Text style={{ ...FONTS.h3,color: COLORS.white }}>Dispatch Packages</Text>
                     </View>  
 
                       <TouchableOpacity
@@ -98,7 +101,7 @@ const WarehouseHome = ({ navigation }) => {
                 }}
             >        
                 <View style={{ marginTop: SIZES.padding * 3 }}>
-                    <Text style={{ color: COLORS.white, ...FONTS.body2 }}>Enter Box Lot Number</Text>
+                    <Text style={{ color: COLORS.white, ...FONTS.body2 }}>Enter Restaurant Phone Number</Text>
                     <TextInput
                         style={{
                             marginVertical: SIZES.padding,
@@ -108,11 +111,11 @@ const WarehouseHome = ({ navigation }) => {
                             color: COLORS.white,
                             ...FONTS.body3
                         }}
-                        placeholder="Enter Lot Number"
+                        placeholder="Enter Phone Number"
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
-                        value= {lotNumber}
-                        onChangeText={(text) => SetLotNumber(text)}
+                        value= {phoneNumber}
+                        onChangeText={(text) => setPhoneNumber(text)}
                     />
                 </View>
 
@@ -131,7 +134,7 @@ const WarehouseHome = ({ navigation }) => {
                         placeholderTextColor={COLORS.white}
                         selectionColor={COLORS.white}
                         value= {lotSize}
-                        onChangeText={(text) => SetLotSize(text)}
+                        onChangeText={(text) => setLotSize(text)}
                     />
                 </View>
 
@@ -152,10 +155,10 @@ const WarehouseHome = ({ navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={()=>{
-                        addPackageHandler();
+                        sendPackageHandler();
                     }}
                 >
-                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Add Packages</Text>
+                    <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Send Packages</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -170,8 +173,8 @@ const WarehouseHome = ({ navigation }) => {
             >
                 <TouchableWithoutFeedback
                     onPress={() => {
-                        SetLotNumber(null);
-                        SetLotSize(null);
+                        setPhoneNumber(null);
+                        setLotSize(null);
                         setModalVisible(false);
                     }}
                 >
@@ -211,7 +214,7 @@ const WarehouseHome = ({ navigation }) => {
                                     width: SIZES.width * 0.8
 
 
-                            }}>Packages with Lot no. {lotNumber} added to Warehouse database.</Text>
+                            }}>{lotSize} packages have been sent to {restaurant}.</Text>
                         </View>
                     </View>
                 </TouchableWithoutFeedback>
@@ -231,4 +234,4 @@ const WarehouseHome = ({ navigation }) => {
     )
 }
 
-export default WarehouseHome;
+export default WarehouseRestaurant;

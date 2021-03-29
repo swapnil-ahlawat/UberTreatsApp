@@ -34,21 +34,25 @@ const Scan = ({route, navigation }) => {
         if(route.params){
             setModeTag(route.params.modeTag);
             orderTemp= route.params.order;
+            if(orderTemp){
+                setOrder(orderTemp);
+                setPhoneNo(orderTemp.customerPhoneNo);
+            }
         }
-        if(orderTemp){
-            setOrder(orderTemp);
-            setPhoneNo(orderTemp.customerPhoneNo);
-        }
-        if(modeTag==="RestaurantDelivery"){
+
+        if(route.params && route.params.modeTag==="RestaurantDelivery"){
             setPackageTag("Customer");
         }
-        else if(modeTag==="Restaurant"){
+        else if(global.modeTag==="Restaurant"){
             setPackageTag("Collected");
         }
-        else {
+        else if(global.modeTag==="Warehouse"){
+            setPackageTag("Warehouse");   
+        }
+        else{
             setPackageTag("Personnel");
         }
-      });
+    });
     
       useEffect(() => {    
         return () => {
@@ -62,7 +66,32 @@ const Scan = ({route, navigation }) => {
           setHasPermission(status === 'granted');
         })();
       }, []);
+      
+      async function addPromoReward(phoneNo){
+            var url = LINK+"/user/givePromoReward";
+            try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    phoneNo
+                })
+            });
 
+        const responseData = await response.json();
+        if (!response.ok) {
+            throw new Error(responseData.message);
+        }
+        else{
+            setModalVisible(true);           
+        }
+        } catch (err) {
+            alert("Can't Process Order");
+        }
+    }
       async function addWalletMoney(phoneNo){
         console.log(phoneNo +"wallet")
         var url = LINK+"/user/addWalletMoney";
@@ -84,8 +113,7 @@ const Scan = ({route, navigation }) => {
          throw new Error(responseData.message);
        }
        else{
-           console.log(responseData.user)
-           setModalVisible(true);           
+           console.log(responseData.user)         
        }
      } catch (err) {
         alert("Can't Process Order");
@@ -120,36 +148,10 @@ const Scan = ({route, navigation }) => {
      }
    }
 
-   async function deletePackage(){
-        var url = LINK+ "/package/removePackage";
-        try {
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    Accept: 'application/json',
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    serialNumber: serialNumber,
-                })
-        });
-
-        const responseData = await response.json();
-        if (!response.ok) {
-            console.log("hi")
-            throw new Error(responseData.message);
-        }
-        else{
-            setModalVisible(true);
-        }
-        } catch (err) {
-            console.log(err)
-            alert("Cant Find Package");
-            setScanned(false);
-            setSerialNumber(null);
-        }
-    }
-    async function scanPackage(){
+    async function scanPackage(serialNumber){
+        console.log(modeTag);
+        console.log(serialNumber);
+        console.log(packageTag)
         var url = LINK+ "/package/scanPackage";
         try {
             const response = await fetch(url, {
@@ -177,7 +179,8 @@ const Scan = ({route, navigation }) => {
             }
             else if(modeTag==="Delivery Personnel"){
                 console.log(responseData.userPhoneNo +"response")
-                addWalletMoney(responseData.userPhoneNo );
+                addWalletMoney(responseData.userPhoneNo);
+                addPromoReward(responseData.userPhoneNo);
             }
             else{
                 setModalVisible(true)
@@ -193,18 +196,13 @@ const Scan = ({route, navigation }) => {
 
 
       const handleBarCodeScanned = ({ type, data }) => {
-        setScanned(true);
-        setSerialNumber(data);
-        if(modeTag==="Warehouse"){
-            deletePackage();
-        }
-        else{
-            scanPackage();
-        }
+            setScanned(true);
+            setSerialNumber(data);
+            scanPackage(data);
       };
 
       const handleClicked = () => {
-        //   setScanned(false);
+          setScanned(true);
           setModalVisible(false);
           if(modeTag==="Restaurant"){
             navigation.navigate("RestaurantHome", {fetch:false});
@@ -217,7 +215,7 @@ const Scan = ({route, navigation }) => {
           }
           else
           {
-                navigation.navigate("PersonnelHome", {fetch:false});
+            navigation.navigate("PersonnelHome", {fetch:false});
           }
         };
     
@@ -333,12 +331,8 @@ const Scan = ({route, navigation }) => {
                     }}
                     onPress={() => {
                         setScanned(true);
-                        if(modeTag==="Warehouse"){
-                            deletePackage();
-                        }
-                        else{
-                            scanPackage();
-                        }
+                        scanPackage(serialNumber);
+
                     }}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>

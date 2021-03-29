@@ -141,7 +141,7 @@ const PersonnelHome = ({ navigation }) => {
         setFetchFlag(false)
         console.log(global.user.phoneNo)
         
-        var url = LINK+"/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Delivery Personnel"
+        var url = LINK+"/user/getOrders?phoneNo=" + global.user.phoneNo + "&userType=Delivery Personnel"
         console.log(url)
         try {
             const response = await fetch(url, {
