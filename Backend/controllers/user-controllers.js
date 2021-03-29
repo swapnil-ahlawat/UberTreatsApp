@@ -80,7 +80,6 @@ const placeOrder = async (req, res, next) => {
 const getOrders = async (req, res, next) => {
   const phoneNo = req.query.phoneNo;
   const userType = req.query.userType;
-
   let identifiedUser = await User.findOne({ phoneNo: phoneNo, userType })
     .exec()
     .catch((error) => {
@@ -96,7 +95,7 @@ const getOrders = async (req, res, next) => {
   let pendingOrders = [];
   for (index = 0; index < identifiedUser.orders.length; index++) {
     let order = await Order.findOne({
-      _id: mongoose.Types.ObjectId(item.orderID),
+      _id: mongoose.Types.ObjectId(identifiedUser.orders[index].orderID),
     })
       .exec()
       .catch((error) => {

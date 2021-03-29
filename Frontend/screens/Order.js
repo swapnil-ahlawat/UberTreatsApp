@@ -16,7 +16,7 @@ import {
 
 import { icons, COLORS, SIZES, FONTS, LINK } from '../constants';
 
-// Screen on which complete selected pending order is displayed
+// Screen on which complete details of selected pending order is displayed
 const Order = ({ route, navigation }) => {
   const [order, setOrder] = useState(null);
   const [isSelected, setSelection] = useState(false);
@@ -125,7 +125,7 @@ const Order = ({ route, navigation }) => {
         <View style={{ flexDirection: 'row' }}>
           <Text
             style={{
-              width: '10%',
+              width: '15%',
               paddingLeft: SIZES.padding,
               ...FONTS.body3,
               color: COLORS.black,
@@ -137,7 +137,7 @@ const Order = ({ route, navigation }) => {
           <Text
             style={{
               paddingLeft: SIZES.padding,
-              width: '55%',
+              width: '50%',
               ...FONTS.body3,
               color: COLORS.black,
             }}
@@ -182,9 +182,7 @@ const Order = ({ route, navigation }) => {
     if (isSelected) img = icons.success;
     else img = icons.cross;
     return (
-      <View
-        style={{ height: 150, marginTop: SIZES.padding, flexDirection: 'row' }}
-      >
+      <View style={{ marginTop: SIZES.padding * 5, flexDirection: 'row' }}>
         <View style={{ justifyContent: 'center' }}>
           <Text
             style={{
@@ -213,26 +211,33 @@ const Order = ({ route, navigation }) => {
           >
             {order?.customerPhoneNo}
           </Text>
-        </View>
+          {/* </View> */}
 
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text
+          <View
             style={{
-              ...FONTS.body3,
-              color: COLORS.white,
-              paddingHorizontal: 3 * SIZES.padding,
+              flexDirection: 'row',
+              alignItems: 'center',
+              marginTop: SIZES.padding,
             }}
           >
-            Resuable Packaging
-          </Text>
-          <Image
-            source={img}
-            resizeMode="contain"
-            style={{
-              height: 25,
-              width: 25,
-            }}
-          />
+            <Text
+              style={{
+                ...FONTS.body3,
+                color: COLORS.white,
+                paddingLeft: 2 * SIZES.padding,
+              }}
+            >
+              Resuable Packaging
+            </Text>
+            <Image
+              source={img}
+              resizeMode="contain"
+              style={{
+                height: 25,
+                width: 25,
+              }}
+            />
+          </View>
         </View>
       </View>
     );

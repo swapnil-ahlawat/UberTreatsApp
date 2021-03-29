@@ -469,7 +469,7 @@ const Restaurant = ({ route, navigation }) => {
                   }}
                 >
                   The restaurant offers an option for reusable packaging. You'll
-                  be charged $4 extra for it.
+                  be charged $1 extra for it.
                 </Text>
                 <Text
                   style={{
@@ -538,7 +538,7 @@ const Restaurant = ({ route, navigation }) => {
               <View
                 style={{
                   margin: SIZES.padding * 2,
-                  marginTop: SIZES.padding * 15,
+                  marginTop: SIZES.padding * 10,
                 }}
               >
                 <TouchableOpacity
