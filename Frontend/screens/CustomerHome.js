@@ -14,62 +14,28 @@ import {
 import {icons, images, SIZES, COLORS, FONTS } from '../constants'
 
 const CustomerHome = ({ navigation }) => {
-    global.name="Swapnil Ahlawat"
-    global.address="Najafgarh, New Delhi"
-    global.wallet= 500.00
 
     const categoryData = [
         {
             id: 1,
+            name: "All",
+            icon: icons.hotdog,
+        },
+        {
+            id: 2,
             name: "Rice",
             icon: icons.rice_bowl,
         },
         {
-            id: 2,
-            name: "Noodles",
-            icon: icons.noodle,
-        },
-        {
             id: 3,
-            name: "Hot Dogs",
-            icon: icons.hotdog,
+            name: "Snacks",
+            icon: icons.hamburger,
         },
         {
             id: 4,
             name: "Salads",
             icon: icons.salad,
         },
-        {
-            id: 5,
-            name: "Burgers",
-            icon: icons.hamburger,
-        },
-        {
-            id: 6,
-            name: "Pizza",
-            icon: icons.pizza,
-        },
-        {
-            id: 7,
-            name: "Snacks",
-            icon: icons.fries,
-        },
-        {
-            id: 8,
-            name: "Sushi",
-            icon: icons.sushi,
-        },
-        {
-            id: 9,
-            name: "Desserts",
-            icon: icons.donut,
-        },
-        {
-            id: 10,
-            name: "Drinks",
-            icon: icons.drink,
-        },
-
     ]
 
     // price rating
@@ -80,21 +46,17 @@ const CustomerHome = ({ navigation }) => {
     const restaurantData = [
         {
             id: 1,
-            name: "ByProgrammers Burger",
+            name: "Harley's Burgers",
             reusablePackage: true,
             rating: 4.8,
-            categories: [5, 7],
+            categories: [1, 3],
             priceRating: affordable,
-            phoneNo: 9818284671,
+            phoneNo: 98982,
             photo: images.burger_restaurant_1,
             duration: "30 - 45 min",
-            location: {
-                latitude: 1.5347282806345879,
-                longitude: 110.35632207358996,
-            },
             courier: {
-                avatar: images.avatar_1,
-                name: "Piyush Maheshwari"
+                name: "Andy",
+                phoneNo: 98986
             },
             menu: [
                 {
@@ -125,21 +87,17 @@ const CustomerHome = ({ navigation }) => {
         },
         {
             id: 2,
-            name: "ByProgrammers Pizza",
+            name: "Mama Mia Pizza",
             reusablePackage: false,
             rating: 4.8,
-            categories: [2, 4, 6],
+            categories: [1, 3, 4],
             priceRating: expensive,
-            phoneNo: 9818284671,
+            phoneNo: 98983,
             photo: images.pizza_restaurant,
             duration: "15 - 20 min",
-            location: {
-                latitude: 1.556306570595712,
-                longitude: 110.35504616746915,
-            },
             courier: {
-                avatar: images.avatar_2,
-                name: "Piyush Maheshwari"
+                name: "Andy",
+                phoneNo: 98986
             },
             menu: [
                 {
@@ -178,21 +136,17 @@ const CustomerHome = ({ navigation }) => {
         },
         {
             id: 3,
-            name: "ByProgrammers Hotdogs",
+            name: "Grand Hotdogs",
             reusablePackage: true,
             rating: 4.8,
-            categories: [3],
+            categories: [1, 3],
             priceRating: expensive,
-            phoneNo: 9818284671,
+            phoneNo: 98984,
             photo: images.hot_dog_restaurant,
             duration: "20 - 25 min",
-            location: {
-                latitude: 1.5238753474714375,
-                longitude: 110.34261833833622,
-            },
             courier: {
-                avatar: images.avatar_3,
-                name: "Piyush Maheshwari"
+                name: "Andy",
+                phoneNo: 98986 
             },
             menu: [
                 {
@@ -207,50 +161,17 @@ const CustomerHome = ({ navigation }) => {
         },
         {
             id: 4,
-            name: "ByProgrammers Sushi",
+            name: "Manchow Cuisine",
             reusablePackage: false,
             rating: 4.8,
-            categories: [8],
-            priceRating: expensive,
-            phoneNo: 9818284671,
-            photo: images.japanese_restaurant,
-            duration: "10 - 15 min",
-            location: {
-                latitude: 1.5578068150528928,
-                longitude: 110.35482523764315,
-            },
-            courier: {
-                avatar: images.avatar_4,
-                name: "Piyush Maheshwari"
-            },
-            menu: [
-                {
-                    menuId: 9,
-                    name: "Sushi sets",
-                    photo: images.sushi,
-                    description: "Fresh salmon, sushi rice, fresh juicy avocado",
-                    calories: 100,
-                    price: 50
-                }
-            ]
-        },
-        {
-            id: 5,
-            name: "ByProgrammers Cuisine",
-            reusablePackage: false,
-            rating: 4.8,
-            categories: [1, 2],
+            categories: [1, 2, 4],
             priceRating: affordable,
-            phoneNo: 9818284671,
+            phoneNo: 98985,
             photo: images.noodle_shop,
             duration: "15 - 20 min",
-            location: {
-                latitude: 1.558050496260768,
-                longitude: 110.34743759630511,
-            },
             courier: {
-                avatar: images.avatar_4,
-                name: "Piyush Maheshwari"
+                name: "Andy",
+                phoneNo: 98986
             },
             menu: [
                 {
@@ -288,53 +209,6 @@ const CustomerHome = ({ navigation }) => {
 
             ]
         },
-        {
-
-            id: 6,
-            name: "ByProgrammers Dessets",
-            reusablePackage: true,
-            rating: 4.9,
-            categories: [9, 10],
-            priceRating: affordable,
-            phoneNo: 9818284671,
-            photo: images.kek_lapis_shop,
-            duration: "35 - 40 min",
-            location: {
-                latitude: 1.5573478487252896,
-                longitude: 110.35568783282145,
-            },
-            courier: {
-                avatar: images.avatar_1,
-                name: "Piyush Maheshwari"
-            },
-            menu: [
-                {
-                    menuId: 12,
-                    name: "Teh C Peng",
-                    photo: images.teh_c_peng,
-                    description: "Three Layer Teh C Peng",
-                    calories: 100,
-                    price: 2
-                },
-                {
-                    menuId: 13,
-                    name: "ABC Ice Kacang",
-                    photo: images.ice_kacang,
-                    description: "Shaved Ice with red beans",
-                    calories: 100,
-                    price: 3
-                },
-                {
-                    menuId: 14,
-                    name: "Kek Lapis",
-                    photo: images.kek_lapis,
-                    description: "Layer cakes",
-                    calories: 300,
-                    price: 20
-                }
-            ]
-
-        }
     ]
 
     const [categories, setCategories] = React.useState(categoryData)

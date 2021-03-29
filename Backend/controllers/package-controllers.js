@@ -15,6 +15,7 @@ const scanPackage= async(req, res, next) => {
     }
 
     let userPhoneNo= identifiedPackage.userPhoneNo;
+    let lastPackageTag= identifiedPackage.packageTag;
     identifiedPackage.userPhoneNo= phoneNo;
     identifiedPackage.packageTag= packageTag;
     if(packageTag==="Warehouse"){
@@ -25,7 +26,8 @@ const scanPackage= async(req, res, next) => {
     console.log(userPhoneNo);
     res.json({
         message: 'Tag changed sucessfully!',
-        userPhoneNo: userPhoneNo
+        userPhoneNo: userPhoneNo,
+        lastPackageTag: lastPackageTag
     });  
 
 }

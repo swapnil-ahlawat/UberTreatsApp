@@ -9,28 +9,19 @@ const app = express();
 
 const DUMMY_USERS = [
     {
-        name: 'Piyush Maheshwari',
-        emailID: 'piyush',
-        phoneNo: '9818284670',
-        password: 'treats',
-        userType: 'Delivery Personnel',
-    },
-    {
-        name: 'Wandan Tibrewal',
-        emailID: 'wandan',
-        phoneNo: '9818284671',
-        password: 'treats',
-        userType: 'Restaurant',
-        orders:[]
+        name: 'Warehouse',
+        phoneNo: '98980',
+        password: 'admin',
+        userType: 'Warehouse'
     },
     {
         name: 'Swapnil Ahlawat',
-        emailID: 'swapnil',
-        phoneNo: '9818284672',
-        password: 'treats',
+        emailID: 'swapnil.ahlawat@gmail.com',
+        phoneNo: '98981',
+        password: 'admin',
         userType: 'Customer', 
         address: "Dwarka, New Delhi",
-        wallet: 500.10,
+        wallet: 500.00,
         promos:[{
             title: "Special Reward",
             description: "Get extra 10%* off on your next order!",
@@ -38,13 +29,35 @@ const DUMMY_USERS = [
         },]
     },
     {
-        name: 'Swapnil Ahlawat',
-        emailID: 'swapnil',
-        phoneNo: '9818284672',
-        password: 'treats',
-        userType: 'Warehouse', 
-        address: "Dwarka, New Delhi",
-    }
+        name: "Harley's Burgers",
+        phoneNo: '98982',
+        password: 'admin',
+        userType: 'Restaurant',
+    },
+    {
+        name: "Mama Mia Pizza",
+        phoneNo: '98983',
+        password: 'admin',
+        userType: 'Restaurant',
+    },
+    {
+        name: "Grand Hotdogs",
+        phoneNo: '98984',
+        password: 'admin',
+        userType: 'Restaurant',
+    },
+    {
+        name: "Manchow Cuisine",
+        phoneNo: '98985',
+        password: 'admin',
+        userType: 'Restaurant',
+    },
+    {
+        name: 'Andy',
+        phoneNo: '98986',
+        password: 'admin',
+        userType: 'Delivery Personnel',
+    },
 ]
 connectDB();
 // User.insertMany(DUMMY_USERS);

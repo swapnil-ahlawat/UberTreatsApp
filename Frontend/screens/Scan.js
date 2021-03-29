@@ -177,7 +177,7 @@ const Scan = ({route, navigation }) => {
                 console.log("done");
                 deleteOrder();
             }
-            else if(modeTag==="Delivery Personnel"){
+            else if(responseData.lastPackageTag && responseData.lastPackageTag==="Customer"){
                 console.log(responseData.userPhoneNo +"response")
                 addWalletMoney(responseData.userPhoneNo);
                 addPromoReward(responseData.userPhoneNo);
