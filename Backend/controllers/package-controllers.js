@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Package = require('../database/Package');
 const User = require('../database/User');
 
+//controller for scaning and changing userPhoneNo, packageTag or count of Package
 const scanPackage = async (req, res, next) => {
   const { serialNumber, phoneNo, packageTag } = req.body;
 
@@ -31,6 +32,7 @@ const scanPackage = async (req, res, next) => {
   });
 };
 
+//controller to add package to database
 const addPackage = async (req, res, next) => {
   const { lotNumber, numPackages } = req.body;
   for (i = 0; i < parseInt(numPackages); i++) {
@@ -46,6 +48,7 @@ const addPackage = async (req, res, next) => {
   });
 };
 
+//controller to assign numPackages packages at warehouse to some restaurant
 const sendPackage = async (req, res, next) => {
   const { phoneNo, numPackages } = req.body;
   let identifiedRestaurant = await User.findOne({

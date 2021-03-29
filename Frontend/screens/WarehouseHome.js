@@ -14,12 +14,14 @@ import {
 
 import { COLORS, SIZES, FONTS, icons, LINK } from '../constants';
 
+// First screen where restaurant owner comes on signing in
 const WarehouseHome = ({ navigation }) => {
   const [lotNumber, SetLotNumber] = useState(null);
   const [lotSize, SetLotSize] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
-  const addPackageHandler = async () => {
+  //function to add new packages to database
+  async function addPackageHandler() {
     try {
       const response = await fetch(LINK + '/package/addPackage', {
         method: 'POST',
@@ -41,7 +43,7 @@ const WarehouseHome = ({ navigation }) => {
     } catch (err) {
       alert('Cannot Process');
     }
-  };
+  }
 
   function renderHeader() {
     return (

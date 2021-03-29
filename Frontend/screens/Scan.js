@@ -11,6 +11,7 @@ import {
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { COLORS, FONTS, SIZES, icons, images, LINK } from '../constants';
 
+// Scan QR code Screen
 const Scan = ({ route, navigation }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
@@ -61,6 +62,7 @@ const Scan = ({ route, navigation }) => {
     })();
   }, []);
 
+  //function to add discount vouchers to user's account on returning reusable package
   async function addPromoReward(phoneNo) {
     var url = LINK + '/user/givePromoReward';
     try {
@@ -85,6 +87,8 @@ const Scan = ({ route, navigation }) => {
       alert("Can't Process Order");
     }
   }
+
+  //function to refund reusable package amount on return reusable package
   async function addWalletMoney(phoneNo) {
     var url = LINK + '/user/addWalletMoney';
     try {
@@ -108,6 +112,8 @@ const Scan = ({ route, navigation }) => {
       alert("Can't Process Order");
     }
   }
+
+  //functin to delete order from restaurant's pending order array on scanning reusable package
   async function deleteOrder() {
     var url = LINK + '/user/removeOrder';
     try {
@@ -135,6 +141,7 @@ const Scan = ({ route, navigation }) => {
     }
   }
 
+  //function to request change tag, user phone no in package database
   async function scanPackage(serialNumber) {
     var url = LINK + '/package/scanPackage';
     try {

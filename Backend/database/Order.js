@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 var Float = require('mongoose-float').loadType(mongoose, 2);
 
+//schema for orders
 const order = new mongoose.Schema({
   customerName: {
     type: String,

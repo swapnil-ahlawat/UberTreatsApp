@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   FlatList,
@@ -16,17 +16,20 @@ import {
 
 import { icons, COLORS, SIZES, FONTS, LINK } from '../constants';
 
+// Screen on which complete selected pending order is displayed
 const Order = ({ route, navigation }) => {
-  const [order, setOrder] = React.useState(null);
-  const [isSelected, setSelection] = React.useState(false);
-  const [modalVisible, setModalVisible] = React.useState(false);
+  const [order, setOrder] = useState(null);
+  const [isSelected, setSelection] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     let { item } = route.params;
 
     setOrder(item);
     setSelection(order?.reusablePackageFlag);
   });
+
+  //request to delete order from restaurant's pending orders list
   async function deleteOrder() {
     var url = LINK + '/user/removeOrder';
     try {
@@ -228,7 +231,6 @@ const Order = ({ route, navigation }) => {
             style={{
               height: 25,
               width: 25,
-              // tintColor: COLORS.primary
             }}
           />
         </View>

@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import { icons, SIZES, COLORS, FONTS, LINK } from '../constants';
 
+// First screen where restaurant owner comes on signing in
 const RestaurantHome = ({ route, navigation }) => {
   const [orders, setOrders] = useState(null);
   const [fetchFlag, setFetchFlag] = useState(true);
@@ -26,6 +27,7 @@ const RestaurantHome = ({ route, navigation }) => {
     };
   }, [navigation]);
 
+  //function to request pending orders from server
   async function fetchOrder() {
     if (fetchFlag) {
       setFetchFlag(false);

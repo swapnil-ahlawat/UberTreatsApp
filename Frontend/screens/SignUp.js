@@ -18,6 +18,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import { COLORS, SIZES, FONTS, icons, LINK } from '../constants';
 
+//Signing in page. Page was initially deigned to add sign up also but couldn't add it due to time constraints
 const SignUp = ({ navigation }) => {
   const mode = [
     {
@@ -47,7 +48,8 @@ const SignUp = ({ navigation }) => {
   const [phoneNo, setPhoneNo] = useState(null);
   const [password, setPassword] = useState(null);
 
-  const authSubmitHandler = async () => {
+  //function to check user in database and login
+  async function authSubmitHandler() {
     try {
       const response = await fetch(LINK + '/login', {
         method: 'POST',
@@ -71,7 +73,7 @@ const SignUp = ({ navigation }) => {
     } catch (err) {
       alert('Incorrect Credentials');
     }
-  };
+  }
 
   function renderLogo() {
     return (
@@ -83,15 +85,6 @@ const SignUp = ({ navigation }) => {
           justifyContent: 'center',
         }}
       >
-        {/* <Image
-                    source={images.uberEatsLogo}
-                    resizeMode="contain"
-                    style={{
-                        height: "150%",
-                        width: "50%",
-                       
-                    }}
-                /> */}
         <Text
           style={{ ...FONTS.largeTitle, fontSize: 60, color: COLORS.white }}
         >

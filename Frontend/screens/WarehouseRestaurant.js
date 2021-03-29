@@ -13,13 +13,14 @@ import {
 } from 'react-native';
 
 import { COLORS, SIZES, FONTS, icons, LINK } from '../constants';
-
+//Screen where you can send packages from warehouse to restaurant in bulk
 const WarehouseRestaurant = ({ navigation }) => {
   const [phoneNumber, setPhoneNumber] = useState(null);
   const [lotSize, setLotSize] = useState(null);
   const [restaurant, setRestaurant] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
+  //function to send packages from warehouse to restaurant in bulk
   const sendPackageHandler = async () => {
     try {
       const response = await fetch(LINK + '/package/sendPackage', {

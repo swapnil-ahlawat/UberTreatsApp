@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 const User = require('../database/User');
 const Order = require('../database/Order');
-
+/*
+controller to place order:-
+1. creates a new order
+2. adds orderID to restaurant's pending orders array
+3. adds orderID to delivery personnel's pending orders array
+*/
 const placeOrder = async (req, res, next) => {
   const {
     reusablePackageFlag,
@@ -71,6 +76,7 @@ const placeOrder = async (req, res, next) => {
   });
 };
 
+//controller to get pending orders of restaurant/delivery personnel
 const getOrders = async (req, res, next) => {
   const phoneNo = req.query.phoneNo;
   const userType = req.query.userType;
@@ -105,6 +111,7 @@ const getOrders = async (req, res, next) => {
   });
 };
 
+//controller to remove order from restaurant/delivery personnel's order array
 const removeOrder = async (req, res, next) => {
   const { orderID, phoneNo } = req.body;
 
@@ -124,6 +131,7 @@ const removeOrder = async (req, res, next) => {
   });
 };
 
+//controller to add money to user wallet
 const addWalletMoney = async (req, res, next) => {
   const { phoneNo, amount } = req.body;
 
@@ -147,6 +155,7 @@ const addWalletMoney = async (req, res, next) => {
   });
 };
 
+//controller to add discound voucher to use promo codes
 const givePromoReward = async (req, res, next) => {
   const { phoneNo } = req.body;
 

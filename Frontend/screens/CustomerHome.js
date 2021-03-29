@@ -13,6 +13,7 @@ import {
 
 import { icons, images, SIZES, COLORS, FONTS } from '../constants';
 
+//First screen where customer comes on signing in
 const CustomerHome = ({ navigation }) => {
   const categoryData = [
     {
@@ -252,27 +253,6 @@ const CustomerHome = ({ navigation }) => {
             </Text>
           </View>
         </View>
-
-        {/* <TouchableOpacity
-                    style={{
-                        width: 50,
-                        paddingRight: SIZES.padding * 2,
-                        justifyContent: 'center'
-                    }}
-                   
-                    onPress={() => navigation.navigate("Cart", {
-                        orderItems: global.orderItems
-                    })}
-                >
-                    <Image
-                        source={icons.basket}
-                        resizeMode="contain"
-                        style={{
-                            width: 30,
-                            height: 30
-                        }}
-                    />
-                </TouchableOpacity> */}
       </SafeAreaView>
     );
   }

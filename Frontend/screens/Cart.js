@@ -16,6 +16,7 @@ import {
 
 import { icons, COLORS, SIZES, FONTS, LINK } from '../constants';
 
+// Order Summary Screen
 const Order = ({ route, navigation }) => {
   const [restaurant, setRestaurant] = useState(null);
   const [orderItems, setOrderItems] = useState([]);
@@ -32,7 +33,8 @@ const Order = ({ route, navigation }) => {
     }
   });
 
-  const placeOrderHandler = async () => {
+  //handler to send place order request to server
+  async function placeOrderHandler() {
     try {
       const response = await fetch(LINK + '/user/placeOrder', {
         method: 'POST',
@@ -66,7 +68,9 @@ const Order = ({ route, navigation }) => {
     } catch (err) {
       alert('Error in placing order. Please try again later.');
     }
-  };
+  }
+
+  //renders header
   function renderHeader() {
     return (
       <View style={{ flexDirection: 'row' }}>
@@ -112,6 +116,7 @@ const Order = ({ route, navigation }) => {
     );
   }
 
+  //renders Restaurant and Customer Details
   function renderInfo() {
     return (
       <View style={{ margin: SIZES.padding * 2, marginBottom: SIZES.padding }}>
@@ -151,6 +156,8 @@ const Order = ({ route, navigation }) => {
       </View>
     );
   }
+
+  //renders Order items
   function renderOrderInfo() {
     const renderItem = ({ item }) => (
       <View
@@ -225,6 +232,8 @@ const Order = ({ route, navigation }) => {
     let total = sumOrder();
     return (0.18 * total).toFixed(2);
   }
+
+  //adds reusable package line on screen if selected
   function reusablePackageFee() {
     if (reusablePackage) {
       return (
@@ -263,6 +272,8 @@ const Order = ({ route, navigation }) => {
       parseFloat(reusablePackage ? 4.0 : 0.0);
     return total.toFixed(2);
   }
+
+  //renders final amounts like tax, subtotal, total, reusable package fee
   function renderTotal() {
     return (
       <View style={{ marginHorizontal: SIZES.padding * 2 }}>
@@ -359,6 +370,7 @@ const Order = ({ route, navigation }) => {
     );
   }
 
+  //render buttons for payment mode
   function renderPaymentMode() {
     return (
       <View
@@ -432,6 +444,8 @@ const Order = ({ route, navigation }) => {
       </View>
     );
   }
+
+  //renders place order button
   function renderPlaceOrderButton() {
     return (
       <TouchableOpacity
@@ -458,6 +472,7 @@ const Order = ({ route, navigation }) => {
     );
   }
 
+  //modal for order confirmation
   function renderPlaceOrderModal() {
     return (
       <Modal animationType="slide" transparent={true} visible={modalVisible}>

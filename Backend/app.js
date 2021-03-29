@@ -6,6 +6,8 @@ const userRouter = require('./routes/user-routes');
 const packageRouter = require('./routes/package-routes');
 
 const app = express();
+//This is the initial database that has been added to the User database.
+//This is required as there is no SignUp functionality in out app right now.
 /*
 const DUMMY_USERS = [
   {

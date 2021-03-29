@@ -15,7 +15,7 @@ import {
 } from 'react-native';
 
 import { SIZES, COLORS, FONTS, icons, LINK } from '../constants';
-
+//Customer Profile Page
 const Wallet = ({ navigation }) => {
   const [specialPromos, setSpecialPromos] = useState(null);
   const [walletAmount, setWalletAmount] = useState(0);
@@ -34,6 +34,7 @@ const Wallet = ({ navigation }) => {
     };
   }, [navigation]);
 
+  //function to add money to user wallet
   async function addWalletMoney(phoneNo) {
     var url = LINK + '/user/addWalletMoney';
     try {

@@ -13,6 +13,7 @@ import { COLORS, icons } from '../constants';
 
 const Tab = createBottomTabNavigator();
 
+//Button for styling
 const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
   var isSelected = accessibilityState.selected;
 
@@ -63,6 +64,7 @@ const TabBarCustomButton = ({ accessibilityState, children, onPress }) => {
   }
 };
 
+//Bar Styling
 const CustomTabBar = (props) => {
   if (isIphoneX()) {
     return (
@@ -85,6 +87,7 @@ const CustomTabBar = (props) => {
   }
 };
 
+// tab navigation area
 const PersonnelTabs = () => {
   return (
     <Tab.Navigator

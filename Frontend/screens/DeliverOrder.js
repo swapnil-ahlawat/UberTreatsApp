@@ -31,6 +31,7 @@ const DeliverOrder = ({ route, navigation }) => {
     setOrder(item);
   });
 
+  //function to delete order from personnel's pending order array
   async function deleteOrder() {
     var url = LINK + '/user/removeOrder';
     try {
@@ -231,6 +232,7 @@ const DeliverOrder = ({ route, navigation }) => {
       </View>
     );
   }
+
   function renderButton() {
     return (
       <View>
@@ -253,6 +255,7 @@ const DeliverOrder = ({ route, navigation }) => {
       </View>
     );
   }
+
   function renderModeModal() {
     return (
       <Modal animationType="slide" transparent={true} visible={modalVisible}>

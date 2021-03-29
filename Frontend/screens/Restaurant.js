@@ -16,6 +16,7 @@ import { isIphoneX } from 'react-native-iphone-x-helper';
 
 import { icons, COLORS, SIZES, FONTS } from '../constants';
 
+//Screen where customer selects food item to order
 const Restaurant = ({ route, navigation }) => {
   const scrollX = new Animated.Value(0);
   const [restaurant, setRestaurant] = useState(null);
