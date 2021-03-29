@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
     SafeAreaView,
     View,
@@ -10,7 +10,7 @@ import {
     Platform,
     StatusBar
 } from "react-native";
-import { icons, images, SIZES, COLORS, FONTS } from '../constants'
+import { icons, images, SIZES, COLORS, FONTS, LINK } from '../constants'
 
 const PersonnelHome = ({ navigation }) => {
 
@@ -140,11 +140,50 @@ const PersonnelHome = ({ navigation }) => {
         
     ]
 
-    
-    const [orders, setorders] = React.useState(deliveryData)
-    
+    const [orders, setOrders] = useState(null)
+    const [fetchFlag,setFetchFlag] = useState(true)
 
-
+    const inFocus = navigation.addListener('focus', () => {
+        setFetchFlag(true) 
+    });
+    
+    useEffect(() => {    
+        return () => {
+          inFocus;
+        };
+    }, [navigation]);
+    
+    async function fetchOrder(){
+        if (fetchFlag)
+        {
+        setFetchFlag(false)
+        console.log(global.user.phoneNo)
+        
+        var url = LINK+"/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Delivery Personnel"
+        console.log(url)
+        try {
+            const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+ 
+        const responseData = await response.json();
+        if (!response.ok) {
+          throw new Error(responseData.message);
+        }
+        else{
+            console.log(responseData)
+            setOrders(responseData.pendingOrders)
+        }
+        } catch (err) {
+            console.log(err)
+            return null
+        }
+    }};
+ 
 
     function renderHeader() {
         return (
@@ -153,7 +192,7 @@ const PersonnelHome = ({ navigation }) => {
                     <View
                        style={{
                             height: 50,
-                            width: "40%",
+                            width: "80%",
                             justifyContent: 'center',
                             borderBottomRightRadius: SIZES.radius,
                             backgroundColor: COLORS.primary,
@@ -161,7 +200,7 @@ const PersonnelHome = ({ navigation }) => {
                             
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>Hello {deliveryPersonData.Name}!</Text>
+                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>Hello {global.user.name}!</Text>
                     </View>
                 
 
@@ -197,7 +236,6 @@ const PersonnelHome = ({ navigation }) => {
                     flex: 1, flexDirection: "column", 
                     width: SIZES.width*0.9,backgroundColor:
                     COLORS.white,
-                    height: 150,
                     borderRadius: 20}}
                onPress={() => navigation.navigate("DeliverOrder", {
                     item
@@ -211,10 +249,10 @@ const PersonnelHome = ({ navigation }) => {
                         paddingHorizontal: SIZES.padding
                     }}
                 >
-                        <Text style={{ ...FONTS.body2,color: COLORS.black }}>Customer Name: <Text style = {{fontWeight: 'bold'}}>{item.customer_name}</Text></Text>
-                        <Text style={{ ...FONTS.body2,color: COLORS.black }}>Restaurant: <Text style = {{fontWeight: 'bold'}}>{item.restaurant}</Text></Text>
-                        <Text style={{ ...FONTS.body2,color: COLORS.black  }}>Delivery Addresss: <Text style = {{fontWeight: 'bold'}}>{item.address}</Text></Text>
-                    <Text style={{ ...FONTS.body2,color: COLORS.black  }}>Order Deadline: <Text style = {{fontWeight: 'bold'}}>{item.order_deadline}</Text></Text>
+                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>Customer Name: <Text style = {{fontWeight: 'bold'}}>{item.customerName}</Text></Text>
+                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>Restaurant: <Text style = {{fontWeight: 'bold'}}>{item.restaurant}</Text></Text>
+                        <Text style={{ ...FONTS.body3,color: COLORS.black  }}>Delivery Addresss: <Text style = {{fontWeight: 'bold'}}>{item.customerAddress}</Text></Text>
+                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>Order Deadline: <Text style = {{fontWeight: 'bold'}}>{item.orderDeadline}</Text></Text>
                  </View>   
                 
                     
@@ -225,10 +263,10 @@ const PersonnelHome = ({ navigation }) => {
 
         return (
             <View style={{ paddingHorizontal: SIZES.padding * 2,}}>
-            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white,  marginTop:SIZES.padding*2 }}>In Progress (3)</Text>
+            <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white,  marginTop:SIZES.padding*2 }}>In Progress ({orders?.length})</Text>
             <FlatList
                 data={orders}
-                keyExtractor={item => `${item.order_id}`}
+                keyExtractor={item => `${item._id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingBottom: 30
@@ -237,7 +275,7 @@ const PersonnelHome = ({ navigation }) => {
             </View>
         )
     }
-
+    fetchOrder();
     return (
         <SafeAreaView style={styles.container}>
             {renderHeader()}

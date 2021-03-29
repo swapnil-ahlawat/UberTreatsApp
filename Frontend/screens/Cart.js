@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 
-import { icons, COLORS, SIZES, FONTS } from '../constants'
+import { icons, COLORS, SIZES, FONTS, LINK } from '../constants'
 
 const Order = ({ route, navigation }) => {
 
@@ -217,7 +217,7 @@ const Order = ({ route, navigation }) => {
     function renderPlaceOrderButton(){
         const placeOrderHandler = async () => {
             try {
-                const response = await fetch('http://b51c079841e0.ngrok.io/user/placeOrder', {
+                const response = await fetch(LINK+'/user/placeOrder', {
                   method: 'POST',
                   headers: {
                      Accept: 'application/json',
@@ -230,7 +230,7 @@ const Order = ({ route, navigation }) => {
                     orderItems: orderItems,
                     customer: global.user,
                     walletUsed: checked,
-                    total: calculateTotal()
+                    total: sumOrder()
                   })
                 });
                 const responseData = await response.json();

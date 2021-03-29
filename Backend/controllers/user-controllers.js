@@ -15,7 +15,7 @@ const placeOrder= async(req, res, next) =>{
     identifiedRestaurant.orders.push({orderID: orderModel._id.toString()});
     await identifiedRestaurant.save();
 
-    let identifiedPersonnel = await User.findOne({name: restaurantCourier, userType: "Personnel"}).exec().catch((error) => {
+    let identifiedPersonnel = await User.findOne({name: restaurantCourier, userType: "Delivery Personnel"}).exec().catch((error) => {
         return next(error);
     });
 

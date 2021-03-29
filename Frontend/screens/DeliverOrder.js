@@ -16,18 +16,16 @@ import {
 
 
 
-import { icons, COLORS, SIZES, FONTS } from '../constants'
+import { icons, COLORS, SIZES, FONTS, LINK} from '../constants'
 
 const DeliverOrder = ({ route, navigation }) => {
 
   
     const [order, setOrder] = React.useState(null);
-    const [currentLocation, setCurrentLocation] = React.useState(null);
     const [modalVisible, setModalVisible] = React.useState(false);
     const [checked, setChecked]= React.useState(true);
 
     const handleClicked = () => {
-        
           setModalVisible(false);
           navigation.navigate("PersonnelHome");
         };
@@ -35,12 +33,65 @@ const DeliverOrder = ({ route, navigation }) => {
     
 
     React.useEffect(() => {
-        let { item, currentLocation } = route.params;
-
+        let {item} = route.params;
         setOrder(item)
-        setCurrentLocation(currentLocation)
-        
     })
+    async function deleteOrderFromDatabase(){
+        var url = LINK+"/order";
+       try {
+       const response = await fetch(url, {
+         method: 'POST',
+         headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+           orderID: order._id,
+         })
+       });
+
+       const responseData = await response.json();
+       if (!response.ok) {
+         throw new Error(responseData.message);
+       }
+       else{
+           console.log("Package Deleted from Database")
+       }
+     } catch (err) {
+       console.log(err)
+     }
+   }
+
+    async function deleteOrder(){
+        var url = LINK+"/user/removeOrder";
+       try {
+       const response = await fetch(url, {
+         method: 'POST',
+         headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+           orderID: order._id,
+           phoneNo: global.user.phoneNo
+
+         })
+       });
+
+       const responseData = await response.json();
+       if (!response.ok) {
+         throw new Error(responseData.message);
+       }
+       else{
+           global.user= responseData.user;
+           deleteOrderFromDatabase();
+           setModalVisible(true)
+       }
+     } catch (err) {
+       console.log(err)
+       alert("Cant Process Order");
+     }
+   }
 
     function renderHeader() {
         return (
@@ -93,11 +144,10 @@ const DeliverOrder = ({ route, navigation }) => {
             <View
                 style={{ 
                     paddingVertical: 2*SIZES.padding,
-                    
                     flex: 1, flexDirection: "column", 
                     width: SIZES.width*0.95,
                     marginLeft: SIZES.width*0.025,
-                    height: 100,
+                    height: 80,
                     backgroundColor:COLORS.white ,
                     borderBottomColor: COLORS.black,
                     borderBottomWidth: 1,
@@ -105,10 +155,10 @@ const DeliverOrder = ({ route, navigation }) => {
                     marginBottom: SIZES.padding,
                     justifyContent:'center'}}
             >
-                <View style = {{flexDirection: "row"}}>
-                    <Text style = {{paddingLeft:SIZES.padding,width: 0.1*SIZES.width,...FONTS.h3,color: COLORS.black}}>{item.quantity}x</Text>
-                    <Text style={{ width: 0.7*SIZES.width,...FONTS.h4,color: COLORS.black }}>{item.name}</Text>
-                    <Text style={{width: 0.2*SIZES.width, ...FONTS.h4,color: COLORS.black }}>${(item.price*item.quantity).toFixed(2)}</Text>
+                 <View style = {{flexDirection: "row", }}>
+                    <Text style = {{ width:"10%",paddingLeft:SIZES.padding,...FONTS.body3, color: COLORS.black, justifyContent:"center"}}>{item.quantity}x</Text>
+                    <Text style = {{paddingLeft:SIZES.padding, width:"55%", ...FONTS.body3,color: COLORS.black}}>{item.name}</Text>
+                    <Text style={{ width:"35%", textAlign: "right", paddingRight:SIZES.padding,...FONTS.body3,color: COLORS.black}}>${item.price.toFixed(2)}</Text>
                 </View>
                 <View
                     style={{
@@ -118,9 +168,7 @@ const DeliverOrder = ({ route, navigation }) => {
                         paddingHorizontal: SIZES.width*0.1
                     }}
                     
-                >   
-                    <Text style = {{width: SIZES.width,...FONTS.body3,color: COLORS.black}}>{item.additional_info}</Text>
-                       
+                >                          
                  </View>   
             
              
@@ -131,8 +179,8 @@ const DeliverOrder = ({ route, navigation }) => {
 
             <View>
             <FlatList
-                data={order?.order_details}
-                keyExtractor={item => `${item.food_id}`}
+                data={order?.foodItems}
+                keyExtractor={item => `${item._id}`}
                 renderItem={renderItem}
                 contentContainerStyle={{
                     paddingBottom: 30
@@ -148,17 +196,19 @@ const DeliverOrder = ({ route, navigation }) => {
     function renderOrder() {
         
         return (
-            <View style = {{height: 100,marginTop: SIZES.padding,flexDirection: "row",justifyContent: "space-between"}}>
+           
+            <View style = {{height: 150,marginTop: SIZES.padding,flexDirection: "row"}}>
               <View style = {{justifyContent: 'center'}}>
-                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.customer_name}</Text>
-                  <Text style={{ ...FONTS.h3,color: COLORS.white,paddingHorizontal: SIZES.padding*2,paddingTop:SIZES.padding }}>{order?.address}</Text>
+                  <Text style={{ ...FONTS.body2,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.customerName}</Text>
+                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.customerAddress}</Text>
+                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2}}>{order?.customerPhoneNo}</Text>
 
               </View>
              
 
               
               <View style = {{alignItems:'center',flexDirection: "row"}}>
-                    <Text style={{ ...FONTS.h2,color: COLORS.white, marginRight: SIZES.padding*5 }}>{order?.restaurant}</Text>
+                    <Text style={{ ...FONTS.h3,color: COLORS.white, marginRight: SIZES.padding*5 }}>{order?.restaurant}</Text>
                     
                </View>
             </View>
@@ -180,7 +230,7 @@ const DeliverOrder = ({ route, navigation }) => {
                         marginHorizontal: SIZES.padding
                     }}
                     onPress={() => {
-                       setModalVisible(true)
+                       deleteOrder();
                     }
                 }
                 >
@@ -313,13 +363,16 @@ const DeliverOrder = ({ route, navigation }) => {
             </Modal>
         )
     }
-     function taxOrder() {
-
-        let total = order?.price;
-        return (0.18*total).toFixed(2);
+    function sumOrder() {
+        let total = order?.foodItems.reduce((a, b) => a + (b.price|| 0), 0)
+        return total?.toFixed(2)
+    }
+    function taxOrder() {
+        let total = sumOrder();
+        return (0.18*total)?.toFixed(2);
     }
      function reusablePackageFee(){
-        if(order?.resuablePackage){
+        if(order?.reusablePackageFlag){
             return (
                 <View style={{flexDirection: "row"}}>
                     <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Reusable Package Fee</Text>  
@@ -332,7 +385,7 @@ const DeliverOrder = ({ route, navigation }) => {
         }
     }
      function calculateTotal(){
-        let total= (parseFloat(order?.price)+ parseFloat(taxOrder())+ parseFloat(5.00)+ parseFloat(((order?.resuablePackage)? 4.00:0.00)));
+        let total= (parseFloat(sumOrder())+ parseFloat(taxOrder())+ parseFloat(5.00)+ parseFloat(((order?.reusablePackageFlag)? 4.00:0.00)));
         return total.toFixed(2);
     }
 
@@ -341,7 +394,7 @@ const DeliverOrder = ({ route, navigation }) => {
             <View style={{margin: SIZES.padding * 2}}>
                 <View style={{flexDirection: "row"}}>
                     <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Subtotal</Text>  
-                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>${order?.price}</Text>   
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>${sumOrder()}</Text>   
                 </View>
                 <View style={{flexDirection: "row"}}>
                     <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Tax</Text>  

@@ -18,7 +18,7 @@ import {
  
 import {LinearGradient} from 'expo-linear-gradient';
  
-import { COLORS, SIZES, FONTS, icons, images } from "../constants"
+import { COLORS, SIZES, FONTS, icons, images, LINK } from "../constants"
  
 const SignUp = ({ navigation }) => {
  
@@ -55,7 +55,7 @@ const SignUp = ({ navigation }) => {
     console.log(password)
     console.log(selectedMode.name)
     try {
-        const response = await fetch('http://b51c079841e0.ngrok.io/login', {
+        const response = await fetch(LINK+'/login', {
           method: 'POST',
           headers: {
              Accept: 'application/json',

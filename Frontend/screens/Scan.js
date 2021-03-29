@@ -11,9 +11,7 @@ import {
 import {
     BarCodeScanner
   } from 'expo-barcode-scanner';
-import { COLORS, FONTS, SIZES, icons, images } from "../constants";
-
-
+import { COLORS, FONTS, SIZES, icons, images, LINK } from "../constants";
 
 
 const Scan = ({route, navigation }) => {
@@ -28,13 +26,32 @@ const Scan = ({route, navigation }) => {
     const [scanned, setScanned] = useState(false);
     const [modalVisible, setModalVisible] = useState(false);
     const [serialNumber, setSerialNumber]= useState(null);
-
+    const [order, setOrder]= useState(null);
+    const [phoneNo, setPhoneNo]= useState(null);
+    const [packageTag, setPackageTag]= useState(null); 
 
     const inFocus = navigation.addListener('focus', () => {
         setScanned(false);
         setSerialNumber(null);
+        setOrder(null);
+        setPhoneNo(global.user.phoneNo);
+        let orderTemp=null;
         if(route.params){
             modeTag= route.params.modeTag;
+            orderTemp= route.params.order;
+        }
+        if(orderTemp){
+            setOrder(orderTemp);
+            setPhoneNo(orderTemp.customerPhoneNo);
+        }
+        if(modeTag==="RestaurantDelivery"){
+            setPackageTag("Customer");
+        }
+        else if(modeTag==="Restaurant"){
+            setPackageTag("Collected");
+        }
+        else {
+            setPackageTag("Personnel");
         }
       });
     
@@ -43,17 +60,86 @@ const Scan = ({route, navigation }) => {
           inFocus;
         };
       }, [navigation]);
-    useEffect(() => {
+    
+      useEffect(() => {
         (async () => {
           const { status } = await BarCodeScanner.requestPermissionsAsync();
           setHasPermission(status === 'granted');
         })();
       }, []);
 
+    
+    async function deleteOrder(){
+        var url = LINK+"/user/removeOrder";
+       try {
+       const response = await fetch(url, {
+         method: 'POST',
+         headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+         },
+         body: JSON.stringify({
+           orderID: order._id,
+           phoneNo: global.user.phoneNo
+
+         })
+       });
+
+       const responseData = await response.json();
+       if (!response.ok) {
+         throw new Error(responseData.message);
+       }
+       else{
+           global.user= responseData.user;
+           setModalVisible(true);           
+       }
+     } catch (err) {
+        alert("Can't Process Order");
+     }
+   }
+    async function scanPackage(){
+        var url = LINK+ "/package/scanPackage";
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                serialNumber: serialNumber,
+                phoneNo: phoneNo,
+                packageTag: packageTag
+                })
+        });
+
+        const responseData = await response.json();
+        if (!response.ok) {
+            throw new Error(responseData.message);
+        }
+        else{
+            if(modeTag==="RestaurantDelivery"){
+                console.log("done");
+                deleteOrder();
+            }
+            else{
+                setModalVisible(true)
+            }
+        }
+        } catch (err) {
+            console.log(err)
+            alert("Cant Find Package");
+            setScanned(false);
+            setSerialNumber(null);
+
+        }
+   }
+
+
       const handleBarCodeScanned = ({ type, data }) => {
-        setSerialNumber(data);
-        setModalVisible(true);
         setScanned(true);
+        setSerialNumber(data);
+        scanPackage();
       };
 
       const handleClicked = () => {
@@ -185,8 +271,8 @@ const Scan = ({route, navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={() => {
-                        setModalVisible(true);
                         setScanned(true);
+                        scanPackage();
                     }}
                 >
                     <Text style={{ color: COLORS.white, ...FONTS.h3 }}>Continue</Text>
@@ -201,7 +287,7 @@ const Scan = ({route, navigation }) => {
             text="Thank you for collecting the package. We will soon collect the package for it's cleaning. "
         }
         else if(modeTag==="RestaurantDelivery"){
-            text="Our delivery personnel will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats. "
+            text="Our delivery personnel will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats."
         }
         else if(modeTag==="Warehouse"){
             text="The Package has been successfully collected at Warehouse."

@@ -15,13 +15,12 @@ import {
 import { Directions, ScrollView } from "react-native-gesture-handler";
 import { isIphoneX } from 'react-native-iphone-x-helper'
 
-import { icons, COLORS, SIZES, FONTS } from '../constants'
+import { icons, COLORS, SIZES, FONTS, LINK } from '../constants'
 
 const Order = ({ route, navigation }) => {
 
   
     const [order, setOrder] = React.useState(null);
-    const [currentLocation, setCurrentLocation] = React.useState(null);
     const [isSelected, setSelection] = React.useState(false);
     const [modalVisible, setModalVisible] = React.useState(false);
 
@@ -29,14 +28,13 @@ const Order = ({ route, navigation }) => {
     
     
     React.useEffect(() => {
-        let { item, currentLocation } = route.params;
+        let {item} = route.params;
 
         setOrder(item)
-        setCurrentLocation(currentLocation)
         setSelection(order?.reusablePackageFlag)
     })
     async function deleteOrder(){
-         var url = "http://b51c079841e0.ngrok.io/user/removeOrder";
+         var url = LINK+"/user/removeOrder";
         try {
         const response = await fetch(url, {
           method: 'POST',
@@ -56,17 +54,13 @@ const Order = ({ route, navigation }) => {
           throw new Error(responseData.message);
         }
         else{
-          console.log(responseData)
+            global.user= responseData.user;
+            setModalVisible(true)
         }
       } catch (err) {
         console.log(err)
+        alert("Cant Process Order");
       }
-    }
-    function handleOrderDispatch(){
-         deleteOrder();
-         console.log("HEEEEEEEE")
-         setModalVisible(false);
-        navigation.navigate("RestaurantHome");
     }
 
     function renderHeader() {
@@ -120,7 +114,6 @@ const Order = ({ route, navigation }) => {
             <View
                 style={{ 
                     paddingVertical: 2*SIZES.padding,
-                    
                     flex: 1, flexDirection: "column", 
                     width: SIZES.width*0.95,
                     marginLeft: SIZES.width*0.025,
@@ -132,10 +125,11 @@ const Order = ({ route, navigation }) => {
                     marginBottom: SIZES.padding,
                     justifyContent:'center'}}
             >
-                <View style = {{flexDirection: "row"}}>
-                    <Text style = {{paddingLeft:SIZES.padding,width: 0.20*SIZES.width,...FONTS.h3,color: COLORS.black}}>{item.quantity}x</Text>
-                    <Text style={{ width: 0.55*SIZES.width,...FONTS.h4,color: COLORS.black }}>{item.name}</Text>
-                    <Text style={{width: 0.25*SIZES.width, ...FONTS.h4,color: COLORS.black,paddingRight:SIZES.padding }}>${(item.price*item.quantity).toFixed(2)}</Text>
+                
+                <View style = {{flexDirection: "row", }}>
+                    <Text style = {{ width:"10%",paddingLeft:SIZES.padding,...FONTS.body3, color: COLORS.black, justifyContent:"center"}}>{item.quantity}x</Text>
+                    <Text style = {{paddingLeft:SIZES.padding, width:"55%", ...FONTS.body3,color: COLORS.black}}>{item.name}</Text>
+                    <Text style={{ width:"35%", textAlign: "right", paddingRight:SIZES.padding,...FONTS.body3,color: COLORS.black}}>${item.price.toFixed(2)}</Text>
                 </View>
                
             
@@ -168,10 +162,11 @@ const Order = ({ route, navigation }) => {
         else
         img = icons.cross
         return (
-            <View style = {{height: 100,marginTop: SIZES.padding,flexDirection: "row"}}>
+            <View style = {{height: 150,marginTop: SIZES.padding,flexDirection: "row"}}>
               <View style = {{justifyContent: 'center'}}>
                   <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.customerName}</Text>
-                  <Text style={{ ...FONTS.h3,color: COLORS.white,paddingHorizontal: SIZES.padding*2,paddingTop:SIZES.padding }}>{order?.customerPhoneNo}</Text>
+                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2 }}>{order?.customerAddress}</Text>
+                  <Text style={{ ...FONTS.body3,color: COLORS.white,paddingHorizontal: SIZES.padding*2}}>{order?.customerPhoneNo}</Text>
 
               </View>
              
@@ -210,13 +205,13 @@ const Order = ({ route, navigation }) => {
                         justifyContent: 'center'
                     }}
                     onPress={() => {
-                        if ( order?.resuablePackageFlag)
+                        if (isSelected)
                         {   
-                            navigation.navigate("Scan",{modeTag: "RestaurantDelivery",order})
+                            navigation.navigate("Scan",{modeTag: "RestaurantDelivery", order})
                         }
                         else
                         {
-                          setModalVisible(true)
+                            deleteOrder();   
                         }
                     }
                 }
@@ -235,7 +230,8 @@ const Order = ({ route, navigation }) => {
             >
                 <TouchableWithoutFeedback
                     onPress={() => {
-                        handleOrderDispatch()
+                        setModalVisible(false);
+                        navigation.navigate("RestaurantHome");
                     }}
                 >
                     <View style={{ flex: 1, flexDirection: 'column-reverse'}}>
@@ -276,7 +272,7 @@ const Order = ({ route, navigation }) => {
                                     width: SIZES.width * 0.8
 
 
-                            }}>{"Our delivery partner will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats. "}</Text>
+                            }}>Our delivery partner will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats.</Text>
 
                         </View>
                     </View>

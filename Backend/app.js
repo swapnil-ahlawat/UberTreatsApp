@@ -16,7 +16,7 @@ const DUMMY_USERS = [
         emailID: 'piyush',
         phoneNo: '9818284670',
         password: 'treats',
-        userType: 'Personnel',
+        userType: 'Delivery Personnel',
     },
     {
         name: 'Wandan Tibrewal',

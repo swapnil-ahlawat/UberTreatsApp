@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
     SafeAreaView,
     View,
@@ -14,23 +14,18 @@ import { icons, images, SIZES, COLORS, FONTS } from '../constants'
  
 const RestaurantHome = ({ navigation }) => {
  
-    // Dummy Datas
- 
-    const initialCurrentLocation = {
-        address: "KFC",
-        gps: {
-            latitude: 1.5496614931250685,
-            longitude: 110.36381866919922
-        }
-    }
- 
-  
- 
-    const [currentLocation,setCurrentLocation] = React.useState(initialCurrentLocation)
-    const [orders, setOrders] = React.useState(null)
-    const [fetchFlag,setFetchFlag] = React.useState(true)
+    const [orders, setOrders] = useState(null)
+    const [fetchFlag,setFetchFlag] = useState(true)
 
-    React.useState(() => { setFetchFlag(true)})
+    const inFocus = navigation.addListener('focus', () => {
+        setFetchFlag(true) 
+      });
+    
+      useEffect(() => {    
+        return () => {
+          inFocus;
+        };
+      }, [navigation]);
     
     
  
@@ -42,7 +37,7 @@ const RestaurantHome = ({ navigation }) => {
         setFetchFlag(false)
         console.log(global.user.phoneNo)
         
-        var url = "http://b51c079841e0.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
+        var url = "https://4c77f765204e.ngrok.io/user/restaurant?phoneNo=" + global.user.phoneNo + "&userType=Restaurant"
         console.log(url)
         try {
         const response = await fetch(url, {
@@ -77,7 +72,7 @@ const RestaurantHome = ({ navigation }) => {
                     <View
                        style={{
                             height: 50,
-                            width: "40%",
+                            width: "80%",
                             justifyContent: 'center',
                             borderBottomRightRadius: SIZES.radius,
                             backgroundColor: COLORS.primary,
@@ -85,7 +80,7 @@ const RestaurantHome = ({ navigation }) => {
                             
                         }}
                     >
-                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>{global.user.address}</Text>
+                        <Text style={{ ...FONTS.h3 ,color: COLORS.white}}>{global.user.name}</Text>
                     </View>
                 <TouchableOpacity
                     style={{
@@ -119,11 +114,10 @@ const RestaurantHome = ({ navigation }) => {
                     flex: 1, flexDirection: "column", 
                     width: SIZES.width*0.9,backgroundColor:
                     COLORS.white,
-                    height: 100,
+                    // height: 100,
                     borderRadius: 20}}
                onPress={() => navigation.navigate("Order", {
-                    item,
-                    currentLocation
+                    item
                 })}
             >
                 
@@ -145,6 +139,16 @@ const RestaurantHome = ({ navigation }) => {
                      }}
                 >
                     {/* <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.address}</Text> */}
+                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.customerAddress}</Text>
+                </View>
+                <View
+                    style={{
+                        flexDirection: "row",
+                        justifyContent: "space-between",
+                        paddingHorizontal: SIZES.padding
+                     }}
+                >
+                    {/* <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.address}</Text> */}
                     <Text style={{ ...FONTS.body3,color: COLORS.black  }}>{item.customerPhoneNo}</Text>
                 </View>
              
@@ -152,7 +156,7 @@ const RestaurantHome = ({ navigation }) => {
         )
  
         return (
-            <View style={{ paddingHorizontal: SIZES.padding * 2,  marginTop:SIZES.padding*2}}>
+            <View style={{paddingHorizontal: SIZES.padding * 2,  marginTop:SIZES.padding*2}}>
             <Text style={{paddingVertical:10, ...FONTS.h2,color: COLORS.white }}>In Progress ({orders?.length})</Text>
             <FlatList
                 data={orders}
