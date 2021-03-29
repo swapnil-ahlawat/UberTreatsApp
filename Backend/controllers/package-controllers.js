@@ -8,13 +8,14 @@ const scanPackage= async(req, res, next) => {
     const identifiedPackage = await Package.findOne({serialNumber}).exec().catch((error) => {
         return next(error);
     });
-
+    let userPhoneNo= identifiedPackage.userPhoneNo;
     identifiedPackage.userPhoneNo= phoneNo;
     identifiedPackage.packageTag= packageTag;
     identifiedPackage.save();
 
     res.json({
         message: 'Tag changed sucessfully!',
+        userPhoneNo: userPhoneNo
     });  
 }
 

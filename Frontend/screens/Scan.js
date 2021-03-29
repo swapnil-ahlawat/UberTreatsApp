@@ -68,7 +68,34 @@ const Scan = ({route, navigation }) => {
         })();
       }, []);
 
-    
+      async function addWalletMoney(){
+        console.log(phoneNo);
+        var url = LINK+"/user/addWalletMoney";
+        try {
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                phoneNo: phoneNo,
+                amount: 4.00
+            })
+        });
+
+       const responseData = await response.json();
+       if (!response.ok) {
+         throw new Error(responseData.message);
+       }
+       else{
+           console.log(responseData.user)
+           setModalVisible(true);           
+       }
+     } catch (err) {
+        alert("Can't Process Order");
+     }
+   }
     async function deleteOrder(){
         var url = LINK+"/user/removeOrder";
        try {
@@ -122,6 +149,10 @@ const Scan = ({route, navigation }) => {
                 console.log("done");
                 deleteOrder();
             }
+            else if(modeTag==="Delivery Personnel"){
+                setPhoneNo(responseData.userPhoneNo)
+                addWalletMoney();
+            }
             else{
                 setModalVisible(true)
             }
@@ -131,7 +162,6 @@ const Scan = ({route, navigation }) => {
             alert("Cant Find Package");
             setScanned(false);
             setSerialNumber(null);
-
         }
    }
 
