@@ -1,142 +1,182 @@
 const mongoose = require('mongoose');
 const User = require('../database/User');
-const Order= require('../database/Order');
+const Order = require('../database/Order');
 
-const placeOrder= async(req, res, next) =>{
-    const {reusablePackageFlag, restaurantPhoneNo, restaurantCourier, orderItems, customer, walletUsed, total, subtotal} = req.body;
-    
-    let identifiedRestaurant = await User.findOne({phoneNo: restaurantPhoneNo, userType: "Restaurant"}).exec().catch((error) => {
-        return next(error);
+const placeOrder = async (req, res, next) => {
+  const {
+    reusablePackageFlag,
+    restaurantPhoneNo,
+    restaurantCourier,
+    orderItems,
+    customer,
+    walletUsed,
+    total,
+    subtotal,
+  } = req.body;
+
+  let identifiedRestaurant = await User.findOne({
+    phoneNo: restaurantPhoneNo,
+    userType: 'Restaurant',
+  })
+    .exec()
+    .catch((error) => {
+      return next(error);
+    });
+  let identifiedPersonnel = await User.findOne({
+    name: restaurantCourier,
+    userType: 'Delivery Personnel',
+  })
+    .exec()
+    .catch((error) => {
+      return next(error);
+    });
+  let identifiedUser = await User.findOne({ phoneNo: customer.phoneNo })
+    .exec()
+    .catch((error) => {
+      return next(error);
     });
 
-    let identifiedPersonnel = await User.findOne({name: restaurantCourier, userType: "Delivery Personnel"}).exec().catch((error) => {
-        return next(error);
+  if (!identifiedRestaurant || !identifiedPersonnel || !identifiedUser) {
+    return res.status(404).send({
+      message: 'User not found!',
     });
+  }
 
-    let identifiedUser = await User.findOne({phoneNo: customer.phoneNo}).exec().catch((error) => {
-        return next(error);
-    });
+  let order = {
+    customerName: customer.name,
+    customerAddress: customer.address,
+    customerPhoneNo: customer.phoneNo,
+    restaurantName: identifiedRestaurant.name,
+    reusablePackageFlag,
+    foodItems: orderItems,
+    total: total,
+    subtotal: subtotal,
+  };
+  let orderModel = new Order(order);
+  await orderModel.save();
 
-    let order={customerName:customer.name, customerAddress: customer.address, customerPhoneNo: customer.phoneNo, restaurantName: identifiedRestaurant.name, reusablePackageFlag, foodItems: orderItems, total:total, subtotal: subtotal}
-    let orderModel = new Order(order);
-    await orderModel.save();
-    
-    
-    identifiedRestaurant.orders.push({orderID: orderModel._id.toString()});
-    await identifiedRestaurant.save();
+  identifiedRestaurant.orders.push({ orderID: orderModel._id.toString() });
+  await identifiedRestaurant.save();
 
+  identifiedPersonnel.orders.push({ orderID: orderModel._id.toString() });
+  await identifiedPersonnel.save();
 
-    identifiedPersonnel.orders.push({orderID: orderModel._id.toString()});
-   
-    await identifiedPersonnel.save();
-
-    if(walletUsed){
-        identifiedUser.wallet = identifiedUser.wallet- parseFloat(total);
-        await identifiedUser.save();
-    }
-
-    res.json({
-        message: "OrderPlaced!",
-        user: identifiedUser
-    });
-}
-
-
-const getOrders= async(req, res, next) =>{
-    const phoneNo= req.query.phoneNo;
-    const userType= req.query.userType;
-    
-    let identifiedUser= await User.findOne({phoneNo: phoneNo, userType}).exec().catch((error) => {
-        return next(error);
-    });
-    
-    async function getOrderfromOrderID(item){
-        return await Order.findOne({_id:mongoose.Types.ObjectId(item.orderID)}).exec().catch((error) => {
-            return next(error);
-        });
-    }
-    let pendingOrders=[]
-    for (index = 0; index < identifiedUser.orders.length; index++) {
-        console.log(identifiedUser.orders[index]);
-        let order= await getOrderfromOrderID(identifiedUser.orders[index])
-        pendingOrders.push(order);
-    }    
-    res.json({
-        pendingOrders
-    });
-}
-
-
-const removeOrder= async(req, res, next) =>{
-    const{orderID, phoneNo}= req.body;
-
-    const identifiedUser = await User.findOne({phoneNo});
-    if(!identifiedUser)
-    {
-        return res.status(404).send({
-            message: "User Not Found."
-         });
-    }
-    identifiedUser.orders = identifiedUser.orders.filter(p => {
-        return p.orderID !== orderID;
-    });
+  if (walletUsed) {
+    identifiedUser.wallet = identifiedUser.wallet - parseFloat(total);
     await identifiedUser.save();
+  }
+  res.json({
+    message: 'OrderPlaced!',
+    user: identifiedUser,
+  });
+};
 
-    res.json({
-        message: 'Order removed Successfully!',
-        user: identifiedUser
+const getOrders = async (req, res, next) => {
+  const phoneNo = req.query.phoneNo;
+  const userType = req.query.userType;
+
+  let identifiedUser = await User.findOne({ phoneNo: phoneNo, userType })
+    .exec()
+    .catch((error) => {
+      return next(error);
     });
-}
 
-const addWalletMoney= async(req, res, next) =>{
-    const {phoneNo, amount}= req.body;
-    
-    let identifiedUser= await User.findOne({phoneNo, userType:"Customer"}).exec().catch((error) => {
+  if (!identifiedUser) {
+    return res.status(404).send({
+      message: 'User not found!',
+    });
+  }
+
+  let pendingOrders = [];
+  for (index = 0; index < identifiedUser.orders.length; index++) {
+    let order = await Order.findOne({
+      _id: mongoose.Types.ObjectId(item.orderID),
+    })
+      .exec()
+      .catch((error) => {
         return next(error);
-    });
-    if(!identifiedUser){
-        return res.status(404).send({
-            message: "User Not Found."
-         });
+      });
+    if (order) {
+      pendingOrders.push(order);
     }
-    let money= identifiedUser.wallet;
-    money+= parseFloat(amount);
-    identifiedUser.wallet= money;
-    identifiedUser.save();
-    res.json({
-        message: 'Money Added Successfully!',
-        user: identifiedUser
-    });
-}
+  }
+  res.json({
+    pendingOrders,
+  });
+};
 
-const givePromoReward= async(req, res, next) =>{
-    const {phoneNo}= req.body;
-    
-    let identifiedUser= await User.findOne({phoneNo, userType:"Customer"}).exec().catch((error) => {
-        return next(error);
+const removeOrder = async (req, res, next) => {
+  const { orderID, phoneNo } = req.body;
+
+  const identifiedUser = await User.findOne({ phoneNo });
+  if (!identifiedUser) {
+    return res.status(404).send({
+      message: 'User Not Found.',
     });
-    if(!identifiedUser){
-        return res.status(404).send({
-            message: "User Not Found."
-         })
-    }
-    let discountAmount= Math.floor((Math.random() * 10) + 10);
-    let code= Math.floor((Math.random() * 10000));
-    let promo= {
-        title: "Special Reward",
-        description: "Get extra "+discountAmount+"%* off on your next order!",
-        promoCode: "REUSE"+code
-    }
-    identifiedUser.promos.push(promo);
-    identifiedUser.save();
-    res.json({
-        message: 'Promo Rewarded Successfully!',
-        user: identifiedUser
+  }
+  identifiedUser.orders = identifiedUser.orders.filter((p) => {
+    return p.orderID !== orderID;
+  });
+  await identifiedUser.save();
+  res.json({
+    message: 'Order removed Successfully!',
+    user: identifiedUser,
+  });
+};
+
+const addWalletMoney = async (req, res, next) => {
+  const { phoneNo, amount } = req.body;
+
+  let identifiedUser = await User.findOne({ phoneNo, userType: 'Customer' })
+    .exec()
+    .catch((error) => {
+      return next(error);
     });
-}
+  if (!identifiedUser) {
+    return res.status(404).send({
+      message: 'User Not Found.',
+    });
+  }
+  let money = identifiedUser.wallet;
+  money += parseFloat(amount);
+  identifiedUser.wallet = money;
+  await identifiedUser.save();
+  res.json({
+    message: 'Money Added Successfully!',
+    user: identifiedUser,
+  });
+};
+
+const givePromoReward = async (req, res, next) => {
+  const { phoneNo } = req.body;
+
+  let identifiedUser = await User.findOne({ phoneNo, userType: 'Customer' })
+    .exec()
+    .catch((error) => {
+      return next(error);
+    });
+  if (!identifiedUser) {
+    return res.status(404).send({
+      message: 'User Not Found.',
+    });
+  }
+  let discountAmount = Math.floor(Math.random() * 10 + 10);
+  let code = Math.floor(Math.random() * 10000);
+  let promo = {
+    title: 'Special Reward',
+    description: 'Get extra ' + discountAmount + '%* off on your next order!',
+    promoCode: 'REUSE' + code,
+  };
+  identifiedUser.promos.push(promo);
+  await identifiedUser.save();
+  res.json({
+    message: 'Promo Rewarded Successfully!',
+    user: identifiedUser,
+  });
+};
 
 exports.placeOrder = placeOrder;
-exports.getOrders= getOrders;
-exports.removeOrder= removeOrder;
-exports.addWalletMoney= addWalletMoney;
-exports.givePromoReward=givePromoReward;
+exports.getOrders = getOrders;
+exports.removeOrder = removeOrder;
+exports.addWalletMoney = addWalletMoney;
+exports.givePromoReward = givePromoReward;
