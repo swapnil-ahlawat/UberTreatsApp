@@ -165,7 +165,7 @@ const Order = ({ route, navigation }) => {
                 </View>
                 <View style={{flexDirection: "row"}}>
                     <Text style={{width:"75%", color: COLORS.white, ...FONTS.body3, textAlign:"left"}}>Delivery Fee</Text>  
-                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>$4.00</Text>   
+                    <Text style={{width:"25%",color: COLORS.white, ...FONTS.body3, textAlign: "right"}}>$5.00</Text>   
                 </View>
                 {reusablePackageFee()}
                 <View style={{flexDirection: "row", marginVertical:SIZES.padding}}>
@@ -249,8 +249,13 @@ const Order = ({ route, navigation }) => {
                   throw new Error(responseData.message);
                 }
                 else{
-                    global.user= responseData.user;
-                    setModalVisible(true);
+                    if(response.message ==="NotEnough"){
+                        alert("Not Enough Money in Wallet!");
+                    }
+                    else{
+                        setModalVisible(true);
+                    }
+                    global.user= responseData.user;  
                 }
               } catch (err) {
                 console.log(err);
@@ -271,7 +276,8 @@ const Order = ({ route, navigation }) => {
 
                 }}
                 onPress={() => {
-                    if(checked && global.wallet<calculateTotal()){
+                    console.log(global.user.wallet);
+                    if(checked && global.user.wallet<calculateTotal()){
                         alert("Wallet Balance less than Order Total!")
                         setChecked(false);
                     }

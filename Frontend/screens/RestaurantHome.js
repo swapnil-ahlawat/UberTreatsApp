@@ -51,6 +51,7 @@ const RestaurantHome = ({route, navigation }) => {
         else{
         console.log(responseData)
         setOrders(responseData.pendingOrders)
+        console.log(orders);
       }
      } catch (err) {
         console.log(err);

@@ -232,9 +232,8 @@ const PersonnelHome = ({ navigation }) => {
                     }}
                 >
                         <Text style={{ ...FONTS.body3,color: COLORS.black }}>Customer Name: <Text style = {{fontWeight: 'bold'}}>{item.customerName}</Text></Text>
-                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>Restaurant: <Text style = {{fontWeight: 'bold'}}>{item.restaurant}</Text></Text>
+                        <Text style={{ ...FONTS.body3,color: COLORS.black }}>Restaurant: <Text style = {{fontWeight: 'bold'}}>{item.restaurantName}</Text></Text>
                         <Text style={{ ...FONTS.body3,color: COLORS.black  }}>Delivery Addresss: <Text style = {{fontWeight: 'bold'}}>{item.customerAddress}</Text></Text>
-                    <Text style={{ ...FONTS.body3,color: COLORS.black  }}>Order Deadline: <Text style = {{fontWeight: 'bold'}}>{item.orderDeadline}</Text></Text>
                  </View>   
                 
                     

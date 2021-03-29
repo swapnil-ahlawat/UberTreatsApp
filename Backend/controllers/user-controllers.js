@@ -4,26 +4,32 @@ const Order= require('../database/Order');
 
 const placeOrder= async(req, res, next) =>{
     const {reusablePackageFlag, restaurantPhoneNo, restaurantCourier, orderItems, customer, walletUsed, total, subtotal} = req.body;
-    let order={customerName:customer.name, customerAddress: customer.address, customerPhoneNo: customer.phoneNo, reusablePackageFlag, foodItems: orderItems, total:total, subtotal: subtotal}
-    let orderModel = new Order(order);
-    await orderModel.save();
     
     let identifiedRestaurant = await User.findOne({phoneNo: restaurantPhoneNo, userType: "Restaurant"}).exec().catch((error) => {
         return next(error);
     });
-    identifiedRestaurant.orders.push({orderID: orderModel._id.toString()});
-    await identifiedRestaurant.save();
 
     let identifiedPersonnel = await User.findOne({name: restaurantCourier, userType: "Delivery Personnel"}).exec().catch((error) => {
         return next(error);
     });
 
-    identifiedPersonnel.orders.push({orderID: orderModel._id.toString()});
-   
-    await identifiedPersonnel.save();
     let identifiedUser = await User.findOne({phoneNo: customer.phoneNo}).exec().catch((error) => {
         return next(error);
     });
+
+    let order={customerName:customer.name, customerAddress: customer.address, customerPhoneNo: customer.phoneNo, restaurantName: identifiedRestaurant.name, reusablePackageFlag, foodItems: orderItems, total:total, subtotal: subtotal}
+    let orderModel = new Order(order);
+    await orderModel.save();
+    
+    
+    identifiedRestaurant.orders.push({orderID: orderModel._id.toString()});
+    await identifiedRestaurant.save();
+
+
+    identifiedPersonnel.orders.push({orderID: orderModel._id.toString()});
+   
+    await identifiedPersonnel.save();
+
     if(walletUsed){
         identifiedUser.wallet = identifiedUser.wallet- parseFloat(total);
         await identifiedUser.save();
@@ -51,7 +57,9 @@ const getOrders= async(req, res, next) =>{
     }
     let pendingOrders=[]
     for (index = 0; index < identifiedUser.orders.length; index++) {
-        pendingOrders.push(await getOrderfromOrderID(identifiedUser.orders[index]));
+        console.log(identifiedUser.orders[index]);
+        let order= await getOrderfromOrderID(identifiedUser.orders[index])
+        pendingOrders.push(order);
     }    
     res.json({
         pendingOrders

@@ -11,6 +11,9 @@ const order = new mongoose.Schema({
     customerPhoneNo:{
         type:String
     },
+    restaurantName:{
+        type:String
+    },
     reusablePackageFlag:{
         type:Boolean, default: false
     },
