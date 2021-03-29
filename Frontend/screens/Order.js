@@ -211,13 +211,11 @@ const Order = ({ route, navigation }) => {
           >
             {order?.customerPhoneNo}
           </Text>
-          {/* </View> */}
-
           <View
             style={{
               flexDirection: 'row',
               alignItems: 'center',
-              marginTop: SIZES.padding,
+              marginVertical: SIZES.padding,
             }}
           >
             <Text

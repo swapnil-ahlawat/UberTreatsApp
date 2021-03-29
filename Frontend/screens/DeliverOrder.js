@@ -120,14 +120,14 @@ const DeliverOrder = ({ route, navigation }) => {
           borderBottomColor: COLORS.black,
           borderBottomWidth: 1,
           borderRadius: 20,
-          marginBottom: SIZES.padding,
+          margin: SIZES.padding,
           justifyContent: 'center',
         }}
       >
         <View style={{ flexDirection: 'row' }}>
           <Text
             style={{
-              width: '10%',
+              width: '15%',
               paddingLeft: SIZES.padding,
               ...FONTS.body3,
               color: COLORS.black,
@@ -139,7 +139,7 @@ const DeliverOrder = ({ route, navigation }) => {
           <Text
             style={{
               paddingLeft: SIZES.padding,
-              width: '55%',
+              width: '50%',
               ...FONTS.body3,
               color: COLORS.black,
             }}
@@ -276,7 +276,7 @@ const DeliverOrder = ({ route, navigation }) => {
               <View
                 style={{
                   flexDirection: 'row',
-                  marginTop: 5 * SIZES.padding,
+                  marginTop: 3 * SIZES.padding,
                   alignItems: 'center',
                 }}
               >
@@ -303,7 +303,7 @@ const DeliverOrder = ({ route, navigation }) => {
                 style={{
                   color: COLORS.black,
                   marginVertical: SIZES.padding,
-                  marginLeft: 3 * SIZES.padding,
+                  marginLeft: SIZES.padding,
                   ...FONTS.body2,
                   width: SIZES.width * 0.9,
                 }}
@@ -314,7 +314,7 @@ const DeliverOrder = ({ route, navigation }) => {
                 style={{
                   color: COLORS.black,
                   marginVertical: SIZES.padding,
-                  marginLeft: 3 * SIZES.padding,
+                  marginLeft: SIZES.padding,
                   ...FONTS.body3,
                   width: SIZES.width * 0.9,
                 }}
@@ -375,7 +375,8 @@ const DeliverOrder = ({ route, navigation }) => {
                   backgroundColor: COLORS.primary,
                   alignItems: 'center',
                   justifyContent: 'center',
-                  borderRadius: 20,
+                  borderRadius: SIZES.radius,
+                  marginBottom: 2 * SIZES.padding,
                 }}
                 onPress={() => {
                   setModalVisible(false);
@@ -543,17 +544,6 @@ const DeliverOrder = ({ route, navigation }) => {
       <ScrollView>
         {renderOrder()}
         {renderOrderInfo()}
-        {
-          <Text
-            style={{
-              margin: SIZES.padding * 2,
-              color: COLORS.white,
-              ...FONTS.body2,
-            }}
-          >
-            Payment Mode: {order?.payment_mode}
-          </Text>
-        }
         {renderTotal()}
       </ScrollView>
       {renderButton()}
