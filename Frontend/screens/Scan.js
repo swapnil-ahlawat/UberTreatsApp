@@ -100,7 +100,7 @@ const Scan = ({ route, navigation }) => {
         },
         body: JSON.stringify({
           phoneNo: phoneNo,
-          amount: 4.0,
+          amount: 1.0,
         }),
       });
 

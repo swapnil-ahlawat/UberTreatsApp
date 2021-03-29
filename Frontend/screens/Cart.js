@@ -256,7 +256,7 @@ const Order = ({ route, navigation }) => {
               textAlign: 'right',
             }}
           >
-            $4.00
+            $1.00
           </Text>
         </View>
       );
@@ -269,7 +269,7 @@ const Order = ({ route, navigation }) => {
       parseFloat(sumOrder()) +
       parseFloat(taxOrder()) +
       parseFloat(5.0) +
-      parseFloat(reusablePackage ? 4.0 : 0.0);
+      parseFloat(reusablePackage ? 1.0 : 0.0);
     return total.toFixed(2);
   }
 
