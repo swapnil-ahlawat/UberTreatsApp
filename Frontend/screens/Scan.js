@@ -63,9 +63,8 @@ const Scan = ({route, navigation }) => {
         })();
       }, []);
 
-      async function addWalletMoney(){
-        console.log(modeTag);
-        console.log(phoneNo);
+      async function addWalletMoney(phoneNo){
+        console.log(phoneNo +"wallet")
         var url = LINK+"/user/addWalletMoney";
         try {
         const response = await fetch(url, {
@@ -177,8 +176,8 @@ const Scan = ({route, navigation }) => {
                 deleteOrder();
             }
             else if(modeTag==="Delivery Personnel"){
-                setPhoneNo(responseData.userPhoneNo)
-                addWalletMoney();
+                console.log(responseData.userPhoneNo +"response")
+                addWalletMoney(responseData.userPhoneNo );
             }
             else{
                 setModalVisible(true)
