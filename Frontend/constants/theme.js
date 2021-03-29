@@ -1,6 +1,6 @@
 import { Dimensions } from 'react-native';
 const { width, height } = Dimensions.get('window');
-export const LINK = 'https://b67d1577a789.ngrok.io';
+export const LINK = 'https://powerful-bastion-70976.herokuapp.com:443';
 export const COLORS = {
   // base colors
   primary: '#3FC060', // green
