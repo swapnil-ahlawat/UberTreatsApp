@@ -1,7 +1,7 @@
 # UberTreatsApp
 
 ## To simply test the app on any Android device: 
-- Download and install the android apk from [this link]().
+- Download and install the android apk from [this link](https://drive.google.com/file/d/1rmI2WdRQWaczkrEuzmKk9g8-aHpWpOuz/view?usp=sharing).
 - Run it on your mobile or virtual android device.
 
 ## To run it in a developer environment:
