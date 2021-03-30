@@ -22,7 +22,7 @@ const Scan = ({ route, navigation }) => {
   const [packageTag, setPackageTag] = useState(null);
   const [modeTag, setModeTag] = useState(null);
 
-  const inFocus = navigation.addListener('state', () => {
+  const inFocus = navigation.addListener('focus', () => {
     setScanned(false);
     setSerialNumber(null);
     setOrder(null);
