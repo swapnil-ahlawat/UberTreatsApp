@@ -13,15 +13,25 @@ To run the server locally, open a terminal window in `./Backend`
 - Run `npm install` (only while running for the first time)
 - Run `npm start`
 
+## The Frontend
 To run the frontend on any mobile device (iOS or Android, virtual or on the same network):
 - Open a terminal window in `./Frontend`
 - Run `npm install` (only while running for the first time)
 - Run `expo start` to start the Expo client
 - Use any of the listed options to see a preview of the app
 
-The frontend by default uses our API hosted on Heroku for requests. In case you'd like to test the local backend with frontend, change the line 3 of ./Frontend/constants/theme.js to the following:
+The frontend by default uses our API hosted on Heroku for requests. \
+In case you'd like to test the local backend with frontend,
+- Install ngrok from their [official website](https://ngrok.com/download).
+- Run `./ngrok http 5000`
+- Note the ngrok subdomain address displayed
+- Change the line 3 of ./Frontend/constants/theme.js to the following: \
+`export const LINK = <displayed subdomain address>;`
+- Run both the frontend and the backend
 
-`export const LINK = 'http://localhost:5000';`
+## The Backend
+It has been hosted on https://powerful-bastion-70976.herokuapp.com/ on Port 443.
+
 
 ## Directory Structure
 ```
@@ -95,9 +105,6 @@ The frontend by default uses our API hosted on Heroku for requests. In case you'
 |  |- README.md
 
 ```
-## The API
-It has been hosted on https://powerful-bastion-70976.herokuapp.com/ on Port 443.
-
 
 ## Login credentials:
 - Customer
@@ -120,4 +127,4 @@ It has been hosted on https://powerful-bastion-70976.herokuapp.com/ on Port 443.
   - Password: admin,
   - User Type: Warehouse
 
-Every phone number of the form 9898x belong to the restaurant except for x = 0, 1 and 6.
+Every phone number of the form 9898x belong to the restaurant for x = 2, 3, 4 and 5.
