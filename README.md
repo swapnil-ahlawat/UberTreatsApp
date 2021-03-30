@@ -96,7 +96,8 @@ The frontend by default uses our API hosted on Heroku for requests. In case you'
 
 ```
 ## The API
-It has been hosted on https://powerful-bastion-70976.herokuapp.com/ reachange at Port 443.
+It has been hosted on https://powerful-bastion-70976.herokuapp.com/ on Port 443.
+
 
 ## Login credentials:
 - Customer
