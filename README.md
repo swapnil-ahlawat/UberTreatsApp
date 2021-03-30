@@ -117,8 +117,8 @@ It has been hosted on https://powerful-bastion-70976.herokuapp.com/ on Port 443.
   - Password: admin,
   - User Type: Delivery Personnel 
 
-- Restaurant
-  - Phone No.: 98985,
+- Restaurant (Harley's Burgers)
+  - Phone No.: 98982,
   - Password: admin,
   - User Type: Restaurant 
 
@@ -127,4 +127,4 @@ It has been hosted on https://powerful-bastion-70976.herokuapp.com/ on Port 443.
   - Password: admin,
   - User Type: Warehouse
 
-Every phone number of the form 9898x belong to the restaurant for x = 2, 3, 4 and 5.
+Every phone number of the form 9898x belong to the restaurant for x = 2, 3, 4 and 5 (all different restaurants). Password is same for all: admin.
