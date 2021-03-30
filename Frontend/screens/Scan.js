@@ -21,6 +21,7 @@ const Scan = ({ route, navigation }) => {
   const [phoneNo, setPhoneNo] = useState(null);
   const [packageTag, setPackageTag] = useState(null);
   const [modeTag, setModeTag] = useState(null);
+  const [count, setCount] = useState(null);
 
   const inFocus = navigation.addListener('focus', () => {
     setScanned(false);
@@ -28,6 +29,7 @@ const Scan = ({ route, navigation }) => {
     setOrder(null);
     setPhoneNo(global.user.phoneNo);
     setModeTag(global.modeTag);
+    setCount(null);
     let orderTemp = null;
     if (route.params) {
       setModeTag(route.params.modeTag);
@@ -162,6 +164,9 @@ const Scan = ({ route, navigation }) => {
       if (!response.ok) {
         throw new Error(responseData.message);
       } else {
+        if (responseData.count) {
+          setCount(responseData.count);
+        }
         if (modeTag === 'RestaurantDelivery') {
           deleteOrder();
         } else if (
@@ -326,7 +331,7 @@ const Scan = ({ route, navigation }) => {
     var text;
     if (modeTag === 'Restaurant') {
       text =
-        "Thank you for collecting the package. We will soon collect the package for it's cleaning. ";
+        'Thank you for collecting the package. We will soon collect the package from you for cleaning. ';
     } else if (modeTag === 'RestaurantDelivery') {
       text =
         'Our delivery personnel will shortly collect the package and will deliver it to the customer. Thank you for choosing to be a partner with Uber Eats.';
@@ -335,6 +340,24 @@ const Scan = ({ route, navigation }) => {
     } else {
       text =
         'Thank you for collecting the package. Please deposit at any collection centre as per your convenience.';
+    }
+
+    function renderPackageCount() {
+      if (modeTag === 'Warehouse') {
+        return (
+          <Text
+            style={{
+              color: COLORS.black,
+              marginVertical: SIZES.padding,
+              marginLeft: 3 * SIZES.padding,
+              ...FONTS.body2,
+              width: SIZES.width * 0.8,
+            }}
+          >
+            Fun Fact: This package has been used {count} times till now!.
+          </Text>
+        );
+      } else return <View></View>;
     }
     return (
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
@@ -401,6 +424,7 @@ const Scan = ({ route, navigation }) => {
               >
                 {text}
               </Text>
+              {renderPackageCount()}
             </View>
           </View>
         </TouchableWithoutFeedback>

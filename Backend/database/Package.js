@@ -20,7 +20,7 @@ const package = new mongoose.Schema({
   },
   count: {
     type: Number,
-    default: 1,
+    default: 0,
   },
 });
 

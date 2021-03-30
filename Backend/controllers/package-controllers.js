@@ -29,6 +29,7 @@ const scanPackage = async (req, res, next) => {
     message: 'Tag changed sucessfully!',
     userPhoneNo: userPhoneNo,
     lastPackageTag: lastPackageTag,
+    count: identifiedPackage.count,
   });
 };
 
