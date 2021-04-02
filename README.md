@@ -1,4 +1,4 @@
-# UberTreatsApp
+# Uber Treats App [[Video Demo](https://drive.google.com/file/d/1YNf3v5RvDx6g3p0KTpDUj1ABvBw4OkjC/view?usp=sharing)]
 
 ## To simply test the app on any Android device: 
 - Download and install the android apk from [this link](https://drive.google.com/file/d/1GStSyrU9QuP6NhdHDIS_JF9l6s7d-yXk/view?usp=sharing).
